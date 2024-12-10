@@ -1,16 +1,15 @@
-import PersonalDataView from "./views/personalData";
-import UploadFileView from "./views/uploadFile";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AuthPage from './views/Auth'; 
+
 
 const App = () =>{
 
   return (
-    <div className="w-full flex items-center flex-col bg-green-300">
-      <h1>CV Manager / NetBees</h1>
-      <div className="w-[1000px] flex flex-row flex-grow h-screen">
-        <PersonalDataView />
-        <UploadFileView />
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/cv-manager-netbees/' element={<AuthPage/>} />
+      </Routes>
+    </Router>
   )
 };
 
