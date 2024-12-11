@@ -1,49 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, TextField, Tabs, Tab, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { login, signUp } from "../services/auth";
-import { isUserProfileCreated } from "../services/masters";
-import AuthFooter from "../components/Footer/AuthFooter";
-
-const style = {
-    container: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#f5f5f5",
-    },
-    formWrapper: {
-        width: "400px",
-        padding: "32px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        backgroundColor: "#fff",
-        borderRadius: "8px",
-    },
-    tab: {
-        marginBottom: "24px",
-    },
-    logo: {
-        width: "100%",
-        maxWidth: "250px",
-        margin: "0 auto 16px auto",
-        display: "block",
-    },
-    textField: {
-        marginBottom: "16px",
-    },
-    button: {
-        width: "100%",
-        padding: "12px 0",
-        marginTop: "16px",
-    },
-    errorMessage: {
-        color: "red",
-        marginTop: "16px",
-        textAlign: "center",
-    },
-};
 
 const LOGIN_FIELDS = [
     { name: "email", label: "Email", type: "email" },
@@ -76,20 +33,7 @@ const AuthPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (isLoginForm) {
-                const authUserId = await login(formValues);
-                if (authUserId.error) throw new Error(authUserId.error.message);
-
-                const profileCreated = await isUserProfileCreated(authUserId);
-                navigate(profileCreated ? "/home/homePage" : "/auth/rol/select");
-            } else {
-                const registeredUserId = await signUp(formValues);
-                if (registeredUserId.error) throw new Error(registeredUserId.error.message);
-
-                navigate("/auth/rol/select");
-            }
         } catch (error) {
-            setErrorMessage(error.message);
         }
     };
 
@@ -97,7 +41,7 @@ const AuthPage = () => {
         <>
             <Box sx={style.container}>
                 <Paper sx={style.formWrapper}>
-                    <img src="/logo.png" alt="Logo" style={style.logo} />
+                    <img src="./images/LOGONETBEES.png" alt="Logo" style={style.logo} />
                     <Tabs
                         value={isLoginForm ? 0 : 1}
                         onChange={() => setIsLoginForm(!isLoginForm)}
@@ -135,9 +79,48 @@ const AuthPage = () => {
                     </form>
                 </Paper>
             </Box>
-            <AuthFooter />
         </>
     );
+};
+
+const style = {
+    container: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "#f5f5f5",
+    },
+    formWrapper: {
+        width: "400px",
+        padding: "32px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#fff",
+        borderRadius: "8px",
+    },
+    tab: {
+        marginBottom: 3,
+    },
+    logo: {
+        width: "100%",
+        maxWidth: "250px",
+        margin: "0 auto 0 auto",
+        display: "block",
+    },
+    textField: {
+        marginBottom: 2,
+    },
+    button: {
+        width: "100%",
+        py: 1.5,
+        marginTop: 2,
+    },
+    errorMessage: {
+        color: "red",
+        marginTop: 2,
+        textAlign: "center",
+    },
 };
 
 export default AuthPage;

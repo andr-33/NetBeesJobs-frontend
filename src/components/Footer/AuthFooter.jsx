@@ -7,85 +7,31 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import PublicIcon from '@mui/icons-material/Public';
 
-const style = {
-  container: {
-    backgroundColor: '#000',
-    padding: '20px',
-  },
-  row: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-  rowSpacing: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap',
-    marginBottom: '20px',
-  },
-  heading: {
-    color: '#fff',
-    marginBottom: '10px',
-    fontWeight: 'bold',
-  },
-  text: {
-    color: '#fff',
-    marginBottom: '5px',
-  },
-  iconRow: {
-    display: 'flex',
-    marginTop: '10px',
-    gap: '10px',
-  },
-  icon: {
-    color: '#fff',
-    fontSize: '20px',
-  },
-  decoratedText: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '5px',
-  },
-  divider: {
-    marginBottom: '10px',
-    backgroundColor: '#1976d2',
-    height: '2px',
-  },
-  textInfo: {
-    marginTop: '10px',
-    color: '#9e9e9e',
-  },
-  centerItems: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-};
-
 const AuthFooter = () => {
   return (
     <Box sx={style.container}>
       <Box sx={style.rowSpacing}>
-        <Box>
+        <Box sx={style.column}>
           <Typography sx={style.heading}>PRODUCTOS</Typography>
           <Divider sx={style.divider} />
           <Link href="https://www.netbees.es/empresas-outsourcing-de-it-en-cantabria/" sx={style.text}>
-            Outsourcing de IT
+            <Typography sx={style.text}>Outsourcing de IT</Typography>
           </Link>
           <Link href="https://www.netbees.es/licitaciones-publicas/" sx={style.text}>
-            Licitaciones Públicas
+            <Typography sx={style.text}>Licitaciones Públicas</Typography>
           </Link>
           <Link href="https://www.netbees.es/centro-de-coworking-en-cantabria/" sx={style.text}>
-            Coworking
+            <Typography sx={style.text}>Coworking</Typography>
           </Link>
           <Link href="https://www.netbees.es/marketing-digital/" sx={style.text}>
-            Marketing Digital
+            <Typography sx={style.text}>Marketing Digital</Typography>
           </Link>
           <Link href="https://www.netbees.es/formacion/" sx={style.text}>
-            Formación
+            <Typography sx={style.text}>Formación</Typography>
           </Link>
           <Typography sx={style.text}>I+D / IA</Typography>
         </Box>
+
 
         <Box>
           <Typography sx={style.heading}>NETBEES</Typography>
@@ -135,6 +81,65 @@ const AuthFooter = () => {
       </Box>
     </Box>
   );
+};
+
+const style = {
+  container: {
+    backgroundColor: '#000',
+    padding: '20px',
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  rowSpacing: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    marginBottom: '20px',
+  },
+  heading: {
+    color: '#fff',
+    marginBottom: '10px',
+    fontWeight: 'bold',
+  },
+  text: {
+    color: '#fff',
+    marginBottom: '5px',
+  },
+  iconRow: {
+    display: 'flex',
+    marginTop: '10px',
+    gap: '10px',
+  },
+  icon: {
+    color: '#fff',
+    fontSize: '20px',
+  },
+  decoratedText: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+  },
+  divider: {
+    marginBottom: '10px',
+    backgroundColor: '#1976d2',
+    height: '2px',
+  },
+  textInfo: {
+    marginTop: '10px',
+    color: '#9e9e9e',
+  },
+  centerItems: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 };
 
 export default AuthFooter;
