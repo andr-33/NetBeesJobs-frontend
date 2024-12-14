@@ -7,7 +7,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import PublicIcon from '@mui/icons-material/Public';
 
-const AuthFooter = () => {
+const WelcomePageFooter = () => {
   return (
     <Box sx={style.container}>
       <Box sx={style.rowSpacing}>
@@ -142,4 +142,4 @@ const style = {
   },
 };
 
-export default AuthFooter;
+export default WelcomePageFooter;
