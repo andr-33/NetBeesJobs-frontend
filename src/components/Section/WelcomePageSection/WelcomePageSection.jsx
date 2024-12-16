@@ -9,6 +9,8 @@ const WelcomePageSection = ({children}) => {
                 flexDirection: 'column',
                 backgroundColor: '#e0f7fa',
                 scrollSnapAlign: 'start',
+                justifyContent: 'center',
+                alignItems: 'center'
             }}
         >
             {children}

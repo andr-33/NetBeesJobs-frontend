@@ -8,10 +8,13 @@ import {
     ListItemText, 
     Toolbar 
 } from "@mui/material";
+import { useTheme} from '@mui/material';
 
 const NAV_ITEMS = ['Encuentra trabajo', 'Empleadores', 'Contacto'];
 
 const WelcomePageNavBar = () => {
+    const theme = useTheme();
+
     return (
         <AppBar
             position="fixed"
@@ -22,7 +25,7 @@ const WelcomePageNavBar = () => {
             }}
         >
             <Toolbar>
-                <Box component='img' src="./images/LOGONETBEES.png" sx={{
+                <Box component='img' src="./logos/netbees-logo.png" sx={{
                     width: 120,
                     height: 80
                 }} />
@@ -65,16 +68,16 @@ const WelcomePageNavBar = () => {
                             color: 'black',
                             borderColor: 'black',
                             borderRadius: 5,
-                            transition: 'transform 0.3s ease-in-out',
+                            transition: 'transform 0.1s ease-in-out',
                             ':hover': {
                                 transform: 'scale(1.02)',
                             },
                         }}>Iniciar sesión</Button>
                         <Button variant="contained" sx={{
-                            bgcolor: 'yellow',
+                            bgcolor: theme.palette.primary.main,
                             color: 'black',
                             borderRadius: 5,
-                            transition: 'transform 0.3s ease-in-out',
+                            transition: 'transform 0.1s ease-in-out',
                             ':hover': {
                                 transform: 'scale(1.02)',
                             },
