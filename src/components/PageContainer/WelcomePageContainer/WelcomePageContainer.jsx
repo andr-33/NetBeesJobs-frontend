@@ -1,20 +1,17 @@
-import { 
-    Box, 
-    Typography, 
-    Button,
-    List, 
-    ListItem, 
-    ListItemIcon, 
-    ListItemText
-} from "@mui/material";
 import {
-    CheckCircle
-} from "@mui/icons-material";
+    Box,
+    Typography,
+    Button,
+    Paper
+} from "@mui/material";
 import WelcomePageSection from "../../Section/WelcomePageSection/WelcomePageSection";
 import WelcomePageNavBar from "../../NavBar/WelcomePageNavBar/WelcomePageNavBar";
 import WelcomePageFooter from "../../Footer/WelcomePageFooter/WelcomePageFooter";
 import LogoCarousel from "../../Carousel/LogoCarousel/LogoCarousel";
-import { useTheme} from '@mui/material';
+import VerifiedCard from "../../Card/VerifiedCard/VirifiedCard";
+import Grid from '@mui/material/Grid2';
+import { useTheme } from '@mui/material';
+import CategoryCard from "../../Card/CategoryCard/CategoryCard";
 
 const WelcomePageContainer = () => {
     const theme = useTheme();
@@ -25,6 +22,8 @@ const WelcomePageContainer = () => {
                 scrollSnapType: 'y mandatory',
                 overflowY: 'scroll',
                 maxHeight: '100vh',
+                scrollBehavior: 'smooth',
+                bgcolor: theme.palette.background.default
             }}
         >
             <WelcomePageSection>
@@ -47,7 +46,7 @@ const WelcomePageContainer = () => {
                         <Box
                             sx={{
                                 fontWeight: '900',
-                                color: 'yellow',
+                                color: theme.palette.primary.main,
                                 fontSize: 50,
                                 mx: 0.5
                             }}
@@ -55,123 +54,103 @@ const WelcomePageContainer = () => {
                         >
                             500
                         </Box>
-                        ofertas de empleo se mueren por conocer tu CV
+                        ofertas de empleo <br /> se mueren por conocer tu CV
                     </Typography>
                 </Box>
             </WelcomePageSection>
             <WelcomePageSection>
-                <Box 
-                    sx={{ textAlign: 'center', backgroundColor: '#e0f7fa', padding: '20px' }}
+                <Box
+                    sx={{ textAlign: 'center', padding: '20px' }}
                 >
-                    <Typography variant="h4" sx={{ marginBottom: '10px' }}> 
-                        Thousands of 
-                    </Typography> 
-                    <Typography variant="h4" sx={{ marginBottom: '20px' }}> 
-                        dreams jobs available now 
-                    </Typography> 
-                    <Typography variant="subtitle1" sx={{ marginBottom: '30px' }}> 
-                        Browse some featured jobs
-                    </Typography> 
+                    <Typography variant="h2" sx={{ marginBottom: '10px' }}>
+                        Miles de
+                    </Typography>
+                    <Typography variant="h2" sx={{ marginBottom: '20px' }}>
+                        empleos de ensueño disponibles ahora
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ marginBottom: '30px' }}>
+                        Explora algunos trabajos destacados
+                    </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-                        <Box sx={{ textAlign: 'center', padding: '20px', backgroundColor: '#ffffff', borderRadius: '10px', width: '200px', margin: '10px' }}> 
-                            <Box 
-                                component='img' 
-                                src="/images/icons/creativity.png" 
-                                alt="Web development" 
-                                sx={{
-                                    width: 80,
-                                    height: 80
-                                }}
-                            /> 
-                            <Typography variant="h6">Designs & Art</Typography> 
-                            <Typography variant="subtitle2">653 open positions</Typography> 
-                        </Box> 
-                        <Box sx={{ textAlign: 'center', padding: '20px', backgroundColor: '#ffffff', borderRadius: '10px', width: '200px', margin: '10px' }}> 
-                            <Box 
-                                component='img' 
-                                src="/images/icons/studies.png" 
-                                alt="Web development" 
-                                sx={{
-                                    width: 80,
-                                    height: 80
-                                }}
-                            />
-                            <Typography variant="h6">Education</Typography> 
-                            <Typography variant="subtitle2">109 open positions</Typography> 
-                        </Box> 
-                        <Box sx={{ textAlign: 'center', padding: '20px', backgroundColor: '#ffffff', borderRadius: '10px', width: '200px', margin: '10px' }}> 
-                            <Box 
-                                component='img' 
-                                src="/images/icons/web-dev.png" 
-                                alt="Web development" 
-                                sx={{
-                                    width: 80,
-                                    height: 80
-                                }}
-                            /> 
-                            <Typography variant="h6">Web development</Typography> 
-                            <Typography variant="subtitle2">870 open positions</Typography> 
-                        </Box> 
-                        <Box sx={{ textAlign: 'center', padding: '20px', backgroundColor: '#ffffff', borderRadius: '10px', width: '200px', margin: '10px' }}> 
-                            <Box 
-                                component='img' 
-                                src="/images/icons/marketing.png" 
-                                alt="Web development" 
-                                sx={{
-                                    width: 80,
-                                    height: 80
-                                }}
-                            /> 
-                            <Typography variant="h6">Digital Marketing</Typography> 
-                            <Typography variant="subtitle2">360 open positions</Typography> 
-                        </Box> 
-                    </Box> 
-                    <Button variant="contained" sx={{ marginTop: '20px', backgroundColor: theme.palette.primary.main, color: '#000000' }}> 
-                        Browse more Categories 
-                    </Button> 
+                        <CategoryCard
+                            imageSrc="/images/icons/creativity.png"
+                            title="Diseño y Arte"
+                            subtitle="653 posiciones abiertas"
+                        />
+                        <CategoryCard
+                            imageSrc="/images/icons/studies.png"
+                            title="Educación"
+                            subtitle="109 posiciones abiertas"
+                        />
+                        <CategoryCard
+                            imageSrc="/images/icons/web-dev.png"
+                            title="Desarrollo Web"
+                            subtitle="870 posiciones abiertas"
+                        />
+                        <CategoryCard
+                            imageSrc="/images/icons/marketing.png"
+                            title="Marketing Digital"
+                            subtitle="360 posiciones abiertas"
+                        />
+                    </Box>
+                    <Button variant="contained" sx={{ marginTop: '20px', backgroundColor: theme.palette.primary.main, color: '#000000' }}>
+                        Explorar más categorías
+                    </Button>
                 </Box>
             </WelcomePageSection>
             <WelcomePageSection>
-                <Box sx={{ backgroundColor: '#fafafa', padding: '20px', borderRadius: '10px', textAlign: 'center' }}> 
-                    <Typography variant="h4" sx={{ marginBottom: '10px' }}> Grow your career </Typography> 
-                    <Typography variant="body1" sx={{ marginBottom: '20px' }}> When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </Typography> 
-                    <List sx={{ textAlign: 'left', display: 'inline-block' }}> 
-                        <ListItem> 
-                            <ListItemIcon> 
-                                <CheckCircle /> 
-                            </ListItemIcon> 
-                            <ListItemText primary="100% Verified Jobs" /> 
-                        </ListItem> 
-                        <ListItem> 
-                            <ListItemIcon> 
-                                <CheckCircle /> 
-                            </ListItemIcon> 
-                            <ListItemText primary="One profile Unlimited job Opening" /> 
-                        </ListItem> 
-                        <ListItem> 
-                            <ListItemIcon> 
-                                <CheckCircle /> 
-                            </ListItemIcon> 
-                            <ListItemText primary="Get Personalized Job Recommendations" /> 
-                        </ListItem> 
-                        <ListItem> 
-                            <ListItemIcon> 
-                                <CheckCircle /> 
-                            </ListItemIcon> 
-                            <ListItemText primary="Find Your Perfect Job Match" /> 
-                        </ListItem> 
-                    </List> 
-                    <Box sx={{ marginTop: '20px' }}> 
-                        <Typography variant="subtitle1">35000+ daily active users</Typography> 
-                        <Typography variant="subtitle1">69000+ open job positions</Typography> 
-                        <Typography variant="subtitle1">68500+ stories shared</Typography> 
-                    </Box> 
+                <Box sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <Box sx={{
+                        width: '50%',
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        <Box
+                            sx={{
+                                width: 500,
+                                height: 500,
+                                margin: 'auto'
+                            }}
+                            component='img'
+                            src="./src/assets/Illustrations/in-progress.svg"
+                        />
+                    </Box>
+
+                    <Box sx={{ width: '50%', padding: '20px', borderRadius: '10px', textAlign: 'center' }}>
+                        <Typography variant="h2" sx={{ marginBottom: '10px' }}> Haz crecer tu carrera </Typography>
+                        <Typography variant="body1"
+                            sx={{
+                                marginBottom: '20px',
+                                textAlign: 'left'
+                            }}
+                        > Cuando un impresor desconocido tomó una galera de texto y la mezcló para hacer un libro de muestras tipográficas. Ha sobrevivido no solo cinco siglos, sino también el salto a la composición tipográfica electrónica, permaneciendo esencialmente sin cambios. </Typography>
+                        <Grid container spacing={3}>
+                            <Grid>
+                                <VerifiedCard title='100% Trabajos Verificados' />
+                            </Grid>
+                            <Grid>
+                                <VerifiedCard title='Un perfil, ofertas ilimitadas' />
+                            </Grid>
+                            <Grid>
+                                <VerifiedCard title='Obtén sujerencias de empleo' />
+                            </Grid>
+                            <Grid>
+                                <VerifiedCard title='Encuentra el trabajo perfecto para ti' />
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </WelcomePageSection>
             <WelcomePageSection>
                 <Box sx={{ flex: 1 }} />
                 <Typography variant="h2">Principales partners</Typography>
                 <LogoCarousel />
+                <Box sx={{ flex: 1 }} />
                 <WelcomePageFooter />
             </WelcomePageSection>
         </Box>

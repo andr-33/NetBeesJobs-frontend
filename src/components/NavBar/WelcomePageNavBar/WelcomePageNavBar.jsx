@@ -20,14 +20,14 @@ const WelcomePageNavBar = () => {
             position="fixed"
             component='nav'
             sx={{
-                bgcolor: '#FFFB',
+                bgcolor: theme.palette.background.paper,
                 height: 80,
             }}
         >
             <Toolbar>
                 <Box component='img' src="./logos/netbees-logo.png" sx={{
-                    width: 120,
-                    height: 80
+                    width: 152,
+                    height: 121
                 }} />
 
                 <Box sx={{

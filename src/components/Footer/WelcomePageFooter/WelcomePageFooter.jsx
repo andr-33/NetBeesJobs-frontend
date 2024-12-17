@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Divider, Link, IconButton } from '@mui/material';
+import { Box, Typography, Divider, Link, IconButton, useTheme } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -8,12 +8,14 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import PublicIcon from '@mui/icons-material/Public';
 
 const WelcomePageFooter = () => {
+  const theme = useTheme();
+
   return (
-    <Box sx={style.container}>
+    <Box sx={{...style.container, bgcolor: theme.palette.text.primary}}>
       <Box sx={style.rowSpacing}>
         <Box sx={style.column}>
           <Typography sx={style.heading}>PRODUCTOS</Typography>
-          <Divider sx={style.divider} />
+          <Divider sx={{...style.divider, bgcolor: theme.palette.primary.main}} />
           <Link href="https://www.netbees.es/empresas-outsourcing-de-it-en-cantabria/" sx={style.text}>
             <Typography sx={style.text}>Outsourcing de IT</Typography>
           </Link>
@@ -29,13 +31,12 @@ const WelcomePageFooter = () => {
           <Link href="https://www.netbees.es/formacion/" sx={style.text}>
             <Typography sx={style.text}>Formación</Typography>
           </Link>
-          <Typography sx={style.text}>I+D / IA</Typography>
         </Box>
 
 
         <Box>
           <Typography sx={style.heading}>NETBEES</Typography>
-          <Divider sx={style.divider} />
+          <Divider sx={{...style.divider, bgcolor: theme.palette.primary.main}} />
           <Typography sx={style.text}>Valores Corporativos</Typography>
           <Typography sx={style.text}>Tecnología e Innovación</Typography>
           <Typography sx={style.text}>Sistema de gestión y Calidad</Typography>
@@ -44,7 +45,7 @@ const WelcomePageFooter = () => {
 
         <Box>
           <Typography sx={style.heading}>CONTACTO</Typography>
-          <Divider sx={style.divider} />
+          <Divider sx={{...style.divider, bgcolor: theme.palette.primary.main}} />
           <Box sx={style.decoratedText}>
             <PhoneIcon sx={style.icon} />
             <Typography sx={style.text}>673 03 25 61</Typography>
@@ -53,7 +54,7 @@ const WelcomePageFooter = () => {
             <EmailIcon sx={style.icon} />
             <Typography sx={style.text}>netbeesbc@gmail.com</Typography>
           </Box>
-          <Divider sx={style.divider} />
+          <Divider sx={{...style.divider, bgcolor: theme.palette.primary.main}} />
           <Box sx={{ ...style.iconRow, ...style.centerItems }}>
             <IconButton href="https://www.instagram.com/netbeeslab?igsh=NnlwNDhucG1mdnI3">
               <InstagramIcon sx={style.icon} />
@@ -72,10 +73,10 @@ const WelcomePageFooter = () => {
       </Box>
 
       <Box sx={style.row}>
-        <Typography sx={style.textInfo}>
+        <Typography sx={{...style.textInfo, color: theme.palette.secondary.main}}>
           ©2025 NetBees Business Center. Todos los derechos reservados.
         </Typography>
-        <Typography sx={style.textInfo}>
+        <Typography sx={{...style.textInfo, color: theme.palette.secondary.main}}>
           Polígono Industrial de Guarnizo, 0 S/N, 39611 Guarnizo, Cantabria
         </Typography>
       </Box>
@@ -85,13 +86,14 @@ const WelcomePageFooter = () => {
 
 const style = {
   container: {
-    backgroundColor: '#000',
     padding: '20px',
+    width: '100%'
   },
   row: {
     display: 'flex',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
+    px: 5
   },
   column: {
     display: 'flex',
@@ -110,7 +112,7 @@ const style = {
   },
   text: {
     color: '#fff',
-    marginBottom: '5px',
+    marginBottom: '3px',
   },
   iconRow: {
     display: 'flex',
@@ -128,12 +130,10 @@ const style = {
   },
   divider: {
     marginBottom: '10px',
-    backgroundColor: '#1976d2',
     height: '2px',
   },
   textInfo: {
     marginTop: '10px',
-    color: '#9e9e9e',
   },
   centerItems: {
     display: 'flex',

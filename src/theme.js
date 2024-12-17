@@ -9,15 +9,15 @@ const theme = createTheme({
         },
         secondary: {
             main: '#8d8d8d', // Color secundario (rosa)
-            light: '#bdbdbd',
+            light: '#E9E9E9',
             dark: '#616161',
         },
         background: {
-            default: '#fafbfa', // Fondo general de la app
+            default: '#FFFEFE', // Fondo general de la app
             paper: '#ffffff', // Fondo de los contenedores (como tarjetas)
         },
         text: {
-            primary: '#333333', // Texto principal
+            primary: '#080808', // Texto principal
             secondary: '#8d8d8d', // Texto secundario
             disabled: '#bdbdbd'
         },
@@ -33,7 +33,7 @@ const theme = createTheme({
         },
         success: {
             main: '#49b74f', // Verde para éxito
-            light: '#76cb7a',
+            light: '#B4F6B8',
             dark: '#2d7c32', 
         },
     },

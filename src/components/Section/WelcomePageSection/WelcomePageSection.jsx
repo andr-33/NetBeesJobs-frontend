@@ -7,10 +7,11 @@ const WelcomePageSection = ({children}) => {
                 minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: '#e0f7fa',
                 scrollSnapAlign: 'start',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                overflow:'hidden',
+                scrollSnapAlign: 'start'
             }}
         >
             {children}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Paper, useTheme } from '@mui/material';
 
 const logos = [
   '/logos/borygo-logo.png',
@@ -12,13 +12,16 @@ const logos = [
 ];
 
 const LogoCarousel = () => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
         overflow: 'hidden', // Ocultar contenido fuera del contenedor
         width: '100%',
         position: 'relative',
-        backgroundColor: '#f9f9f9', // Fondo del carrusel
+        backgroundColor: theme.palette.background.default,
+        py:2 // Fondo del carrusel
       }}
     >
       {/* Contenedor animado */}
@@ -35,18 +38,26 @@ const LogoCarousel = () => {
       >
         {/* Duplicamos los logos para efecto de loop */}
         {[...logos, ...logos].map((logo, index) => (
-          <Box
-            key={index}
-            component="img"
-            src={logo}
-            alt={`Logo ${index}`}
+          <Paper
             sx={{
-              height: 100,
-              width: 'auto',
-              margin: '0 20px',
-              flexShrink: 0, // Evita que los logos se reduzcan
+              bgcolor: theme.palette.secondary.light,
+              mx: 1,
+              borderRadius: 2
             }}
-          />
+          >
+            <Box
+              key={index}
+              component="img"
+              src={logo}
+              alt={`Logo ${index}`}
+              sx={{
+                height: 100,
+                width: 'auto',
+                margin: '0 20px',
+                flexShrink: 0, // Evita que los logos se reduzcan
+              }}
+            />
+          </Paper>
         ))}
       </Box>
     </Box>
