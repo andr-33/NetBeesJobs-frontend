@@ -44,6 +44,7 @@ const LogoCarousel = () => {
               mx: 1,
               borderRadius: 2
             }}
+            key={index}
           >
             <Box
               key={index}
