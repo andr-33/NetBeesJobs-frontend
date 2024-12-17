@@ -2,13 +2,13 @@ import React from 'react';
 import { Box, Paper, useTheme } from '@mui/material';
 
 const logos = [
-  '/logos/borygo-logo.png',
-  '/logos/boryszew-logo.png',
-  '/logos/gira-logo.png',
-  '/logos/maflow-logo.png',
-  '/logos/netbees-logo.png',
-  '/logos/tim-logo.png',
-  '/logos/vanitas-logo.png',
+  './logos/borygo-logo.png',
+  './logos/boryszew-logo.png',
+  './logos/gira-logo.png',
+  './logos/maflow-logo.png',
+  './logos/netbees-logo.png',
+  './logos/tim-logo.png',
+  './logos/vanitas-logo.png',
 ];
 
 const LogoCarousel = () => {

@@ -6,7 +6,7 @@ import ExamplePage from './pages/Example';
 const App = () =>{
 
   return (
-    <Router>
+    <Router basename='/cv-manager-netbees'>
       <Routes>
         <Route path='/' element={<WelcomePage/>} />
       </Routes>

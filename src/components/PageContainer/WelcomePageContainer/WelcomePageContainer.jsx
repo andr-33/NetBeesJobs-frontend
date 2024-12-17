@@ -73,22 +73,22 @@ const WelcomePageContainer = () => {
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                         <CategoryCard
-                            imageSrc="/images/icons/creativity.png"
+                            imageSrc="./images/icons/creativity.png"
                             title="Diseño y Arte"
                             subtitle="653 posiciones abiertas"
                         />
                         <CategoryCard
-                            imageSrc="/images/icons/studies.png"
+                            imageSrc="./images/icons/studies.png"
                             title="Educación"
                             subtitle="109 posiciones abiertas"
                         />
                         <CategoryCard
-                            imageSrc="/images/icons/web-dev.png"
+                            imageSrc="./images/icons/web-dev.png"
                             title="Desarrollo Web"
                             subtitle="870 posiciones abiertas"
                         />
                         <CategoryCard
-                            imageSrc="/images/icons/marketing.png"
+                            imageSrc="./images/icons/marketing.png"
                             title="Marketing Digital"
                             subtitle="360 posiciones abiertas"
                         />
