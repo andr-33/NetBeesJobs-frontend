@@ -2,13 +2,13 @@ import React from 'react';
 import { Box, Paper, useTheme } from '@mui/material';
 
 const logos = [
-  './logos/borygo-logo.png',
-  './logos/boryszew-logo.png',
-  './logos/gira-logo.png',
-  './logos/maflow-logo.png',
-  './logos/netbees-logo.png',
-  './logos/tim-logo.png',
-  './logos/vanitas-logo.png',
+  './logos/blacked/borygo-logo-bk.png',
+  './logos/blacked/boryszew-logo-bk.png',
+  './logos/blacked/gira-logo-bk.png',
+  './logos/blacked/maflow-logo-bk.png',
+  './logos/blacked/netbees-logo-bk.png',
+  './logos/blacked/tim-logo-bk.png',
+  './logos/blacked/vanitas-logo-bk.png',
 ];
 
 const LogoCarousel = () => {
@@ -17,11 +17,11 @@ const LogoCarousel = () => {
   return (
     <Box
       sx={{
-        overflow: 'hidden', // Ocultar contenido fuera del contenedor
+        overflow: 'hidden',
         width: '100%',
         position: 'relative',
         backgroundColor: theme.palette.background.default,
-        py:2 // Fondo del carrusel
+        py:2
       }}
     >
       {/* Contenedor animado */}
@@ -38,9 +38,9 @@ const LogoCarousel = () => {
       >
         {/* Duplicamos los logos para efecto de loop */}
         {[...logos, ...logos].map((logo, index) => (
-          <Paper
+          <Box
+            
             sx={{
-              bgcolor: theme.palette.secondary.light,
               mx: 1,
               borderRadius: 2
             }}
@@ -52,13 +52,13 @@ const LogoCarousel = () => {
               src={logo}
               alt={`Logo ${index}`}
               sx={{
-                height: 100,
-                width: 'auto',
+                height: 300,
+                width: 212,
                 margin: '0 20px',
                 flexShrink: 0, // Evita que los logos se reduzcan
               }}
             />
-          </Paper>
+          </Box>
         ))}
       </Box>
     </Box>
