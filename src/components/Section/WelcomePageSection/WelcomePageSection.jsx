@@ -10,7 +10,6 @@ const WelcomePageSection = ({children}) => {
                 scrollSnapAlign: 'start',
                 justifyContent: 'center',
                 alignItems: 'center',
-                overflow:'hidden',
                 scrollSnapAlign: 'start'
             }}
         >
