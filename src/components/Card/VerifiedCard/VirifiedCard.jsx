@@ -8,11 +8,13 @@ const VerifiedCard = ({ title, subtitle }) => {
         <Box
             sx={{
                 position: "relative",
-                width: "200px",
+                height: "50px",
                 backgroundColor: theme.palette.success.light, 
                 borderRadius: "12px",
                 padding: "16px",
                 textAlign: "center",
+                display: "flex",
+                alignItems: "center",
             }}
         >
             <Typography
