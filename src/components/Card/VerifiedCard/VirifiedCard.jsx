@@ -12,14 +12,17 @@ const VerifiedCard = ({ title, subtitle }) => {
                 backgroundColor: theme.palette.success.light, 
                 borderRadius: "12px",
                 padding: "16px",
-                textAlign: "center",
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center"
             }}
         >
             <Typography
                 variant="subtitle1"
-                sx={{ fontWeight: "bold", color: theme.palette.text.primary, maxWidth: '300px' }}
+                sx={{ 
+                    fontWeight: "bold", 
+                    color: theme.palette.text.primary, 
+                }}
             >
                 {title}
             </Typography>

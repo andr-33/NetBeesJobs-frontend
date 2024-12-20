@@ -58,8 +58,8 @@ const WelcomePageFooter = () => {
                 <EmailIcon sx={style.icon} />
                 <Typography sx={style.text}>netbeesbc@gmail.com</Typography>
               </Box>
-              <Divider sx={{ ...style.divider, bgcolor: theme.palette.primary.main }} />
-              <Box sx={{ ...style.iconRow, ...style.centerItems }}>
+              <Divider sx={{ ...style.divider, bgcolor: theme.palette.primary.main, marginTop:'3px' }} />
+              <Box sx={{ ...style.iconRow}}>
                 <IconButton href="https://www.instagram.com/netbeeslab?igsh=NnlwNDhucG1mdnI3">
                   <InstagramIcon sx={style.icon} />
                 </IconButton>
@@ -77,10 +77,10 @@ const WelcomePageFooter = () => {
           </Grid>
           <Grid size={12} textAlign="center">
             <Box sx={{width: '100%'}}>
-              <Typography sx={{ ...style.textInfo, color: theme.palette.secondary.main }}>
+              <Typography sx={{ color: theme.palette.secondary.main }}>
                 ©2025 NetBees Business Center. Todos los derechos reservados.
               </Typography>
-              <Typography sx={{ ...style.textInfo, color: theme.palette.secondary.main }}>
+              <Typography sx={{ color: theme.palette.secondary.main }}>
                 Polígono Industrial de Guarnizo, 0 S/N, 39611 Guarnizo, Cantabria
               </Typography>
             </Box>
@@ -130,14 +130,7 @@ const style = {
   divider: {
     marginBottom: '10px',
     height: '2px',
-  },
-  textInfo: {
-    marginTop: '10px',
-  },
-  centerItems: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '200px'
   },
 };
 

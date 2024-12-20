@@ -2,14 +2,13 @@ import {
     Box,
     Typography,
     Button,
-    Paper,
+    Grid2 as Grid
 } from "@mui/material";
 import WelcomePageSection from "../../Section/WelcomePageSection/WelcomePageSection";
 import WelcomePageNavBar from "../../NavBar/WelcomePageNavBar/WelcomePageNavBar";
 import WelcomePageFooter from "../../Footer/WelcomePageFooter/WelcomePageFooter";
 import LogoCarousel from "../../Carousel/LogoCarousel/LogoCarousel";
 import VerifiedCard from "../../Card/VerifiedCard/VirifiedCard";
-import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/material';
 import CategoryCard from "../../Card/CategoryCard/CategoryCard";
 
@@ -21,6 +20,7 @@ const WelcomePageContainer = () => {
             sx={{
                 scrollSnapType: 'y mandatory',
                 overflowY: 'scroll',
+                overflowX: 'hidden',
                 maxHeight: '100vh',
                 scrollBehavior: 'smooth',
                 bgcolor: theme.palette.background.default
@@ -116,29 +116,29 @@ const WelcomePageContainer = () => {
                                     component='img'
                                     src="./src/assets/Illustrations/in-progress.svg"
                                 />
-
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6 }} >
-
+                            <Grid size={{ xs: 12, sm: 12, md: 6 }} alignContent='center'>
                                 <Typography variant="h2" sx={{ marginBottom: '10px' }}> Haz crecer tu carrera </Typography>
                                 <Typography variant="body1"
                                     sx={{
                                         marginBottom: '20px',
                                         textAlign: 'left'
                                     }}
-                                > Cuando un impresor desconocido tomó una galera de texto y la mezcló para hacer un libro de muestras tipográficas. Ha sobrevivido no solo cinco siglos, sino también el salto a la composición tipográfica electrónica, permaneciendo esencialmente sin cambios. </Typography>
+                                >
+                                    Descubre oportunidades laborales que se alinean con tus habilidades y aspiraciones. Nuestra app te conecta con empleadores que valoran tu talento y te ayudan a alcanzar tus metas profesionales. ¡Empieza hoy y da el siguiente paso en tu carrera!
+                                </Typography>
 
-                                <Grid container spacing={3} >
-                                    <Grid size={{ xs: 12, sm: 6 }} textAlign="center" justifyContent="center" alignContent="center">
+                                <Grid container spacing={3}>
+                                    <Grid size={{ xs: 12, sm: 6 }}>
                                         <VerifiedCard title='100% Trabajos Verificados' />
                                     </Grid>
                                     <Grid size={{ xs: 12, sm: 6 }} >
                                         <VerifiedCard title='Un perfil, ofertas ilimitadas' />
                                     </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }} textAlign="center" alignContent="center">
+                                    <Grid size={{ xs: 12, sm: 6 }}>
                                         <VerifiedCard title='Obtén sujerencias de empleo' />
                                     </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }} textAlign="center" alignContent="center">
+                                    <Grid size={{ xs: 12, sm: 6 }}>
                                         <VerifiedCard title='Encuentra el trabajo perfecto para ti' />
                                     </Grid>
                                 </Grid>
