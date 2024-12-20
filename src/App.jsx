@@ -9,6 +9,7 @@ const App = () =>{
     <Router basename='/cv-manager-netbees'>
       <Routes>
         <Route path='/' element={<WelcomePage/>} />
+        <Route path='/authentication' element={<AuthPage/>} />
       </Routes>
     </Router>
   )

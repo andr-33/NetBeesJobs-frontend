@@ -9,12 +9,13 @@ import {
     Toolbar 
 } from "@mui/material";
 import { useTheme} from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 const NAV_ITEMS = ['Encuentra trabajo', 'Empleadores', 'Contacto'];
 
 const WelcomePageNavBar = () => {
     const theme = useTheme();
-
+    const navigate = useNavigate();
     return (
         <AppBar
             position="fixed"
@@ -63,16 +64,21 @@ const WelcomePageNavBar = () => {
                         gap: 2,
                         alignItems: 'center'
                     }}>
-                        <Button variant="outlined" sx={{
-                            bgcolor: 'transparent',
-                            color: 'black',
-                            borderColor: 'black',
-                            borderRadius: 5,
-                            transition: 'transform 0.1s ease-in-out',
-                            ':hover': {
-                                transform: 'scale(1.02)',
-                            },
-                        }}>Iniciar sesión</Button>
+                        <Button variant="outlined" 
+                            sx={{
+                                bgcolor: 'transparent',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: 5,
+                                transition: 'transform 0.1s ease-in-out',
+                                ':hover': {
+                                    transform: 'scale(1.02)',
+                                },
+                            }}
+                            onClick={()=>{ navigate('/authentication')}}
+                        >
+                            Iniciar sesión
+                        </Button>
                         <Button variant="contained" sx={{
                             bgcolor: theme.palette.primary.main,
                             color: 'black',
