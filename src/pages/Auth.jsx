@@ -1,55 +1,99 @@
 import React, { useState } from "react";
-import { Box, Typography, Tabs, Tab, Paper,} from "@mui/material";
+import { Box, Typography, Tabs, Tab, Paper, Grid2 as Grid, Fade, useTheme } from "@mui/material";
+import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
 import FormLogin from "../components/Form/FormLogin/FormLogin";
 import FormSignup from "../components/Form/FormSignup/FormSignup";
 
 const AuthPage = () => {
     const [isLoginForm, setIsLoginForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+    const theme = useTheme();
+    const { isMobile, isSmall, } = useScreenWidth();
+
+    console.log('Esta panatalla es de movil: ',isMobile)
 
     return (
-        <Box sx={style.container}>
-            <Paper sx={style.formWrapper}>
-                <Box 
-                    component='img' 
-                    src="./logos/netbees-logo.png" 
-                    alt="Logo NetBees" 
-                    sx={style.logo}
-                />
-                <Tabs
-                    value={isLoginForm ? 0 : 1}
-                    onChange={() => setIsLoginForm(!isLoginForm)}
-                    centered
-                    textColor="secondary"
-                    sx={style.tab}
-                >
-                    <Tab label="Iniciar sesión"/>
-                    <Tab label="Registrarse"/>
-                </Tabs>
-                <Box>
-                    {isLoginForm ? (
-                        <FormLogin />
-                    ) : (
-                        <FormSignup />
-                    )}
-                    {errorMessage && (
-                        <Typography sx={style.errorMessage}>{errorMessage}</Typography>
-                    )}
-                </Box>
-            </Paper>
+        <Grid
+            container
+            direction='row'
+            alignItems='center'
+            sx={{minHeight: '100vh', bgcolor: theme.palette.background.default}}
+        >
 
-            <Box 
-                component={'img'} 
-                src="./images/gifs/signup-message.gif"
-                sx={{
-                    width: 300,
-                    height: 300,
-                    position: 'absolute',
-                    top: 400,
-                    left: 100
-                }}
-            />
-        </Box>
+            {!isLoginForm && !isMobile && (
+                <Grid 
+                    size={4}
+                    display='flex'
+                    justifyContent='end'
+                    marginTop={40}
+                >
+                    <Fade 
+                        in={!isLoginForm} 
+                        easing={{
+                            enter: 'ease-in',
+                        }}
+                    >
+                        <Box
+                            component='img'
+                            src="./images/gifs/signup-message.gif"
+                            sx={{
+                                width: 300,
+                                height: 300,
+                            }}
+                        />
+                    </Fade>
+                </Grid>
+            )}
+
+            <Grid 
+                size={(isLoginForm || isMobile ) ? 12 : 4}
+                justifyItems='center'
+            >
+                <Paper
+                    sx={{ ...style.formWrapper, bgcolor: theme.palette.background.paper }}
+                    elevation={3}
+                >
+                    <Box sx={{
+                        width: '200px',
+                        height: '120px',
+                        display: 'block',
+                        margin: 'auto',
+                        overflow: 'hidden'
+                    }}>
+                        <Box
+                            component='img'
+                            src="./logos/netbees-logo.png"
+                            alt="Logo NetBees"
+                            sx={style.logo}
+                        />
+                    </Box>
+                    <Tabs
+                        value={isLoginForm ? 0 : 1}
+                        onChange={() => setIsLoginForm(!isLoginForm)}
+                        centered
+                        textColor="secondary"
+                        sx={style.tab}
+                    >
+                        <Tab label="Iniciar sesión" />
+                        <Tab label="Registrarse" />
+                    </Tabs>
+                    <Box>
+                        {isLoginForm ? (
+                            <FormLogin />
+                        ) : (
+                            <FormSignup />
+                        )}
+                        {errorMessage && (
+                            <Typography sx={style.errorMessage}>{errorMessage}</Typography>
+                        )}
+                    </Box>
+                </Paper>
+            </Grid>
+
+            {!isLoginForm && !isMobile && (
+                <Grid size={4} />
+            )}
+        </Grid>
     );
 };
 
@@ -60,13 +104,10 @@ const style = {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundColor: "#f5f5f5",
     },
     formWrapper: {
         width: "400px",
         padding: "32px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        backgroundColor: "#fff",
         borderRadius: "8px",
     },
     tab: {
@@ -74,9 +115,9 @@ const style = {
     },
     logo: {
         width: "100%",
-        maxWidth: "250px",
-        margin: "auto",
-        display: "block",
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center'
     },
     textField: {
         marginBottom: 2,
