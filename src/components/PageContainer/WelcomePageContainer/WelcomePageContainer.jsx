@@ -150,9 +150,22 @@ const WelcomePageContainer = () => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 12 }} >
                     <WelcomePageSection>
-                        <Box sx={{ flex: 1 }} />
-                        <Typography variant="h2">Principales partners</Typography>
+                        
+                        <Typography 
+                            variant="h2"
+                            sx={{
+                                textDecoration: 'underline',
+                                textDecorationColor: (theme) => theme.palette.primary.main
+                            }}
+                        >
+                            Nuestro principales socios
+                        </Typography>
                         <LogoCarousel />
+                        
+                    </WelcomePageSection>
+                </Grid>
+                <Grid size={{ xs: 12, sm: 12 }} >
+                    <WelcomePageSection>
                         <Box sx={{ flex: 1 }} />
                         <WelcomePageFooter />
                     </WelcomePageSection>
