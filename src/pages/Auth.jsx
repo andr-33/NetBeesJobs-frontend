@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Box, Typography, Tabs, Tab, Paper, Grid2 as Grid, Fade, useTheme } from "@mui/material";
+import { Box, Tabs, Tab, Paper, Grid2 as Grid, Fade, useTheme } from "@mui/material";
 import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
-import FormLogin from "../components/Form/FormLogin/FormLogin";
-import FormSignup from "../components/Form/FormSignup/FormSignup";
+import FormLogin from "../components/Form/LoginForm/LoginForm";
+import FormSignup from "../components/Form/SignupForm/SignupForm";
 
 const AuthPage = () => {
     const [isLoginForm, setIsLoginForm] = useState(true);
-    const [errorMessage, setErrorMessage] = useState(null);
     const theme = useTheme();
     const { isMobile, isSmall, } = useScreenWidth();
-
-    console.log('Esta panatalla es de movil: ',isMobile)
 
     return (
         <Grid
@@ -19,7 +16,6 @@ const AuthPage = () => {
             alignItems='center'
             sx={{minHeight: '100vh', bgcolor: theme.palette.background.default}}
         >
-
             {!isLoginForm && !isMobile && (
                 <Grid 
                     size={4}
@@ -82,9 +78,6 @@ const AuthPage = () => {
                             <FormLogin />
                         ) : (
                             <FormSignup />
-                        )}
-                        {errorMessage && (
-                            <Typography sx={style.errorMessage}>{errorMessage}</Typography>
                         )}
                     </Box>
                 </Paper>

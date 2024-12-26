@@ -1,7 +1,10 @@
-import { Box, Button, useTheme, CircularProgress } from "@mui/material";
+import { Box, useTheme, Typography } from "@mui/material";
 import { AlternateEmailRounded, LockRounded } from "@mui/icons-material";
 import { useState } from "react";
+import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
+import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 
 const INITIAL_VALUES = {
     email: '',
@@ -14,23 +17,32 @@ const FormSignup = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const theme = useTheme();
+    const { saveToken } = useAuth();
 
-    const handleSignup = (event) => {
+    const handleSignup = async (event) => {
         event.preventDefault();
+        setError(null);
+        setLoading(true);
+
         const { password, confirmPassword } = formSignupValues;
 
         if (password !== confirmPassword) {
             setError("Las contraseñas no coinciden");
+            setLoading(false);
             return;
         }
 
-        setError(null); 
-        setLoading(true);
-
-        setTimeout(() => {
+        try {
+            const response = await axios.post('api/auth/signup', formSignupValues);
+            const { message, session } = response.data;
+            saveToken(session);
+            console.log(message);
+        } catch (error) {
+            console.error('Error during signup: ', error);
+            setError(error.response?.data?.error || 'Ups...algo ha salido mal, intentalo nuevamente');
+        } finally {
             setLoading(false);
-            alert("Registro exitoso");
-        }, 3000);
+        }
     };
 
     const handleOnChange = (event) => {
@@ -70,40 +82,31 @@ const FormSignup = () => {
                 required
                 icon={LockRounded}
             />
+            <LoaderButton 
+                text='Registrarse'
+                loading={loading}
+            />
+
             {error && (
                 <Box
                     sx={{
-                        color: theme.palette.error.main,
-                        textAlign: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
                         mt: 1,
-                        mb: 2,
                     }}
                 >
-                    {error}
+                    <Typography
+                        variant="body1"
+                        maxWidth={250}
+                        textAlign='center'
+                        sx={{
+                            color: theme.palette.error.main,
+                        }}
+                    >
+                        {error}
+                    </Typography>
                 </Box>
             )}
-            <Button
-                sx={{
-                    bgcolor: theme.palette.primary.main,
-                    color: 'black',
-                    borderRadius: 2,
-                    display: 'block',
-                    margin: 'auto',
-                    transition: 'background 0.2s ease-in-out',
-                    ':hover': {
-                        bgcolor: theme.palette.primary.light,
-                    },
-                }}
-                type="submit"
-                variant="contained"
-                disabled={loading}
-            >
-                {loading ? (
-                    <CircularProgress size={24} sx={{ color: 'black' }} />
-                ) : (
-                    "Registrarse"
-                )}
-            </Button>
         </Box>
     );
 };
