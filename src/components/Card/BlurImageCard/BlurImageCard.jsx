@@ -9,7 +9,12 @@ const BlurImageCard = ({imgSrc, text}) => {
     const [hover, setHover] = useState(false);
     const theme = useTheme();
     return (
-        <>
+        <Box sx={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+        }}>
             <Box
                 sx={{
                     position: 'absolute',
@@ -37,7 +42,9 @@ const BlurImageCard = ({imgSrc, text}) => {
                     transition: 'background-color 0.3s ease',
                     ':hover':{
                         bgcolor: `${theme.palette.primary.main}66`
-                    }
+                    },
+                    m: 3,
+                    borderRadius: 2
                 }}
             >
                 <Typography
@@ -50,7 +57,7 @@ const BlurImageCard = ({imgSrc, text}) => {
                     {text}
                 </Typography>
             </Box>
-        </>
+        </Box>
     );
 };
 

@@ -2,6 +2,7 @@ import { Box, useTheme, Typography } from "@mui/material";
 import { AlternateEmailRounded, LockRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
@@ -17,6 +18,7 @@ const FormSignup = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const theme = useTheme();
+    const navigate = useNavigate();
     const { saveToken } = useAuth();
 
     const handleSignup = async (event) => {
@@ -34,9 +36,9 @@ const FormSignup = () => {
 
         try {
             const response = await axios.post('api/auth/signup', formSignupValues);
-            const { message, session } = response.data;
+            const { session } = response.data;
             saveToken(session);
-            console.log(message);
+            navigate('/seleccion-role');
         } catch (error) {
             console.error('Error during signup: ', error);
             setError(error.response?.data?.error || 'Ups...algo ha salido mal, intentalo nuevamente');

@@ -1,12 +1,30 @@
-import {
-    Box, 
-    Grid2 as Grid, 
-    Typography,
-    useTheme
-} from "@mui/material";
+import { Grid2 as Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext/AuthContext";
+import axios from "axios";
 import BlurImageCard from "../components/Card/BlurImageCard/BlurImageCard";
 
 const SelectRole = () => {
+    const navigate = useNavigate();
+    const { accessToken } = useAuth();
+
+    const handleRoleSelection = async (roleId) =>{
+        try{
+            const response = await axios.post(
+                'api/master/set-role', 
+                { roleId: roleId },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                },
+            );
+            console.log(response.data.message);
+        } catch (error){
+            console.error('Error during signup: ', error);
+        }
+    };
+
     return(
         <Grid
             container
@@ -16,10 +34,8 @@ const SelectRole = () => {
         >
             <Grid
                 size={{xs: 12, md: 6}}
-                sx={{
-                    position: 'relative',
-                    overflow: 'hidden',
-                }}
+                component='div'
+                onClick={()=> handleRoleSelection(1)}
             >
                 <BlurImageCard 
                     imgSrc='./images/netbees-development.png'
@@ -33,10 +49,10 @@ const SelectRole = () => {
             >
                 <Grid
                     sx={{
-                        position: 'relative',
                         height: '50%',
-                        overflow: 'hidden'
                     }}
+                    component='div'
+                    onClick={()=> handleRoleSelection(2)}
                 >
                     <BlurImageCard 
                         imgSrc='./images/netbees-marketing.png'
@@ -45,9 +61,7 @@ const SelectRole = () => {
                 </Grid>
                 <Grid
                     sx={{
-                        position: 'relative',
                         height: '50%',
-                        overflow: 'hidden'
                     }}
                 >
                     <BlurImageCard 
