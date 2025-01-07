@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext/AuthContext";
 import axios from "axios";
 import BlurImageCard from "../components/Card/BlurImageCard/BlurImageCard";
 
-const SelectRole = () => {
+const SelectRolePage = () => {
     const navigate = useNavigate();
     const { accessToken } = useAuth();
 
@@ -75,4 +75,4 @@ const SelectRole = () => {
     );
 };
 
-export default SelectRole;
+export default SelectRolePage;

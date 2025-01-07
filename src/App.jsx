@@ -4,6 +4,7 @@ import AuthPage from './pages/Auth';
 import WelcomePage from './pages/Welcome';
 import SelectRole from './pages/SelectRole';
 import NotFoundPage from './pages/NotFound';
+import CreateProfilePage from './pages/CreateProfile';
 import ExamplePage from './pages/Example';
 
 const App = () =>{
@@ -13,14 +14,8 @@ const App = () =>{
       <Routes>
         <Route path='/' element={<WelcomePage/>} />
         <Route path='/authentication' element={<AuthPage/>} />
-        <Route 
-          path='/seleccion-role' 
-          element={
-            
-              <SelectRole/>
-            
-          } 
-        />
+        <Route path='/seleccion-role' element={<SelectRole/>} />
+        <Route path='/crea-tu-perfil' element={<CreateProfilePage />} />
         <Route path='*' element={<NotFoundPage/>} />
       </Routes>
     </Router>

@@ -1,0 +1,101 @@
+import React, { useState } from "react";
+import { Box, Button, Paper, Typography, useTheme } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ProfileCompanyForm from "../components/Form/ProfileCompanyForm/ProfileCompanyForm";
+import ProfileUserForm from "../components/Form/ProfileUserForm/ProfileUserForm";
+import PhotoPicker from "../components/Picker/PhotoPicker/PhotoPicker";
+import { ImageProfileProvider } from "../contexts/ImageProfileContext/ImageProfileContext";
+
+const CrearPerfilPage = ({ rol }) => {
+    const [isBoxVisible, setIsBoxVisible] = useState(true);
+    const theme = useTheme();
+
+    const handleSlideUp = () => {
+        setIsBoxVisible(false);
+    };
+
+    return (
+        <Box
+            sx={{
+                position: "relative",
+                width: "100%",
+                height: "100vh",
+                overflowY: 'scroll',
+                bgcolor: theme.palette.background.default
+            }}
+        >
+            {/* Deslizable Box */}
+            <Paper
+                elevation={3}
+                sx={{
+                    position: "absolute",
+                    top: isBoxVisible ? "50%" : "-100%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: "90%",
+                    maxWidth: "600px",
+                    bgcolor: theme.palette.background.paper,
+                    borderRadius: 2,
+                    padding: 3,
+                    textAlign: "center",
+                    transition: "top 0.8s ease",
+                    zIndex: 1
+                }}
+            >
+                <Typography variant="h5" gutterBottom>
+                    Antes de comenzar, nos gustaría conocer un poco más sobre ti
+                </Typography>
+                <Button
+                    variant="contained"
+                    endIcon={<ArrowUpwardIcon />}
+                    onClick={handleSlideUp}
+                    sx={{
+                        marginTop: 3,
+                        bgcolor: theme.palette.primary.main,
+                        "&:hover": { bgcolor: theme.palette.primary.light },
+                    }}
+                >
+                    De acuerdo
+                </Button>
+            </Paper>
+
+            <Box
+                sx={{
+                    position: "absolute",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    width: '100%',
+                    opacity: isBoxVisible ? 0 : 1,
+                    transition: "opacity 0.8s ease",
+                }}
+            >
+                <Paper
+                    sx={{
+                        width: "400px",
+                        padding: "32px",
+                        borderRadius: "8px",
+                        bgcolor: theme.palette.background.paper,
+                    }}
+                    elevation={3}
+                >
+                    <PhotoPicker />
+                    <Box>
+                        {rol !== "A" ? (
+                            <ProfileCompanyForm />
+                        ) : (
+                            <ProfileUserForm />
+                        )}
+                    </Box>
+                </Paper>
+            </Box>
+        </Box>
+    );
+};
+
+export default () => (
+    <ImageProfileProvider>
+        <CrearPerfilPage />
+    </ImageProfileProvider>
+);
