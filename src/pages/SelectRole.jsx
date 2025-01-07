@@ -20,6 +20,7 @@ const SelectRolePage = () => {
                 },
             );
             console.log(response.data.message);
+            navigate(`/crea-tu-perfil/${roleId}`);
         } catch (error){
             console.error('Error during signup: ', error);
         }

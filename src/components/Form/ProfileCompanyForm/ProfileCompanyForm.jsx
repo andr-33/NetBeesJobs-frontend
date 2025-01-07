@@ -8,11 +8,11 @@ import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
 
 const INITIAL_VALUES = {
-    nombre: '',
-    acronimo: '',
-    community: 7,
-    province: 28,
-    mst_ciudades_id: '',
+    name: '',
+    acronym: '',
+    community_id: 7,
+    province_id: 28,
+    city_id: '',
     image: ''
 };
 
@@ -61,41 +61,41 @@ const ProfileCompanyForm = () => {
         >
             <CustomTextFieldWithIcon
                 label="Nombre de la empresa"
-                name="nombre"
-                value={formValues.nombre}
+                name="name"
+                value={formValues.name}
                 onChange={handleOnChange}
                 required
             />
             <CustomTextFieldWithIcon
                 label="Acrónimo"
-                name="acronimo"
-                value={formValues.acronimo}
+                name="acronym"
+                value={formValues.acronym}
                 onChange={handleOnChange}
                 required
             />
             <OptionPicker
                 urlData='/api/master/communities'
                 label="Comunidad Autonoma"
-                name="community"
-                value={formValues.community}
+                name="community_id"
+                value={formValues.community_id}
                 onChange={handleOnChange}
                 idKey='mst_comunidades_id'
                 labelKey='nombre_corto'
             />
             <OptionPicker
-                urlData={`/api/master/communities/${formValues.community}/provinces`}
+                urlData={`/api/master/communities/${formValues.community_id}/provinces`}
                 label="Provincia"
-                name="province"
-                value={formValues.province}
+                name="province_id"
+                value={formValues.province_id}
                 onChange={handleOnChange}
                 idKey='mst_provincias_id'
                 labelKey='nombre'
             />
             <OptionPicker
-                urlData={`/api/master/provinces/${formValues.province}/cities`}
+                urlData={`/api/master/provinces/${formValues.province_id}/cities`}
                 label="Ciudad"
-                name="mst_ciudades_id"
-                value={formValues.mst_ciudades_id}
+                name="city_id"
+                value={formValues.city_id}
                 onChange={handleOnChange}
                 idKey='mst_ciudades_id'
                 labelKey='nombre'

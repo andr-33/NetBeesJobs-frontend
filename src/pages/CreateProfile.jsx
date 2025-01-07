@@ -5,10 +5,12 @@ import ProfileCompanyForm from "../components/Form/ProfileCompanyForm/ProfileCom
 import ProfileUserForm from "../components/Form/ProfileUserForm/ProfileUserForm";
 import PhotoPicker from "../components/Picker/PhotoPicker/PhotoPicker";
 import { ImageProfileProvider } from "../contexts/ImageProfileContext/ImageProfileContext";
+import { useParams } from "react-router-dom";
 
-const CrearPerfilPage = ({ rol }) => {
+const CrearPerfilPage = () => {
     const [isBoxVisible, setIsBoxVisible] = useState(true);
     const theme = useTheme();
+    const { roleId } = useParams();
 
     const handleSlideUp = () => {
         setIsBoxVisible(false);
@@ -82,7 +84,7 @@ const CrearPerfilPage = ({ rol }) => {
                 >
                     <PhotoPicker />
                     <Box>
-                        {rol !== "A" ? (
+                        {roleId === '2' ? (
                             <ProfileCompanyForm />
                         ) : (
                             <ProfileUserForm />

@@ -15,7 +15,7 @@ const App = () =>{
         <Route path='/' element={<WelcomePage/>} />
         <Route path='/authentication' element={<AuthPage/>} />
         <Route path='/seleccion-role' element={<SelectRole/>} />
-        <Route path='/crea-tu-perfil' element={<CreateProfilePage />} />
+        <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
         <Route path='*' element={<NotFoundPage/>} />
       </Routes>
     </Router>
