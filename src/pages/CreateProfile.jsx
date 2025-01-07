@@ -26,7 +26,6 @@ const CrearPerfilPage = () => {
                 bgcolor: theme.palette.background.default
             }}
         >
-            {/* Deslizable Box */}
             <Paper
                 elevation={3}
                 sx={{
@@ -67,7 +66,7 @@ const CrearPerfilPage = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: '100%',
+                    height: 'auto',
                     width: '100%',
                     opacity: isBoxVisible ? 0 : 1,
                     transition: "opacity 0.8s ease",
@@ -79,6 +78,7 @@ const CrearPerfilPage = () => {
                         padding: "32px",
                         borderRadius: "8px",
                         bgcolor: theme.palette.background.paper,
+                        my: 2
                     }}
                     elevation={3}
                 >
