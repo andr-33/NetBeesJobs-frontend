@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
@@ -32,6 +32,7 @@ const ProfileUserForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const theme = useTheme();
+  const navigate = useNavigate();
   const { selectedImage } = useImageProfile(); 
   const { accessToken } = useAuth();
 
@@ -51,7 +52,7 @@ const ProfileUserForm = () => {
           }
         }
       );
-      console.log("User created:", response.data);
+      navigate('/pagina-principal');
     } catch (error) {
       console.error("Error creating user:", error);
       setError(

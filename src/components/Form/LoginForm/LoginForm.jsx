@@ -2,6 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { AlternateEmailRounded, LockRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
@@ -16,6 +17,7 @@ const FormLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const theme = useTheme();
+    const navigate = useNavigate();
     const { saveToken } = useAuth();
 
     const handleLogin = async (event) => {
@@ -25,9 +27,24 @@ const FormLogin = () => {
 
         try {
             const response = await axios.post('api/auth/login', formLoginValues);
-            const { message, session } = response.data;
+            const { session } = response.data;
             saveToken(session);
-            console.log(message);
+            const responseUserRole = await axios.get(
+                '/api/master/get-role',
+                {
+                    headers: {
+                        Authorization: `Bearer ${session}`,
+                    }
+                }
+            );
+
+            if(responseUserRole.data.length === 0){
+                navigate('/seleccion-rol');
+            } else if (responseUserRole.data[0].tipo == 1) {
+                navigate('/pagina-principal');
+            } else {
+                navigate('/perfil-empresa');
+            }
         } catch (error) {
             console.error('Error during login: ', error);
             setError(error.response?.data?.error || 'Ups... algo ha salido mal, intentalo nuevamente');

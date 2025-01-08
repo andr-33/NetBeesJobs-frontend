@@ -6,23 +6,12 @@ import {
     MenuItem,
     Pagination,
     IconButton,
-    Paper,
-    Typography,
-    Button,
-    Avatar,
     useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
-
-const mockData = [
-    { id: 1, name: "Oferta A", sector: "Tecnología", city: "Madrid", community: "Madrid" },
-    { id: 2, name: "Oferta B", sector: "Salud", city: "Barcelona", community: "Cataluña" },
-    { id: 3, name: "Oferta C", sector: "Educación", city: "Sevilla", community: "Andalucía" },
-    // Añade más datos si lo necesitas
-];
 
 const HomePage = () => {
     const [searchFilters, setSearchFilters] = useState({
@@ -32,7 +21,7 @@ const HomePage = () => {
         community: "",
     });
     const [expanded, setExpanded] = useState(false);
-    const [filteredData, setFilteredData] = useState(mockData);
+    const [filteredData, setFilteredData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [offersData, setOffersData] = useState([]);
     const theme = useTheme();
@@ -45,9 +34,8 @@ const HomePage = () => {
             const response = await axios.get('/api/company/all-offers');
             setOffersData(response.data);
             setFilteredData(response.data);
-            console.log(response.data);
         };
-
+        
         fetchAllOffers();
     }, []);
 

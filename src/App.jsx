@@ -15,7 +15,7 @@ const App = () =>{
       <Routes>
         <Route path='/' element={<WelcomePage/>} />
         <Route path='/authentication' element={<AuthPage/>} />
-        <Route path='/seleccion-role' element={<SelectRole/>} />
+        <Route path='/seleccion-rol' element={<SelectRole/>} />
         <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
         <Route path='/pagina-principal' element={<HomePage />} />
         <Route path='/example' element={<ExamplePage />} />
