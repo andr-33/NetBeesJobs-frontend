@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText } from "@mui/material";
+import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
 
 const OfferApplyCard = ({ item }) => {
     const [openModal, setOpenModal] = useState(false);
     const [cvFiles, setCvFiles] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { accessToken } = useAuth();
 
     const handleOpenModal = async () => {
         setOpenModal(true);
         setLoading(true);
 
         try {
-            const response = await axios.get("/user/cv-files");
+            const response = await axios.get(
+                'api/users/get-cvs-info',
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                }
+            );
+            console.log(response.data);
             setCvFiles(response.data); // Asume que los CVs vienen como un array de objetos con una propiedad `name`
         } catch (error) {
             console.error("Error al cargar los CVs:", error);
@@ -133,7 +143,7 @@ const OfferApplyCard = ({ item }) => {
                                 bgcolor: "primary.light",
                             },
                         }}
-                        //onClick={handleOpenModal}
+                        onClick={handleOpenModal}
                     >
                         Aplicar
                     </Button>
@@ -168,16 +178,19 @@ const OfferApplyCard = ({ item }) => {
                     ) : cvFiles.length > 0 ? (
                         <List>
                             {cvFiles.map((cv, index) => (
-                                <ListItem key={index} sx={{ py: 1 }}>
-                                    <ListItemText primary={cv.name} />
-                                </ListItem>
+                                <Box key={index} onClick={handleCloseModal}>
+                                    <ListItem sx={{ py: 1, cursor: "pointer" }} disablePadding>
+                                        <ListItemText primary={cv.nombre} />
+                                    </ListItem>
+                                    <ListItemText secondary={`Fecha: ${cv.fecha}`} />
+                                </Box>
                             ))}
                         </List>
                     ) : (
                         <Typography>No se encontraron CVs disponibles.</Typography>
                     )}
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         sx={{ mt: 2 }}
                         onClick={handleCloseModal}
                     >

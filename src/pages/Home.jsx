@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
 import {
     Box,
-    TextField,
-    Select,
-    MenuItem,
     Pagination,
     IconButton,
     useTheme
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Search, Clear } from "@mui/icons-material";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
+import OptionPicker from "../components/Picker/OptionPicker/OptionPicker";
+import CustomTextFieldWithIcon from "../components/TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 
 const HomePage = () => {
     const [searchFilters, setSearchFilters] = useState({
         name: "",
         sector: "",
         city: "",
-        community: "",
     });
     const [expanded, setExpanded] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
@@ -35,18 +33,21 @@ const HomePage = () => {
             setOffersData(response.data);
             setFilteredData(response.data);
         };
-        
         fetchAllOffers();
     }, []);
 
     const handleSearch = async () => {
         const filtered = offersData.filter((item) =>
-            (!searchFilters.name || item.name.toLowerCase().includes(searchFilters.name.toLowerCase())) &&
-            (!searchFilters.sector || item.sector === searchFilters.sector) &&
-            (!searchFilters.city || item.city === searchFilters.city) &&
-            (!searchFilters.community || item.community === searchFilters.community)
+            (!searchFilters.name || item.nombre.toLowerCase().includes(searchFilters.name.toLowerCase())) &&
+            (!searchFilters.sector || item.mst_emp_sector_id.mst_emp_sector_id === searchFilters.sector) &&
+            (!searchFilters.city || item.mst_ciudades_id.nombre.toLowerCase().includes(searchFilters.city.toLowerCase()))
         );
         setFilteredData(filtered);
+    };
+
+    const handleOnChange = (event) => {
+        const { name, value } = event.target;
+        setSearchFilters((prev) => ({ ...prev, [name]: value }));
     };
 
     const handlePageChange = (event, value) => {
@@ -63,56 +64,50 @@ const HomePage = () => {
             <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
 
             <Box sx={{ flexGrow: 1, p: 3 }}>
-                {/* Barra de búsqueda */}
-                <Box sx={{ display: "flex", justifyContent: 'center', gap: 2, mb: 3 }}>
-                    <TextField
-                        label="Buscar por nombre"
-                        variant="outlined"
-                        size="small"
-                        onChange={(e) =>
-                            setSearchFilters((prev) => ({ ...prev, name: e.target.value }))
-                        }
+                <Box sx={{ 
+                    display: "flex", 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    gap: 1, 
+                    mb: 3 
+                }}>
+                    <CustomTextFieldWithIcon 
+                        label={'Buscar por nombre'}
+                        name={'name'}
+                        value={searchFilters.name}
+                        onChange={handleOnChange}
                     />
-                    <Select
+                    <OptionPicker
+                        urlData={'/api/master/sectors'}
+                        label="Sector"
+                        name="sector"
                         value={searchFilters.sector}
-                        onChange={(e) =>
-                            setSearchFilters((prev) => ({ ...prev, sector: e.target.value }))
-                        }
-                        displayEmpty
-                        size="small"
-                    >
-                        <MenuItem value="">Todos los sectores</MenuItem>
-                        <MenuItem value="Tecnología">Tecnología</MenuItem>
-                        <MenuItem value="Salud">Salud</MenuItem>
-                        <MenuItem value="Educación">Educación</MenuItem>
-                    </Select>
-                    <TextField
-                        label="Ciudad"
-                        variant="outlined"
-                        size="small"
-                        onChange={(e) =>
-                            setSearchFilters((prev) => ({ ...prev, city: e.target.value }))
-                        }
+                        onChange={handleOnChange}
+                        idKey={'mst_emp_sector_id'}
+                        labelKey={'descripcion'}
                     />
-                    <TextField
-                        label="Comunidad"
-                        variant="outlined"
-                        size="small"
-                        onChange={(e) =>
-                            setSearchFilters((prev) => ({
-                                ...prev,
-                                community: e.target.value,
-                            }))
-                        }
+                    <CustomTextFieldWithIcon
+                        label={'Ciudad'}
+                        name={'city'}
+                        value={searchFilters.city}
+                        onChange={handleOnChange}
                     />
-                    <IconButton color="primary" onClick={handleSearch}>
-                        <SearchIcon />
-                    </IconButton>
+                    <Box sx={{ display: 'flex'}}>
+                        <IconButton color="primary" onClick={handleSearch}>
+                            <Search />
+                        </IconButton>
+                        <IconButton color="secondary" onClick={() => {
+                            setSearchFilters({ name: "", sector: "", city: "" });
+                            setFilteredData(offersData);
+                        }}>
+                            <Clear />
+                        </IconButton>
+                    </Box>
                 </Box>
 
                 <Box>
                     {offersData.length > 0 && paginatedData.map((item) => (
-                        <OfferApplyCard item={item} />
+                        <OfferApplyCard key={item.emp_ofertas_id} item={item} />
                     ))}
                 </Box>
 
