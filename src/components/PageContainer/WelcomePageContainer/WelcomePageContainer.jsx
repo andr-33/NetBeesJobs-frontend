@@ -114,7 +114,7 @@ const WelcomePageContainer = () => {
                                         margin: "0 auto",
                                     }}
                                     component='img'
-                                    src="./src/assets/Illustrations/in-progress.svg"
+                                    src="./images/illustrations/in-progress.svg"
                                 />
                             </Grid>
                             <Grid size={{ xs: 12, sm: 12, md: 6 }} alignContent='center'>
