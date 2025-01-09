@@ -1,77 +1,59 @@
-import {
-    Box,
-    Typography,
-    Button,
-    Grid2 as Grid
-} from "@mui/material";
+import React, { useRef } from "react";
+import { Box, Typography, Grid2 as Grid } from "@mui/material";
 import WelcomePageSection from "../../Section/WelcomePageSection/WelcomePageSection";
 import WelcomePageNavBar from "../../NavBar/WelcomePageNavBar/WelcomePageNavBar";
 import WelcomePageFooter from "../../Footer/WelcomePageFooter/WelcomePageFooter";
 import LogoCarousel from "../../Carousel/LogoCarousel/LogoCarousel";
+import CategoryCard from "../../Card/CategoryCard/CategoryCard";
 import VerifiedCard from "../../Card/VerifiedCard/VirifiedCard";
 import { useTheme } from '@mui/material';
-import CategoryCard from "../../Card/CategoryCard/CategoryCard";
 
 const WelcomePageContainer = () => {
     const theme = useTheme();
 
+    const homeRef = useRef(null);
+    const sociosRef = useRef(null);
+    const contactoRef = useRef(null);
+
+    const sectionRefs = {
+        'encuentra trabajo': homeRef,
+        'socios': sociosRef,
+        'contacto': contactoRef,
+    };
+
+    const handleScrollToSection = (section) => {
+        const sectionRef = sectionRefs[section];
+        if (sectionRef && sectionRef.current) {
+            sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
-        <Box
-            sx={{
-                scrollSnapType: 'y mandatory',
-                overflowY: 'scroll',
-                overflowX: 'hidden',
-                maxHeight: '100vh',
-                scrollBehavior: 'smooth',
-                bgcolor: theme.palette.background.default
-            }}
-        >
+        <Box sx={{ scrollSnapType: 'y mandatory', overflowY: 'scroll', overflowX: 'hidden', maxHeight: '100vh', scrollBehavior: 'smooth', bgcolor: theme.palette.background.default }}>
+            <WelcomePageNavBar onScrollToSection={handleScrollToSection} />
+
             <Grid container spacing={2}>
-                <Grid size={12} >
+                <Grid size={12} ref={homeRef}>
                     <WelcomePageSection>
-                        <WelcomePageNavBar />
                         <Box>
-                            <Box
-                                component='img'
-                                src="./images/funny.gif"
-                                sx={{
-                                    width: 250,
-                                    height: 250,
-                                }}
-                            />
+                            <Box component='img' src="./images/funny.gif" sx={{ width: 250, height: 250 }} />
                         </Box>
                         <Box sx={{ textAlign: 'center' }}>
-                            <Typography sx={{
-                                fontSize: 40,
-                            }}>
+                            <Typography sx={{ fontSize: 40 }}>
                                 Más de
-                                <Box
-                                    sx={{
-                                        fontWeight: '900',
-                                        color: theme.palette.primary.main,
-                                        fontSize: 50,
-                                        mx: 0.5
-                                    }}
-                                    component='span'
-                                >
+                                <Box sx={{ fontWeight: '900', color: theme.palette.primary.main, fontSize: 50, mx: 0.5 }} component='span'>
                                     500
                                 </Box>
-                                ofertas de empleo <br /> se mueren por conocer tu CV
+                                ofertas de empleo <br/> se mueren por conocer tu CV
                             </Typography>
                         </Box>
                     </WelcomePageSection>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 12 }} >
+        
+                <Grid size={{ xs: 12, sm: 12 }}>
                     <WelcomePageSection>
-                        <Box
-                            sx={{ textAlign: 'center', padding: '20px' }}
-                        >
-                            <Typography variant="h2" sx={{ marginBottom: '10px' }}>
-                                Miles de
-                            </Typography>
-                            <Typography variant="h2" sx={{ marginBottom: '20px' }}>
-                                empleos de ensueño disponibles ahora
-                            </Typography>
+                        <Box sx={{ textAlign: 'center', padding: '20px' }}>
+                            <Typography variant="h2" sx={{ marginBottom: '10px' }}>Miles de empleos de ensueño disponibles ahora</Typography>
                             <Typography variant="subtitle1" sx={{ marginBottom: '30px' }}>
                                 Explora algunos trabajos destacados
                             </Typography>
@@ -97,15 +79,13 @@ const WelcomePageContainer = () => {
                                     subtitle="360 posiciones abiertas"
                                 />
                             </Box>
-                            <Button variant="contained" sx={{ marginTop: '20px', backgroundColor: theme.palette.primary.main, color: '#000000' }}>
-                                Explorar más categorías
-                            </Button>
                         </Box>
                     </WelcomePageSection>
                 </Grid>
+
                 <Grid size={{ xs: 12, sm: 12 }} sx={{ px: 3 }}>
                     <WelcomePageSection>
-                        <Grid container spacing={2} >
+                        <Grid container spacing={2}>
                             <Grid size={{ xs: 12, sm: 12, md: 6 }} textAlign="center">
                                 <Box
                                     sx={{
@@ -119,12 +99,7 @@ const WelcomePageContainer = () => {
                             </Grid>
                             <Grid size={{ xs: 12, sm: 12, md: 6 }} alignContent='center'>
                                 <Typography variant="h2" sx={{ marginBottom: '10px' }}> Haz crecer tu carrera </Typography>
-                                <Typography variant="body1"
-                                    sx={{
-                                        marginBottom: '20px',
-                                        textAlign: 'left'
-                                    }}
-                                >
+                                <Typography variant="body1" sx={{ marginBottom: '20px', textAlign: 'left' }}>
                                     Descubre oportunidades laborales que se alinean con tus habilidades y aspiraciones. Nuestra app te conecta con empleadores que valoran tu talento y te ayudan a alcanzar tus metas profesionales. ¡Empieza hoy y da el siguiente paso en tu carrera!
                                 </Typography>
 
@@ -136,42 +111,34 @@ const WelcomePageContainer = () => {
                                         <VerifiedCard title='Un perfil, ofertas ilimitadas' />
                                     </Grid>
                                     <Grid size={{ xs: 12, sm: 6 }}>
-                                        <VerifiedCard title='Obtén sujerencias de empleo' />
+                                        <VerifiedCard title='Obtén sugerencias de empleo' />
                                     </Grid>
                                     <Grid size={{ xs: 12, sm: 6 }}>
                                         <VerifiedCard title='Encuentra el trabajo perfecto para ti' />
                                     </Grid>
                                 </Grid>
-
-
                             </Grid>
                         </Grid>
                     </WelcomePageSection>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 12 }} >
+
+                <Grid size={{ xs: 12, sm: 12 }} ref={sociosRef}>
                     <WelcomePageSection>
-                        
-                        <Typography 
-                            variant="h2"
-                            sx={{
-                                textDecoration: 'underline',
-                                textDecorationColor: (theme) => theme.palette.primary.main
-                            }}
-                        >
+                        <Typography variant="h2" sx={{ textDecoration: 'underline', textDecorationColor: (theme) => theme.palette.primary.main }}>
                             Nuestro principales socios
                         </Typography>
                         <LogoCarousel />
-                        
                     </WelcomePageSection>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 12 }} >
+
+                <Grid size={{ xs: 12, sm: 12 }} ref={contactoRef} >
                     <WelcomePageSection>
                         <Box sx={{ flex: 1 }} />
                         <WelcomePageFooter />
                     </WelcomePageSection>
                 </Grid>
             </Grid>
-        </Box >
+        </Box>
     );
 };
 
