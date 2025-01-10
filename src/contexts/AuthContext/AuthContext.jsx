@@ -4,6 +4,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(null);
+    const [isInitialized, setIsInitialized] = useState(true);
 
     useEffect(()=>{
         const storedToken = sessionStorage.getItem('accessToken');
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
         if(storedToken){
             setAccessToken(storedToken);
         }
+        setIsInitialized(false);
     },[]);
 
     const saveToken = (token) => {
@@ -24,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return(
-        <AuthContext.Provider value={{accessToken, saveToken, removeToken}}>
+        <AuthContext.Provider value={{accessToken, saveToken, removeToken, isInitialized}}>
             {children}
         </AuthContext.Provider>
     );

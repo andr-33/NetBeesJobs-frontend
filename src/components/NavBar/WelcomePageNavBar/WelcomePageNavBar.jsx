@@ -12,7 +12,7 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
         <AppBar position="fixed" component='nav' sx={{ bgcolor: theme.palette.background.paper, height: 80 }}>
             <Toolbar>
                 <Box component='img' src="./logos/netbees-logo.png" sx={{ width: 152, height: 121 }} />
-                <Box sx={{ marginLeft: 'auto', display: 'flex', flexDirection: 'row' }}>
+                <Box sx={{ marginLeft: 'auto', display: 'flex', flexDirection: 'row', gap: 1 }}>
                     <List disablePadding sx={{ display: 'flex', flexDirection: 'row' }}>
                         {NAV_ITEMS.map((item, index) => (
                             <ListItem key={index} disablePadding>
@@ -23,9 +23,19 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
                                             color: 'yellowgreen'
                                         }
                                     }}
-                                    onClick={() => onScrollToSection(item.toLowerCase())}
+                                    onClick={() => item === 'Encuentra trabajo' ?
+                                        navigate('/pagina-principal') :
+                                        onScrollToSection(item.toLowerCase())
+                                    }
                                 >
-                                    <ListItemText primary={item} sx={{ color: 'black' }} />
+                                    <ListItemText 
+                                        primary={item} 
+                                        sx={{ 
+                                            color: 'black', 
+                                            whiteSpace: 'nowrap',
+                                            textAlign: 'center',
+                                        }} 
+                                    />
                                 </ListItemButton>
                             </ListItem>
                         ))}
@@ -34,7 +44,7 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
                         <Button 
                             variant="outlined" 
                             sx={{ bgcolor: 'transparent', color: 'black', borderColor: 'black', borderRadius: 5, transition: 'transform 0.1s ease-in-out', ':hover': { transform: 'scale(1.02)' } }} 
-                            onClick={() => navigate('/authentication')}
+                            onClick={() => navigate('/autenticacion')}
                         >
                             Iniciar sesión
                         </Button>

@@ -1,4 +1,4 @@
-import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, useTheme } from "@mui/material";
 import {PersonRounded, BusinessRounded, DescriptionRounded} from '@mui/icons-material';
 
 const HomePageSideBar = ({ expanded, setExpanded }) => {
@@ -8,16 +8,22 @@ const HomePageSideBar = ({ expanded, setExpanded }) => {
         { name: "CVs", icon: <DescriptionRounded /> },
     ];
 
+    const theme = useTheme();
+
     return (
         <Drawer
             variant="permanent"
             sx={{
                 width: expanded ? 200 : 70,
+                overflowX: 'hidden',
+                position: 'absolute',
+                zIndex: 5,
                 "& .MuiDrawer-paper": {
                     width: expanded ? 200 : 70,
                     transition: "width 0.3s",
+                    overflowX: 'hidden',
+                    bgcolor: theme.palette.secondary.light,
                 },
-                overflow: 'hidden'
             }}
             onMouseEnter={() => setExpanded(true)}
             onMouseLeave={() => setExpanded(false)}
@@ -27,7 +33,9 @@ const HomePageSideBar = ({ expanded, setExpanded }) => {
                     <ListItem key={item.name} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>{item.icon}</ListItemIcon>
-                            {expanded && <ListItemText primary={item.name} />}
+                            {expanded && <ListItemText primary={item.name} sx={{
+                                minWidth: 200,
+                            }} />}
                         </ListItemButton>
                     </ListItem>
                 ))}

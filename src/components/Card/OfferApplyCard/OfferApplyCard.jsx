@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import { useState } from "react";
+import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText, useTheme } from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ const OfferApplyCard = ({ item }) => {
     const [cvFiles, setCvFiles] = useState([]);
     const [loading, setLoading] = useState(false);
     const { accessToken } = useAuth();
+    const theme = useTheme();
 
     const handleOpenModal = async () => {
         setOpenModal(true);
@@ -43,6 +44,7 @@ const OfferApplyCard = ({ item }) => {
                     p: 2,
                     mb: 2,
                     borderRadius: 2,
+                    bgcolor: theme.palette.background.paper,
                 }}
             >
                 <Box

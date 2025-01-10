@@ -3,7 +3,9 @@ import {
     Box,
     Pagination,
     IconButton,
-    useTheme
+    useTheme,
+    Skeleton,
+    Typography
 } from "@mui/material";
 import { Search, Clear } from "@mui/icons-material";
 import axios from "axios";
@@ -60,18 +62,23 @@ const HomePage = () => {
     );
 
     return (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{
+            display: "flex",
+            backgroundColor: theme.palette.background.default,
+            position: 'relative',
+            pl: '70px',
+        }}>
             <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
 
             <Box sx={{ flexGrow: 1, p: 3 }}>
-                <Box sx={{ 
-                    display: "flex", 
-                    justifyContent: 'center', 
-                    alignItems: 'center', 
-                    gap: 1, 
-                    mb: 3 
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 1,
+                    mb: 3
                 }}>
-                    <CustomTextFieldWithIcon 
+                    <CustomTextFieldWithIcon
                         label={'Buscar por nombre'}
                         name={'name'}
                         value={searchFilters.name}
@@ -92,7 +99,7 @@ const HomePage = () => {
                         value={searchFilters.city}
                         onChange={handleOnChange}
                     />
-                    <Box sx={{ display: 'flex'}}>
+                    <Box sx={{ display: 'flex' }}>
                         <IconButton color="primary" onClick={handleSearch}>
                             <Search />
                         </IconButton>
@@ -106,17 +113,31 @@ const HomePage = () => {
                 </Box>
 
                 <Box>
-                    {offersData.length > 0 && paginatedData.map((item) => (
-                        <OfferApplyCard key={item.emp_ofertas_id} item={item} />
-                    ))}
+                    {offersData.length === 0 ? (
+                        Array.from({ length: 5 }).map((_, index) => (
+                            <Box key={index} sx={{ mb: 2 }}>
+                                <Skeleton key={index} variant="rectangular" height={200} />
+                            </Box>
+                        ))
+                    ) : (
+                        filteredData.length === 0 ? (
+                            <Typography variant="h6" align="center">Ups.. No se encontraron resultados</Typography>
+                        ) : (
+                            paginatedData.map((item) => (
+                                <OfferApplyCard key={item.emp_proyectos_id} item={item} />
+                            ))
+                        )
+                    )}
                 </Box>
 
-                <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
-                />
+                {filteredData.length > 0 && (
+                    <Pagination
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
+                    />
+                )}
             </Box>
         </Box>
     );

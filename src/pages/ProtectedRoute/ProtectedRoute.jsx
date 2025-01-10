@@ -2,10 +2,13 @@ import { useAuth } from "../../contexts/AuthContext/AuthContext";
 import { Navigate } from "react-router-dom"; 
 
 const ProtectedRoute = ({ children }) => {
-    const { accessToken } = useAuth();
-    console.log(accessToken);
+    const { accessToken, isInitialized } = useAuth();
+
+    if(isInitialized){
+        return null;
+    }
     if(!accessToken){
-        return <Navigate to='/authentication' replace />
+        return <Navigate to='/autenticacion' replace />
     }
 
     return children;
