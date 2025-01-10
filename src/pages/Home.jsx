@@ -116,15 +116,15 @@ const HomePage = () => {
                     {offersData.length === 0 ? (
                         Array.from({ length: 5 }).map((_, index) => (
                             <Box key={index} sx={{ mb: 2 }}>
-                                <Skeleton key={index} variant="rectangular" height={200} />
+                                <Skeleton variant="rectangular" height={200} />
                             </Box>
                         ))
                     ) : (
                         filteredData.length === 0 ? (
                             <Typography variant="h6" align="center">Ups.. No se encontraron resultados</Typography>
                         ) : (
-                            paginatedData.map((item) => (
-                                <OfferApplyCard key={item.emp_proyectos_id} item={item} />
+                            paginatedData.map((item, index) => (
+                                <OfferApplyCard key={index} item={item} />
                             ))
                         )
                     )}

@@ -2,7 +2,7 @@ import { AppBar, Box, Button, List, ListItem, ListItemButton, ListItemText, Tool
 import { useTheme } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
-const NAV_ITEMS = ['Encuentra trabajo', 'Socios', 'Contacto'];
+const NAV_ITEMS = ['Encuentra trabajo', 'Colaboradores', 'Contacto'];
 
 const WelcomePageNavBar = ({ onScrollToSection }) => {
     const theme = useTheme();

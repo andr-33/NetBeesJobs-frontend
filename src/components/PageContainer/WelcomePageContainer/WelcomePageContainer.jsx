@@ -11,14 +11,12 @@ import { useTheme } from '@mui/material';
 const WelcomePageContainer = () => {
     const theme = useTheme();
 
-    const homeRef = useRef(null);
-    const sociosRef = useRef(null);
-    const contactoRef = useRef(null);
+    const partnerRef = useRef(null);
+    const contactRef = useRef(null);
 
     const sectionRefs = {
-        'encuentra trabajo': homeRef,
-        'socios': sociosRef,
-        'contacto': contactoRef,
+        'colaboradores': partnerRef,
+        'contacto': contactRef,
     };
 
     const handleScrollToSection = (section) => {
@@ -33,7 +31,7 @@ const WelcomePageContainer = () => {
             <WelcomePageNavBar onScrollToSection={handleScrollToSection} />
 
             <Grid container spacing={2}>
-                <Grid size={12} ref={homeRef}>
+                <Grid size={12}>
                     <WelcomePageSection>
                         <Box>
                             <Box component='img' src="./images/funny.gif" sx={{ width: 250, height: 250 }} />
@@ -122,16 +120,16 @@ const WelcomePageContainer = () => {
                     </WelcomePageSection>
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 12 }} ref={sociosRef}>
+                <Grid size={{ xs: 12, sm: 12 }} ref={partnerRef}>
                     <WelcomePageSection>
                         <Typography variant="h2" sx={{ textDecoration: 'underline', textDecorationColor: (theme) => theme.palette.primary.main }}>
-                            Nuestro principales socios
+                            Nuestro principales colaboradores
                         </Typography>
                         <LogoCarousel />
                     </WelcomePageSection>
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 12 }} ref={contactoRef} >
+                <Grid size={{ xs: 12, sm: 12 }} ref={contactRef} >
                     <WelcomePageSection>
                         <Box sx={{ flex: 1 }} />
                         <WelcomePageFooter />
