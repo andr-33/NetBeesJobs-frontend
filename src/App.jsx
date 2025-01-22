@@ -6,7 +6,9 @@ import SelectRole from './pages/SelectRole';
 import NotFoundPage from './pages/NotFound';
 import CreateProfilePage from './pages/CreateProfile';
 import HomePage from './pages/Home';
+import CompanyProfilePage from './pages/CompanyProfile';
 import ExamplePage from './pages/Example';
+import CompanyDashboardPage from './pages/CompanyDashboard';
 
 const App = () =>{
 
@@ -15,17 +17,13 @@ const App = () =>{
       <Routes>
         <Route path='/' element={<WelcomePage/>} />
         <Route path='/autenticacion' element={<AuthPage/>} />
-        <Route path='/seleccion-rol' element={<SelectRole/>} />
-        <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
-        <Route 
-          path='/pagina-principal' 
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          } 
-        />
-        <Route path='/example' element={<ExamplePage />} />
+        <Route element={<ProtectedRoute />} >
+          <Route path='/seleccion-rol' element={<SelectRole/>} />
+          <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
+          <Route path='/pagina-principal' element={<HomePage />} />
+          <Route path='/perfil-empresa' element={<CompanyProfilePage />} />
+        </Route>
+        <Route path='/example' element={<CompanyDashboardPage />} />
         <Route path='*' element={<NotFoundPage/>} />
       </Routes>
     </Router>
