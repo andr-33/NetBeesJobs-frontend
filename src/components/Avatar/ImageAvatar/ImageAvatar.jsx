@@ -3,21 +3,20 @@ import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const ImageAvatar = () => {
+const ImageAvatar = ({roleId}) => {
     const [imageUrl, setImageUrl] = useState('');
     const { accessToken } = useAuth();
+    const route = roleId === 2 ? '/api/companies/get-logo-image' : '/api/users/'
 
     useEffect(() => {
         const fetchImage = async () => {
-            const response = await axios.get('/api/master/get-image', {
+            const response = await axios.get(route, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            console.log(response.data.imageUrl);
-            setImageUrl(response.data.imageUrl);
+            setImageUrl(response.data.imgUrl);
         }
-
         fetchImage();
     },[]);
 

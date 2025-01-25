@@ -32,7 +32,7 @@ const ProfileCompanyForm = () => {
 
         try {
             const response = await axios.post(
-                '/api/company/create-company-profile',
+                '/api/companies/create-company-profile',
                 formValues,
                 {
                     headers: {

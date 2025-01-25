@@ -30,12 +30,16 @@ const HomePage = () => {
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     useEffect(() => {
-        const fetchAllOffers = async () => {
-            const response = await axios.get('/api/company/all-offers');
-            setOffersData(response.data);
-            setFilteredData(response.data);
-        };
-        fetchAllOffers();
+        try{
+            const fetchAllOffers = async () => {
+                const response = await axios.get('/api/companies/all-offers');
+                setOffersData(response.data);
+                setFilteredData(response.data);
+            };
+            fetchAllOffers();
+        } catch (error) {
+            console.error(error.message);
+        }
     }, []);
 
     const handleSearch = async () => {
