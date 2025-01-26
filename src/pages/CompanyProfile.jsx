@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { Box, Grid2 as Grid, Typography, useTheme } from "@mui/material";
+import { Box, Button, Grid2 as Grid, Skeleton, Typography, useTheme } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import ImageAvatar from "../components/Avatar/ImageAvatar/ImageAvatar";
 import CompanySidebar from "../components/Sidebar/CompanySidebar/CompanySidebar";
 import axios from "axios";
 import ProjectCard from "../components/Card/ProjectCard/ProjectCard";
+import { AddCircleOutlineRounded } from "@mui/icons-material";
 
 const CompanyProfilePage = () => {
     const [expanded, setExpanded] = useState(false);
     const [projectsData, setProjectsData] = useState([]);
+    const [companyInfo, setCompanyInfo] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const theme = useTheme();
     const { accessToken } = useAuth();
 
@@ -21,6 +24,7 @@ const CompanyProfilePage = () => {
                     }
                 });
                 console.log(response.data)
+                setIsLoading(false);
                 setProjectsData(response.data);
             };
             fetchAllCompanyProjects();
@@ -28,6 +32,34 @@ const CompanyProfilePage = () => {
             console.error(error.message);
         }
     }, []);
+
+    useEffect(() => {
+        try {
+            const fetchCompanyInformation = async () => {
+                const response = await axios.get('/api/companies/company-information', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                console.log(response.data)
+                setCompanyInfo(response.data);
+            };
+            fetchCompanyInformation();
+        } catch (error) {
+            console.error(error.message);
+        }
+    }, []);
+
+    const formatDate = (dateISO) => {
+        const newDate = new Date(dateISO);
+        const opciones = {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+        };
+        const formatter = new Intl.DateTimeFormat("es-ES", opciones);
+        return formatter.format(newDate).replace(".", "");
+    };
 
     return (
         <Box sx={{
@@ -38,16 +70,98 @@ const CompanyProfilePage = () => {
         }}>
             <CompanySidebar expanded={expanded} setExpanded={setExpanded} />
             <Box sx={{ flexGrow: 1, p: 3 }}>
-                <ImageAvatar roleId={2} />
+                <Box sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 2
+                }}>
+                    <ImageAvatar roleId={2} />
+                    {companyInfo ? (
+                        <Box>
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    fontWeight: '600',
+                                    fontSize: 30
+                                }}
+                            >
+                                {companyInfo.nombre} ({companyInfo.acronimo})
+                            </Typography>
+                            <Typography variant="body2">Fecha de alta: {formatDate(companyInfo.fecha_alta)}</Typography>
+                            <Typography variant="caption">En: {companyInfo.mst_ciudades_id.nombre}</Typography>
+                        </Box>
+                    ) : (
+                        <Box>
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <Skeleton
+                                    variant="text"
+                                    sx={{
+                                        fontSize: index === 0 ? '1.25rem' : '1rem',
+                                        width: index === 0 ? '200px' : '150px'
+                                    }}
+                                />
+                            ))}
+                        </Box>
+                    )}
+                </Box>
+
+                <Box sx={{
+                    mt: 2,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            textDecoration: 'underline'
+                        }}
+                    >
+                        Tus proyectos
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        endIcon={<AddCircleOutlineRounded />}
+                    >
+                        CREAR
+                    </Button>
+                </Box>
 
                 {projectsData.length > 0 && (
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} mt={2}>
                         {projectsData.map((project, index) => (
-                            <Grid key={index} size={{md: 6, sm: 12}}>
-                                <ProjectCard project={project} />
+                            <Grid key={index} size={{ md: 6, sm: 12 }}>
+                                <ProjectCard 
+                                    name={project.nombre}
+                                    description={project.descripcion}
+                                    startDate={formatDate(project.fecha_inicio)} 
+                                    state={project.estado}
+                                />
                             </Grid>
-                    ))}
+                        ))}
+                    </Grid>
+                )}
 
+                {projectsData.length === 0 && !isLoading && (
+                    <Typography></Typography>
+                )}
+
+                {isLoading && (
+                    <Grid container spacing={2} mt={2}>
+                        {Array.from({ length: 4 }).map((_, index) => (
+                            <Grid key={index} size={{ md: 6, sm: 12 }}>
+                                <Skeleton
+                                    variant="rectangular"
+                                    height={150}
+                                    sx={{
+                                        borderRadius: '16px'
+                                    }}
+                                />
+                            </Grid>
+                        ))}
                     </Grid>
                 )}
             </Box>

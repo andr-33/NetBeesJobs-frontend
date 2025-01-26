@@ -5,7 +5,7 @@ const theme = createTheme({
         primary: {
             main: '#ffd60a', // Color principal 
             light: '#ffee4a', // Variación clara del primario
-            dark: '#c7a500', // Variación oscura del primario
+            dark: '#dbb500', // Variación oscura del primario
         },
         secondary: {
             main: '#8d8d8d', // Color secundario (rosa)
