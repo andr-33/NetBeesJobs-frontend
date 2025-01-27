@@ -1,18 +1,21 @@
 import { useState } from "react";
-import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText, useTheme } from "@mui/material";
+import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText, useTheme, ListItemButton, ListItemAvatar } from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
+import CvFileItem from "../../ListItem/CvFileItem/CvFileItem";
+import FilePicker from "../../Picker/FilePicker/FilePicker";
 
 const OfferApplyCard = ({ item }) => {
     const [openModal, setOpenModal] = useState(false);
     const [cvFiles, setCvFiles] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [availableToUpload, setAvailableToUpload] = useState(false);
     const { accessToken } = useAuth();
     const theme = useTheme();
 
     const handleOpenModal = async () => {
         setOpenModal(true);
-        setLoading(true);
+        setIsLoading(true);
 
         try {
             const response = await axios.get(
@@ -23,12 +26,16 @@ const OfferApplyCard = ({ item }) => {
                     }
                 }
             );
-            console.log(response.data);
-            setCvFiles(response.data); // Asume que los CVs vienen como un array de objetos con una propiedad `name`
+
+            if (response.data.length === 0) {
+                setAvailableToUpload(true);
+            } else {
+                setCvFiles(response.data);
+            }
         } catch (error) {
             console.error("Error al cargar los CVs:", error);
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -175,22 +182,27 @@ const OfferApplyCard = ({ item }) => {
                     <Typography id="cv-modal-title" variant="h6" sx={{ mb: 2 }}>
                         Selecciona tu CV
                     </Typography>
-                    {loading ? (
+
+                    {isLoading && (
                         <Typography>Cargando CVs...</Typography>
-                    ) : cvFiles.length > 0 ? (
+                    )}
+
+                    {cvFiles.length > 0 && !availableToUpload &&(
                         <List>
                             {cvFiles.map((cv, index) => (
-                                <Box key={index} onClick={handleCloseModal}>
-                                    <ListItem sx={{ py: 1, cursor: "pointer" }} disablePadding>
-                                        <ListItemText primary={cv.nombre} />
-                                    </ListItem>
-                                    <ListItemText secondary={`Fecha: ${cv.fecha}`} />
-                                </Box>
+                                <CvFileItem
+                                    key={index}
+                                    fileName={cv.nombre}
+                                    uploadDate={cv.fecha}
+                                />
                             ))}
                         </List>
-                    ) : (
-                        <Typography>No se encontraron CVs disponibles.</Typography>
                     )}
+
+                    {availableToUpload && (
+                        <FilePicker />
+                    )}
+
                     <Button
                         variant="contained"
                         sx={{ mt: 2 }}
@@ -198,6 +210,15 @@ const OfferApplyCard = ({ item }) => {
                     >
                         Cerrar
                     </Button>
+
+                    <Button
+                        variant="contained"
+                        sx={{ mt: 2, ml: 2 }}
+                        onClick={()=> setAvailableToUpload(true)}
+                    >
+                        Subir CV
+                    </Button>
+
                 </Box>
             </Modal>
         </>
