@@ -1,4 +1,4 @@
-import { DeleteRounded } from "@mui/icons-material";
+import { CloudUploadRounded, DeleteRounded } from "@mui/icons-material";
 import { Box, IconButton, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
@@ -43,7 +43,24 @@ const FilePicker = () => {
 
                 </Box>
             ) : (
-                <Box>
+                <Box sx={{
+                    width: '100%',
+                    py: 4,
+                    border: '1px dashed #AAAD',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    borderRadius: 2
+                }}>
+                    <CloudUploadRounded
+                        sx={{
+                            animation: 'bounce 1s infinite',
+                            fontSize: '40px'
+                        }}
+                    />
+                    <Typography variant="caption">Haz clic para seleccionar un archivo</Typography>
+                    <Typography variant="caption">O, si lo prefieres, arrástralo y suéltalo acá</Typography>
+
                     <input
                         type="file"
                         accept="application/pdf"

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Paper, Box, Typography, Avatar, Button, Modal, List, ListItem, ListItemText, useTheme, ListItemButton, ListItemAvatar } from "@mui/material";
+import { Paper, Box, Typography, Avatar, Button, useTheme} from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
-import CvFileItem from "../../ListItem/CvFileItem/CvFileItem";
-import FilePicker from "../../Picker/FilePicker/FilePicker";
+import SelectCvModal from "../../Modal/SelectCvModal/SelectCvModal";
 
 const OfferApplyCard = ({ item }) => {
     const [openModal, setOpenModal] = useState(false);
@@ -15,8 +14,12 @@ const OfferApplyCard = ({ item }) => {
 
     const handleOpenModal = async () => {
         setOpenModal(true);
-        setIsLoading(true);
 
+        if(cvFiles.length !== 0){
+            return
+        }
+
+        setIsLoading(true);
         try {
             const response = await axios.get(
                 'api/users/get-cvs-info',
@@ -41,6 +44,7 @@ const OfferApplyCard = ({ item }) => {
 
     const handleCloseModal = () => {
         setOpenModal(false);
+        setAvailableToUpload(false);
     };
 
     return (
@@ -160,67 +164,14 @@ const OfferApplyCard = ({ item }) => {
             </Paper>
 
             {/* Modal */}
-            <Modal
-                open={openModal}
-                onClose={handleCloseModal}
-                aria-labelledby="cv-modal-title"
-                aria-describedby="cv-modal-description"
-            >
-                <Box
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: 400,
-                        bgcolor: "background.paper",
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                    }}
-                >
-                    <Typography id="cv-modal-title" variant="h6" sx={{ mb: 2 }}>
-                        Selecciona tu CV
-                    </Typography>
-
-                    {isLoading && (
-                        <Typography>Cargando CVs...</Typography>
-                    )}
-
-                    {cvFiles.length > 0 && !availableToUpload &&(
-                        <List>
-                            {cvFiles.map((cv, index) => (
-                                <CvFileItem
-                                    key={index}
-                                    fileName={cv.nombre}
-                                    uploadDate={cv.fecha}
-                                />
-                            ))}
-                        </List>
-                    )}
-
-                    {availableToUpload && (
-                        <FilePicker />
-                    )}
-
-                    <Button
-                        variant="contained"
-                        sx={{ mt: 2 }}
-                        onClick={handleCloseModal}
-                    >
-                        Cerrar
-                    </Button>
-
-                    <Button
-                        variant="contained"
-                        sx={{ mt: 2, ml: 2 }}
-                        onClick={()=> setAvailableToUpload(true)}
-                    >
-                        Subir CV
-                    </Button>
-
-                </Box>
-            </Modal>
+            <SelectCvModal 
+                openModal={openModal}
+                handleCloseModal={handleCloseModal}
+                cvFilesData={cvFiles}
+                isLoading={isLoading}
+                availableToUpload={availableToUpload}
+                setAvailableToUpload={setAvailableToUpload}
+            />
         </>
     );
 };
