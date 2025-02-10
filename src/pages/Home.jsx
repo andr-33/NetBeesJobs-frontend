@@ -32,7 +32,7 @@ const HomePage = () => {
     useEffect(() => {
         try{
             const fetchAllOffers = async () => {
-                const response = await axios.get('/api/companies/all-offers');
+                const response = await axios.get('/api/companies/all-active-offers');
                 setOffersData(response.data);
                 setFilteredData(response.data);
             };
