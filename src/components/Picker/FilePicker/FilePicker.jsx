@@ -1,19 +1,13 @@
 import { CloudUploadRounded, DeleteRounded } from "@mui/icons-material";
 import { Box, IconButton, Typography } from "@mui/material";
-import axios from "axios";
-import { useState } from "react";
+import { useRef } from "react";
 
-const FilePicker = () => {
-    const [file, setFile] = useState();
-
-    const handleUploadFile = async () => {
-        try {
-            const response = await axios.post();
-        } catch (error) {
-
-        }
+const FilePicker = ({ file, setFile }) => {
+    const inputFileRef = useRef(null);
+    
+    const handleOpenFilePicker = () => {
+        inputFileRef.current.click();
     };
-
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -21,7 +15,6 @@ const FilePicker = () => {
             const reader = new FileReader();
             reader.onload = (e) => {
                 setFile(e.target.result);
-                console.log(e.target.result);
             };
             reader.readAsDataURL(file);
         }
@@ -43,15 +36,20 @@ const FilePicker = () => {
 
                 </Box>
             ) : (
-                <Box sx={{
-                    width: '100%',
-                    py: 4,
-                    border: '1px dashed #AAAD',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    borderRadius: 2
-                }}>
+                <Box 
+                    component={'div'}
+                    onClick={handleOpenFilePicker}
+                    sx={{
+                        width: '100%',
+                        py: 4,
+                        border: '1px dashed #AAAD',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        borderRadius: 2,
+                        cursor: 'pointer'
+                    }}
+                >
                     <CloudUploadRounded
                         sx={{
                             animation: 'bounce 1s infinite',
@@ -66,6 +64,7 @@ const FilePicker = () => {
                         accept="application/pdf"
                         onChange={handleFileChange}
                         hidden
+                        ref={inputFileRef}
                     />
                 </Box>
             )}
