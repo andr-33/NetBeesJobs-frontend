@@ -5,6 +5,7 @@ const logos = [
   './logos/blacked/borygo-logo-bk.png',
   './logos/blacked/boryszew-logo-bk.png',
   './logos/blacked/gira-logo-bk.png',
+  './logos/blacked/ctc-logo-bk.svg',
   './logos/blacked/maflow-logo-bk.png',
   './logos/blacked/netbees-logo-bk.png',
   './logos/blacked/tim-logo-bk.png',
@@ -21,25 +22,20 @@ const LogoCarousel = () => {
         width: '100%',
         position: 'relative',
         backgroundColor: theme.palette.background.default,
-        py:2
+        py:2,
+        display: 'flex',
+        alignItems: 'center',
       }}
     >
-      {/* Contenedor animado */}
       <Box
         sx={{
           display: 'flex',
-          width: '200%', // Duplicamos el contenido
-          animation: 'scroll 20s linear infinite', // Animación continua
-          '@keyframes scroll': {
-            '0%': { transform: 'translateX(0)' },
-            '100%': { transform: 'translateX(-50%)' }, // Mueve el 50% del ancho
-          },
+          width: 'fit-content', 
+          animation: 'slide 20s linear infinite', 
         }}
       >
-        {/* Duplicamos los logos para efecto de loop */}
         {[...logos, ...logos].map((logo, index) => (
           <Box
-            
             sx={{
               mx: 1,
               borderRadius: 2
@@ -55,7 +51,7 @@ const LogoCarousel = () => {
                 height: 300,
                 width: 212,
                 margin: '0 20px',
-                flexShrink: 0, // Evita que los logos se reduzcan
+                flexShrink: 0, 
               }}
             />
           </Box>
