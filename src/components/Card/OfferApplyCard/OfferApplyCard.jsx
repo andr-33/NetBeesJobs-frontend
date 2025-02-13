@@ -18,7 +18,6 @@ const OfferApplyCard = ({ item }) => {
         setOpenModal(true);
 
         if(!accessToken){
-            console.log('no hay token')
             navigate('/autenticacion');
             return; 
         }

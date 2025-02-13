@@ -1,6 +1,7 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, useTheme } from "@mui/material";
 import { PersonRounded, BusinessRounded, DescriptionRounded, LogoutRounded } from '@mui/icons-material';
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePageSideBar = ({ expanded, setExpanded }) => {
     const menuItems = [
@@ -10,6 +11,7 @@ const HomePageSideBar = ({ expanded, setExpanded }) => {
     ];
 
     const theme = useTheme();
+    const navigate = useNavigate();
     const { removeToken } = useAuth();
 
     return (
@@ -59,7 +61,7 @@ const HomePageSideBar = ({ expanded, setExpanded }) => {
                     mb: 1,
                 }}>
                     <ListItem disablePadding>
-                        <ListItemButton onClick={removeToken}>
+                        <ListItemButton onClick={()=>{removeToken(); navigate('/')}}>
                             <ListItemIcon>
                                <LogoutRounded />
                             </ListItemIcon>

@@ -8,6 +8,7 @@ import {
     Typography
 } from "@mui/material";
 import { Search, Clear } from "@mui/icons-material";
+import { useAuth } from "../contexts/AuthContext/AuthContext";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
@@ -25,6 +26,7 @@ const HomePage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [offersData, setOffersData] = useState([]);
     const theme = useTheme();
+    const { accessToken } = useAuth();
 
     const itemsPerPage = 5;
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -70,10 +72,12 @@ const HomePage = () => {
             display: "flex",
             backgroundColor: theme.palette.background.default,
             position: 'relative',
-            pl: '70px',
+            pl: accessToken ? '70px' : '0px',
         }}>
-            <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
-
+            {accessToken && (
+                <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
+            )}
+            
             <Box sx={{ flexGrow: 1, p: 3 }}>
                 <Box sx={{
                     display: "flex",
