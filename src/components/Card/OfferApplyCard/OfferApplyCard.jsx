@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Paper, Box, Typography, Avatar, Button, useTheme} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
 import SelectCvModal from "../../Modal/SelectCvModal/SelectCvModal";
@@ -11,9 +12,16 @@ const OfferApplyCard = ({ item }) => {
     const [availableToUpload, setAvailableToUpload] = useState(false);
     const { accessToken } = useAuth();
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const handleOpenModal = async () => {
         setOpenModal(true);
+
+        if(!accessToken){
+            console.log('no hay token')
+            navigate('/autenticacion');
+            return; 
+        }
 
         if(cvFiles.length !== 0){
             return
@@ -163,7 +171,6 @@ const OfferApplyCard = ({ item }) => {
                 </Box>
             </Paper>
 
-            {/* Modal */}
             <SelectCvModal 
                 openModal={openModal}
                 handleCloseModal={handleCloseModal}

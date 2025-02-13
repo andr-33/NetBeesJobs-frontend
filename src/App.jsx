@@ -17,10 +17,10 @@ const App = () =>{
       <Routes>
         <Route path='/' element={<WelcomePage/>} />
         <Route path='/autenticacion' element={<AuthPage/>} />
+        <Route path='/pagina-principal' element={<HomePage />} />
         <Route element={<ProtectedRoute />} >
           <Route path='/seleccion-rol' element={<SelectRole/>} />
           <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
-          <Route path='/pagina-principal' element={<HomePage />} />
           <Route path='/perfil-empresa' element={<CompanyProfilePage />} />
         </Route>
         <Route path='/example' element={<CompanyDashboardPage />} />
