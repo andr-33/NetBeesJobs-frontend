@@ -6,14 +6,30 @@ import CompanySidebar from "../components/Sidebar/CompanySidebar/CompanySidebar"
 import axios from "axios";
 import ProjectCard from "../components/Card/ProjectCard/ProjectCard";
 import { AddCircleOutlineRounded } from "@mui/icons-material";
+import CreateProjectModal from "../components/Modal/CreateProjectModal/CreateProjectModal";
+import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
 
 const CompanyProfilePage = () => {
     const [expanded, setExpanded] = useState(false);
     const [projectsData, setProjectsData] = useState([]);
     const [companyInfo, setCompanyInfo] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
+    const [openNotification, setOpenNotification] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState("");
     const theme = useTheme();
     const { accessToken } = useAuth();
+
+    const handleDeleteProject = async (projectId) => {
+        try{
+            const response = await axios.delete(`/api/companies/delete-project/${projectId}`);
+            setNotificationMessage(response.data.message);
+            setOpenNotification(true);
+            setProjectsData(projectsData.filter(project => project.emp_proyectos_id !== projectId));
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
 
     useEffect(() => {
         try {
@@ -23,7 +39,6 @@ const CompanyProfilePage = () => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                console.log(response.data)
                 setIsLoading(false);
                 setProjectsData(response.data);
             };
@@ -41,7 +56,6 @@ const CompanyProfilePage = () => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                console.log(response.data)
                 setCompanyInfo(response.data);
             };
             fetchCompanyInformation();
@@ -89,13 +103,18 @@ const CompanyProfilePage = () => {
                             >
                                 {companyInfo.nombre} ({companyInfo.acronimo})
                             </Typography>
-                            <Typography variant="body2">Fecha de alta: {formatDate(companyInfo.fecha_alta)}</Typography>
-                            <Typography variant="caption">En: {companyInfo.mst_ciudades_id.nombre}</Typography>
+                            <Typography variant="body2" fontWeight={'600'}>Fecha de alta: 
+                                <Typography component={'span'}> {formatDate(companyInfo.fecha_alta)}</Typography>
+                            </Typography>
+                            <Typography variant="body2" fontWeight={'600'}>En: 
+                                <Typography component={'span'}> {companyInfo.mst_ciudades_id.nombre}</Typography>
+                            </Typography>
                         </Box>
                     ) : (
                         <Box>
                             {Array.from({ length: 3 }).map((_, index) => (
                                 <Skeleton
+                                    key={index}
                                     variant="text"
                                     sx={{
                                         fontSize: index === 0 ? '1.25rem' : '1rem',
@@ -125,20 +144,28 @@ const CompanyProfilePage = () => {
                     <Button
                         variant="contained"
                         endIcon={<AddCircleOutlineRounded />}
+                        onClick={()=> setOpenModal(true)}
                     >
                         CREAR
                     </Button>
                 </Box>
+                <CreateProjectModal 
+                    openModal={openModal} 
+                    handleCloseModal={() => setOpenModal(false)}
+                    setProjectsData={setProjectsData}
+                />
 
                 {projectsData.length > 0 && (
                     <Grid container spacing={2} mt={2}>
                         {projectsData.map((project, index) => (
                             <Grid key={index} size={{ md: 6, sm: 12 }}>
                                 <ProjectCard 
+                                    id={project.emp_proyectos_id}
                                     name={project.nombre}
                                     description={project.descripcion}
                                     startDate={formatDate(project.fecha_inicio)} 
                                     state={project.estado}
+                                    handleDeleteProject={handleDeleteProject}
                                 />
                             </Grid>
                         ))}
@@ -168,6 +195,12 @@ const CompanyProfilePage = () => {
             {/*Pensar en el Layout, fijo sidebar  */}
             {/*Lista de proyectos, pensar como hacer las cards*/}
             {/*Agregar ofertas con dialog que sube? */}
+            <SlideUpNotification
+                message={notificationMessage}
+                type="success"
+                open={openNotification}
+                handleClose={() => setOpenNotification(false)}
+            />
         </Box>
     );
 };

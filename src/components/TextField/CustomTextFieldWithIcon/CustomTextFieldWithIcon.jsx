@@ -8,6 +8,8 @@ const CustomTextFieldWithIcon = ({
     value,
     onChange,
     required = false,
+    multiline = false,
+    rows = 0,
     icon: Icon,
 }) => {
     const theme = useTheme();
@@ -21,6 +23,8 @@ const CustomTextFieldWithIcon = ({
             value={value}
             onChange={onChange}
             required={required}
+            multiline={multiline}
+            rows={rows}
             sx={{
                 mb: 2,
             }}
