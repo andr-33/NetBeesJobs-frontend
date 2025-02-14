@@ -48,8 +48,8 @@ const OptionPicker = ({ urlData, label = "Select", onChange, value, name = "", i
                     name={name}
                     label={label}
                 >
-                    {data.map((item) => (
-                        <MenuItem key={item[idKey]} value={item[idKey]}>
+                    {data.map((item, index) => (
+                        <MenuItem key={index} value={item[idKey]}>
                             {item[labelKey]}
                         </MenuItem>
                     ))}

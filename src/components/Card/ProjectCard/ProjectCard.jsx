@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Box, Card, CardContent, CardHeader, IconButton, Typography, useTheme } from "@mui/material";
-import { DeleteOutlineRounded, EditOutlined } from "@mui/icons-material";
+import { DeleteOutlineRounded, AddCircleRounded } from "@mui/icons-material";
+import CreateOfferModal from "../../Modal/CreateOfferModal/CreateOfferModal";
 
 const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProject  }) => {
+    const [openModal, setOpenModal] = useState(false);
     const theme = useTheme();
     const isActive = state === 1 ? true : false;
 
@@ -41,8 +44,32 @@ const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProj
                 }
             />
             <CardContent>
-                <Typography variant="body1" >{description}</Typography>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <Typography variant="body1" >{description}</Typography>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                    }}>
+                        <IconButton
+                            size="large" 
+                            onClick={()=>setOpenModal(true)}
+                        >
+                            <AddCircleRounded sx={{
+                                color: theme.palette.primary.main
+                            }}/>
+                        </IconButton>
+                    </Box>
+                </Box>
             </CardContent>
+            <CreateOfferModal
+                openModal={openModal}
+                handleCloseModal={() => setOpenModal(false)}
+            />
         </Card>
     );
 };

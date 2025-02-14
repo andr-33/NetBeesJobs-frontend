@@ -146,7 +146,7 @@ const CompanyProfilePage = () => {
                         endIcon={<AddCircleOutlineRounded />}
                         onClick={()=> setOpenModal(true)}
                     >
-                        CREAR
+                        CREAR PROYECTO
                     </Button>
                 </Box>
                 <CreateProjectModal 
