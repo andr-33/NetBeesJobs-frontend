@@ -48,7 +48,13 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
                         >
                             Iniciar sesión
                         </Button>
-                        <Button variant="contained" sx={{ bgcolor: theme.palette.primary.main, color: 'black', borderRadius: 5, transition: 'transform 0.1s ease-in-out', ':hover': { transform: 'scale(1.02)' } }}>Publicar oferta</Button>
+                        <Button 
+                            variant="contained" 
+                            sx={{ bgcolor: theme.palette.primary.main, color: 'black', borderRadius: 5, transition: 'transform 0.1s ease-in-out', ':hover': { transform: 'scale(1.02)' } }}
+                            onClick={() => navigate('/perfil-empresa')}
+                        >
+                            Publicar oferta
+                        </Button>
                     </Box>
                 </Box>
             </Toolbar>

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab, Paper, Grid2 as Grid, Fade, useTheme } from "@mui/material";
 import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
+import { useNavigate } from "react-router-dom";
 import FormLogin from "../components/Form/LoginForm/LoginForm";
 import FormSignup from "../components/Form/SignupForm/SignupForm";
 
 const AuthPage = () => {
     const [isLoginForm, setIsLoginForm] = useState(true);
     const theme = useTheme();
+    const navigate = useNavigate();
     const { isMobile, isSmall, } = useScreenWidth();
 
     return (
@@ -60,7 +62,14 @@ const AuthPage = () => {
                             component='img'
                             src="./logos/netbees-logo.png"
                             alt="Logo NetBees"
-                            sx={style.logo}
+                            sx={{
+                                width: "100%",
+                                height: '100%',
+                                objectFit: 'cover',
+                                objectPosition: 'center',
+                                cursor: 'pointer'
+                            }}
+                            onClick={()=> navigate('/')}
                         />
                     </Box>
                     <Tabs
@@ -105,12 +114,6 @@ const style = {
     },
     tab: {
         marginBottom: 3,
-    },
-    logo: {
-        width: "100%",
-        height: '100%',
-        objectFit: 'cover',
-        objectPosition: 'center'
     },
     textField: {
         marginBottom: 2,
