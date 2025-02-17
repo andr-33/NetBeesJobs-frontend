@@ -5,6 +5,7 @@ import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { LinkedIn } from "@mui/icons-material";
 
 const INITIAL_VALUES = {
     nombre: "",
@@ -69,7 +70,7 @@ const CreateOfferModal = ({ openModal, handleCloseModal }) => {
                 }}
             >
                 <Typography variant="h6" sx={{ mb: 2 }}>
-                    Crear Nueva Oferta
+                    Crear Nueva Oferta de Empleo
                 </Typography>
 
                 <CustomTextFieldWithIcon
@@ -95,6 +96,7 @@ const CreateOfferModal = ({ openModal, handleCloseModal }) => {
                     name="oferta_link"
                     value={formValues.oferta_link}
                     onChange={handleOnChange}
+                    icon={LinkedIn}
                 />
 
                 <CustomTextFieldWithIcon

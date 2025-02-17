@@ -1,12 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Card, CardContent, CardHeader, IconButton, Typography, useTheme } from "@mui/material";
 import { DeleteOutlineRounded, AddCircleRounded } from "@mui/icons-material";
 import CreateOfferModal from "../../Modal/CreateOfferModal/CreateOfferModal";
+import WarningModal from "../../Modal/WarningModal/WarningModal";
 
 const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProject  }) => {
     const [openModal, setOpenModal] = useState(false);
+    const [openWarningModal, setOpenWarningModal] = useState(false);
+    const [confirmation, setConfirmation] = useState(false);
     const theme = useTheme();
     const isActive = state === 1 ? true : false;
+
+    const handleCloseWarningModal = () => {
+        setOpenWarningModal(false);
+        setConfirmation(false);
+    };
+
+    useEffect(() => {
+        if(confirmation){
+            handleDeleteProject(id);
+            setOpenWarningModal(false);
+            setConfirmation(false);
+        }
+    },[confirmation]);
 
     return (
         <Card
@@ -27,7 +43,7 @@ const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProj
                     }}>
                         <IconButton 
                             sx={{p: 0.5}}
-                            onClick={()=>handleDeleteProject(id)}
+                            onClick={()=> setOpenWarningModal(true)}
                         >
                             <DeleteOutlineRounded />
                         </IconButton>
@@ -69,6 +85,12 @@ const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProj
             <CreateOfferModal
                 openModal={openModal}
                 handleCloseModal={() => setOpenModal(false)}
+            />
+            <WarningModal
+                openModal={openWarningModal}
+                handleCloseModal={handleCloseWarningModal}
+                setConfirmation={setConfirmation}
+                message={'Seguro que quieres eliminar este proyecto? '}
             />
         </Card>
     );
