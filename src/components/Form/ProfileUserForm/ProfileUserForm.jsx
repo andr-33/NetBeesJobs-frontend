@@ -43,7 +43,7 @@ const ProfileUserForm = () => {
     formValues.image = selectedImage; 
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "/api/users/create-user-profile",
         formValues,
         {

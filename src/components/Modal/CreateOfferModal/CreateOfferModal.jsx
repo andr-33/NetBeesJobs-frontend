@@ -4,23 +4,31 @@ import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/Cus
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import axios from "axios";
-import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { LinkedIn } from "@mui/icons-material";
 
 const INITIAL_VALUES = {
-    nombre: "",
-    descripcion: "",
-    oferta_link: "",
-    salario_anual: "",
-    mst_puestos_id: "",
-    mst_emp_sector_id: "",
+    name: "",
+    description: "",
+    offer_link: "",
+    salary: 0,
+    job_id: "",
+    sector_id: "",
+    community_id: 7,
+    province_id: 28,
+    city_id: "",
+    project_id: 0
 };
 
-const CreateOfferModal = ({ openModal, handleCloseModal }) => {
-    const { accessToken } = useAuth();
+const CreateOfferModal = ({ 
+    openModal, 
+    handleCloseModal, 
+    proyectId, 
+    setNotification, 
+    setMessage, 
+    setNotificationType 
+}) => {
     const [formValues, setFormValues] = useState(INITIAL_VALUES);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
     const handleOnChange = (event) => {
         const { name, value } = event.target;
@@ -30,25 +38,23 @@ const CreateOfferModal = ({ openModal, handleCloseModal }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        setError(null);
+        formValues.project_id = proyectId;
+        formValues.salary = parseInt(formValues.salary);
 
         try {
-            const response = await axios.post("/api/companies/create-offer", formValues, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
-
-            setOffersData((prev) => [...prev, response.data]);
-            setFormValues(INITIAL_VALUES);
-            handleCloseModal();
+            const response = await axios.post("/api/companies/create-offer-in-project", formValues);
+            setMessage(response.data.message);
+            setNotification(true);
+            setNotificationType('success');
         } catch (error) {
             console.error("Error al crear la oferta:", error);
-            setError(
-                error.response?.data?.error || "Ocurrió un error. Inténtalo de nuevo."
-            );
+            setNotification("Ocurrió un error. Inténtalo de nuevo");
+            setNotification(true);
+            setNotificationType('error');
         } finally {
             setLoading(false);
+            setFormValues(INITIAL_VALUES);
+            handleCloseModal();
         }
     };
 
@@ -63,28 +69,30 @@ const CreateOfferModal = ({ openModal, handleCloseModal }) => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     width: 400,
+                    maxHeight: "80vh",
+                    overflowY: "auto",
                     bgcolor: "background.paper",
                     boxShadow: 24,
                     p: 4,
                     borderRadius: 2,
                 }}
             >
-                <Typography variant="h6" sx={{ mb: 2 }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>
                     Crear Nueva Oferta de Empleo
                 </Typography>
 
                 <CustomTextFieldWithIcon
                     label="Nombre de la Oferta"
-                    name="nombre"
-                    value={formValues.nombre}
+                    name="name"
+                    value={formValues.name}
                     onChange={handleOnChange}
                     required
                 />
 
                 <CustomTextFieldWithIcon
                     label="Descripción"
-                    name="descripcion"
-                    value={formValues.descripcion}
+                    name="description"
+                    value={formValues.description}
                     onChange={handleOnChange}
                     required
                     multiline
@@ -92,27 +100,31 @@ const CreateOfferModal = ({ openModal, handleCloseModal }) => {
                 />
 
                 <CustomTextFieldWithIcon
-                    label="Link de la Oferta (LinkedIn)"
-                    name="oferta_link"
-                    value={formValues.oferta_link}
-                    onChange={handleOnChange}
-                    icon={LinkedIn}
-                />
-
-                <CustomTextFieldWithIcon
                     label="Salario Anual (€)"
-                    name="salario_anual"
+                    name="salary"
                     type="number"
-                    value={formValues.salario_anual}
+                    value={formValues.salary}
                     onChange={handleOnChange}
                     required
                 />
 
+                <CustomTextFieldWithIcon
+                    label="Link de la Oferta (LinkedIn)"
+                    name="offer_link"
+                    value={formValues.offer_link}
+                    onChange={handleOnChange}
+                    icon={LinkedIn}
+                />
+
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                    Detalles de la Oferta
+                </Typography>
+
                 <OptionPicker
                     urlData="/api/master/job-positions"
                     label="Puesto"
-                    name="mst_puestos_id"
-                    value={formValues.mst_puestos_id}
+                    name="job_id"
+                    value={formValues.job_id}
                     onChange={handleOnChange}
                     idKey="mst_puestos_id"
                     labelKey="nombre"
@@ -121,20 +133,48 @@ const CreateOfferModal = ({ openModal, handleCloseModal }) => {
                 <OptionPicker
                     urlData="/api/master/sectors"
                     label="Sector"
-                    name="mst_emp_sector_id"
-                    value={formValues.mst_emp_sector_id}
+                    name="sector_id"
+                    value={formValues.sector_id}
                     onChange={handleOnChange}
                     idKey="mst_emp_sector_id"
                     labelKey="descripcion"
                 />
 
-                <LoaderButton text="Crear Oferta" loading={loading} sx={{ mt: 2 }} />
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                    Detalles de la Ubicación
+                </Typography>
 
-                {error && (
-                    <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-                        {error}
-                    </Typography>
-                )}
+                <OptionPicker
+                    urlData='/api/master/communities'
+                    label="Comunidad Autonoma"
+                    name="community_id"
+                    value={formValues.community_id}
+                    onChange={handleOnChange}
+                    idKey='mst_comunidades_id'
+                    labelKey='nombre_corto'
+                />
+
+                <OptionPicker
+                    urlData={`/api/master/communities/${formValues.community_id}/provinces`}
+                    label="Provincia"
+                    name="province_id"
+                    value={formValues.province_id}
+                    onChange={handleOnChange}
+                    idKey='mst_provincias_id'
+                    labelKey='nombre'
+                />
+
+                <OptionPicker
+                    urlData={`/api/master/provinces/${formValues.province_id}/cities`}
+                    label="Ciudad"
+                    name="city_id"
+                    value={formValues.city_id}
+                    onChange={handleOnChange}
+                    idKey='mst_ciudades_id'
+                    labelKey='nombre'
+                />
+
+                <LoaderButton text="Crear Oferta" loading={loading} sx={{ mt: 2 }} />
             </Box>
         </Modal>
     );

@@ -3,11 +3,15 @@ import { Box, Card, CardContent, CardHeader, IconButton, Typography, useTheme } 
 import { DeleteOutlineRounded, AddCircleRounded } from "@mui/icons-material";
 import CreateOfferModal from "../../Modal/CreateOfferModal/CreateOfferModal";
 import WarningModal from "../../Modal/WarningModal/WarningModal";
+import SlideUpNotification from "../../Notification/SlideUpNotification/SlideUpNotification";
 
 const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProject  }) => {
     const [openModal, setOpenModal] = useState(false);
     const [openWarningModal, setOpenWarningModal] = useState(false);
     const [confirmation, setConfirmation] = useState(false);
+    const [openNotification, setOpenNotification] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [notificationType, setNotificationType] = useState('success');
     const theme = useTheme();
     const isActive = state === 1 ? true : false;
 
@@ -85,6 +89,10 @@ const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProj
             <CreateOfferModal
                 openModal={openModal}
                 handleCloseModal={() => setOpenModal(false)}
+                proyectId={id}
+                setNotification={setOpenNotification}
+                setMessage={setNotificationMessage}
+                setNotificationType={setNotificationType}
             />
             <WarningModal
                 openModal={openWarningModal}
@@ -92,6 +100,12 @@ const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProj
                 setConfirmation={setConfirmation}
                 warningQuestion={'¿Seguro que quieres eliminar este proyecto?'}
                 message={'Se eliminaran todas las ofertas asociadas a este proyecto'}
+            />
+            <SlideUpNotification 
+                open={openNotification}
+                handleClose={()=> setOpenNotification(false)}
+                message={notificationMessage}
+                type={notificationType}
             />
         </Card>
     );
