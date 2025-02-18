@@ -90,7 +90,8 @@ const ProjectCard = ({ id, name, description, startDate, state, handleDeleteProj
                 openModal={openWarningModal}
                 handleCloseModal={handleCloseWarningModal}
                 setConfirmation={setConfirmation}
-                message={'Seguro que quieres eliminar este proyecto? '}
+                warningQuestion={'¿Seguro que quieres eliminar este proyecto?'}
+                message={'Se eliminaran todas las ofertas asociadas a este proyecto'}
             />
         </Card>
     );

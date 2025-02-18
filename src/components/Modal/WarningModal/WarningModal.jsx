@@ -1,6 +1,7 @@
 import { Button, Modal, Typography, Box } from "@mui/material";
+import { WarningRounded } from "@mui/icons-material";
 
-const WarningModal = ({ message, setConfirmation, openModal, handleCloseModal }) => {
+const WarningModal = ({ warningQuestion, message, setConfirmation, openModal, handleCloseModal }) => {
     return (
         <Modal
             open={openModal}
@@ -17,24 +18,40 @@ const WarningModal = ({ message, setConfirmation, openModal, handleCloseModal })
                 p: 4,
                 borderRadius: 2,
             }}>
-                <Typography variant="h5">{message}</Typography>
+                <Typography 
+                    variant="h5"
+                    align="center"
+                >
+                    {warningQuestion}
+                </Typography>
+                <Typography
+                    variant="body1"
+                    align="justify"
+                    color="secondary"
+                    marginTop={1} 
+                >
+                    <WarningRounded sx={{mr: 0.5}} />
+                    {message}
+                </Typography>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     width: '100%',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    mt: 2
                 }}>
-                    <Button
-                        variant="outlined"
-                        onClick={() => setConfirmation(true)}
-                    >
-                        SI
-                    </Button>
                     <Button
                         variant="contained"
                         onClick={handleCloseModal}
+                        color="error"
                     >
                         NO
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => setConfirmation(true)}
+                    >
+                        SI
                     </Button>
                 </Box>
             </Box>
