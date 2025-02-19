@@ -4,19 +4,20 @@ body {
 }
 
 @keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-3px);
-    }
+    0%, 100% { transform: translateY(0) }
+    50% { transform: translateY(-3px) }
 }
 
 @keyframes slide {
-    0% { 
-        transform: translateX(0) 
-    }
-    100% { 
-        transform: translateX(-50%) 
-    }
+    0% { transform: translateX(0) }
+    100% { transform: translateX(-50%) }
+}
+
+@keyframes vibration {
+    0% { transform: translateX(0) }
+    20% { transform: translateX(-3px) }
+    40% { transform: translateX(3px) }
+    60% { transform: translateX(-3px) }
+    80% { transform: translateX(3px) }
+    100% { transform: translateX(0) }
 }

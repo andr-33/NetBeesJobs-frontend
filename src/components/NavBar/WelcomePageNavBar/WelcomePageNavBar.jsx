@@ -1,12 +1,23 @@
 import { AppBar, Box, Button, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
 import { useTheme } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 
-const NAV_ITEMS = ['Encuentra trabajo', 'Colaboradores', 'Contacto'];
+const NAV_ITEMS = ['Colaboradores', 'Contacto'];
 
 const WelcomePageNavBar = ({ onScrollToSection }) => {
+    const [isVibrating, setIsVibrating] = useState(false); 
     const theme = useTheme();
     const navigate = useNavigate();
+
+    useState(()=>{
+        const interval = setInterval(()=> {
+            setIsVibrating(true);
+            setTimeout(()=> setIsVibrating(false), 700);
+        }, 2500);
+
+        return () => clearInterval(interval);
+    },[]);
 
     return (
         <AppBar position="fixed" component='nav' sx={{ bgcolor: theme.palette.background.paper, height: 80 }}>
@@ -23,10 +34,7 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
                                             color: 'yellowgreen'
                                         }
                                     }}
-                                    onClick={() => item === 'Encuentra trabajo' ?
-                                        navigate('/pagina-principal') :
-                                        onScrollToSection(item.toLowerCase())
-                                    }
+                                    onClick={() => onScrollToSection(item.toLowerCase())}
                                 >
                                     <ListItemText 
                                         primary={item} 
@@ -54,6 +62,20 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
                             onClick={() => navigate('/perfil-empresa')}
                         >
                             Publicar oferta
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            sx={{ 
+                                bgcolor: theme.palette.primary.main, 
+                                color: 'black', 
+                                borderRadius: 5, 
+                                transition: 'transform 0.1s ease-in-out', 
+                                ':hover': { transform: 'scale(1.02)' }, 
+                                animation: isVibrating ? 'vibration 0.4s ease-in-out' : 'none'
+                            }}
+                            onClick={() => navigate('/pagina-principal')}
+                        >
+                            Encuentra trabajo
                         </Button>
                     </Box>
                 </Box>

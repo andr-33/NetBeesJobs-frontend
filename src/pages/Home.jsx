@@ -7,8 +7,14 @@ import {
     Skeleton,
     Typography
 } from "@mui/material";
-import { Search, Clear } from "@mui/icons-material";
+import { 
+    Search, 
+    DeleteOutlineRounded,
+    ContentPasteSearchRounded,
+    LocationCityRounded
+} from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
@@ -26,6 +32,7 @@ const HomePage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [offersData, setOffersData] = useState([]);
     const theme = useTheme();
+    const navigate = useNavigate();
     const { accessToken } = useAuth();
 
     const itemsPerPage = 5;
@@ -70,10 +77,29 @@ const HomePage = () => {
     return (
         <Box sx={{
             display: "flex",
+            flexDirection: "column",
             backgroundColor: theme.palette.background.default,
             position: 'relative',
             pl: accessToken ? '70px' : '0px',
         }}>
+            <Box
+                component='div' 
+                sx={{
+                    height: 80,
+                    overflowY: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    ml: 3,
+                    cursor: 'pointer'
+                }}
+                onClick={()=> navigate('/')}
+            >
+                <Box 
+                    component={'img'}
+                    src="./logos/netbees-logo.png"
+                    sx={{ width: 152, height: 121 }}
+                />
+            </Box>
             {accessToken && (
                 <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
             )}
@@ -91,10 +117,11 @@ const HomePage = () => {
                         name={'name'}
                         value={searchFilters.name}
                         onChange={handleOnChange}
+                        icon={ContentPasteSearchRounded}
                     />
                     <OptionPicker
                         urlData={'/api/master/sectors'}
-                        label="Sector"
+                        label="Buscar por sector"
                         name="sector"
                         value={searchFilters.sector}
                         onChange={handleOnChange}
@@ -102,20 +129,21 @@ const HomePage = () => {
                         labelKey={'descripcion'}
                     />
                     <CustomTextFieldWithIcon
-                        label={'Ciudad'}
+                        label={'Buscar por ciudad'}
                         name={'city'}
                         value={searchFilters.city}
                         onChange={handleOnChange}
+                        icon={LocationCityRounded}
                     />
-                    <Box sx={{ display: 'flex' }}>
+                    <Box sx={{ display: 'flex', mb: 2 }}>
                         <IconButton color="primary" onClick={handleSearch}>
                             <Search />
                         </IconButton>
-                        <IconButton color="secondary" onClick={() => {
+                        <IconButton color="error" onClick={() => {
                             setSearchFilters({ name: "", sector: "", city: "" });
                             setFilteredData(offersData);
                         }}>
-                            <Clear />
+                            <DeleteOutlineRounded />
                         </IconButton>
                     </Box>
                 </Box>
