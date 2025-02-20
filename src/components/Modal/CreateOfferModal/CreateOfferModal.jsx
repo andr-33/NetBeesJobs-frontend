@@ -16,7 +16,8 @@ const INITIAL_VALUES = {
     community_id: 7,
     province_id: 28,
     city_id: "",
-    project_id: 0
+    project_id: 0,
+    created_at: null
 };
 
 const CreateOfferModal = ({ 
@@ -40,6 +41,7 @@ const CreateOfferModal = ({
         setLoading(true);
         formValues.project_id = proyectId;
         formValues.salary = parseInt(formValues.salary);
+        formValues.created_at = new Date();
 
         try {
             const response = await axios.post("/api/companies/create-offer-in-project", formValues);
