@@ -5,16 +5,17 @@ import {
     IconButton,
     useTheme,
     Skeleton,
-    Typography
+    Typography,
+    Grid2 as Grid
 } from "@mui/material";
-import { 
-    Search, 
+import {
+    Search,
     DeleteOutlineRounded,
     ContentPasteSearchRounded,
-    LocationCityRounded
+    LocationOnRounded
 } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
@@ -35,11 +36,11 @@ const HomePage = () => {
     const navigate = useNavigate();
     const { accessToken } = useAuth();
 
-    const itemsPerPage = 5;
+    const itemsPerPage = 6;
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     useEffect(() => {
-        try{
+        try {
             const fetchAllOffers = async () => {
                 const response = await axios.get('/api/companies/all-active-offers');
                 setOffersData(response.data);
@@ -83,7 +84,7 @@ const HomePage = () => {
             pl: accessToken ? '70px' : '0px',
         }}>
             <Box
-                component='div' 
+                component='div'
                 sx={{
                     height: 80,
                     overflowY: 'hidden',
@@ -92,9 +93,9 @@ const HomePage = () => {
                     ml: 3,
                     cursor: 'pointer'
                 }}
-                onClick={()=> navigate('/')}
+                onClick={() => navigate('/')}
             >
-                <Box 
+                <Box
                     component={'img'}
                     src="./logos/netbees-logo.png"
                     sx={{ width: 152, height: 121 }}
@@ -103,7 +104,7 @@ const HomePage = () => {
             {accessToken && (
                 <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
             )}
-            
+
             <Box sx={{ flexGrow: 1, p: 3 }}>
                 <Box sx={{
                     display: "flex",
@@ -133,7 +134,7 @@ const HomePage = () => {
                         name={'city'}
                         value={searchFilters.city}
                         onChange={handleOnChange}
-                        icon={LocationCityRounded}
+                        icon={LocationOnRounded}
                     />
                     <Box sx={{ display: 'flex', mb: 2 }}>
                         <IconButton color="primary" onClick={handleSearch}>
@@ -148,9 +149,12 @@ const HomePage = () => {
                     </Box>
                 </Box>
 
-                <Box>
+                <Grid 
+                    container
+                    spacing={2}
+                >
                     {offersData.length === 0 ? (
-                        Array.from({ length: 5 }).map((_, index) => (
+                        Array.from({ length: 6 }).map((_, index) => (
                             <Box key={index} sx={{ mb: 2 }}>
                                 <Skeleton variant="rectangular" height={200} />
                             </Box>
@@ -160,11 +164,16 @@ const HomePage = () => {
                             <Typography variant="h6" align="center">Ups.. No se encontraron resultados</Typography>
                         ) : (
                             paginatedData.map((item, index) => (
-                                <OfferApplyCard key={index} item={item} />
+                                <Grid 
+                                    key={index}
+                                    size={{xs:12, sm:6, md:4}}
+                                >
+                                    <OfferApplyCard item={item} />
+                                </Grid>
                             ))
                         )
                     )}
-                </Box>
+                </Grid>
 
                 {filteredData.length > 0 && (
                     <Pagination
