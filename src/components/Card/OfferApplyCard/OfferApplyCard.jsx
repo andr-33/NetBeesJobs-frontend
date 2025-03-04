@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import axios from "axios";
 import SelectCvModal from "../../Modal/SelectCvModal/SelectCvModal";
+import dayjs from "dayjs";
 
 const OfferApplyCard = ({ item }) => {
     const [openModal, setOpenModal] = useState(false);
@@ -13,7 +14,7 @@ const OfferApplyCard = ({ item }) => {
     const { accessToken } = useAuth();
     const theme = useTheme();
     const navigate = useNavigate();
-
+    console.log(item)
     const handleOpenModal = async () => {
         setOpenModal(true);
 
@@ -54,6 +55,20 @@ const OfferApplyCard = ({ item }) => {
         setAvailableToUpload(false);
     };
 
+    const PostDate = ({createdAtDate}) => {
+        const difference = dayjs().diff(dayjs(createdAtDate), 'days');
+        return (
+            <Typography 
+                variant="caption"
+                sx={{
+                    color: theme.palette.secondary.main
+                }}
+            >
+                Hace {difference} {difference === 1 ? 'día':'días'}
+            </Typography>
+        )
+    };
+
     return (
         <>
             <Paper
@@ -85,7 +100,7 @@ const OfferApplyCard = ({ item }) => {
                             flexDirection: "row",
                             alignItems: "center",
                             gap: 1,
-                            mb: 2,
+                            mb: 0.5,
                         }}
                     >
                         {item.emp_proyectos_id.emp_empresas_id.logo_link ? (
@@ -97,6 +112,8 @@ const OfferApplyCard = ({ item }) => {
                                     width: "50px",
                                     height: "50px",
                                     borderRadius: "50%",
+                                    border: `1px solid ${theme.palette.secondary.main}`,
+
                                 }}
                             />
                         ) : (
@@ -113,24 +130,71 @@ const OfferApplyCard = ({ item }) => {
                                     .toUpperCase()}
                             </Avatar>
                         )}
-                        <Typography variant="h6">
-                            {item.nombre} ({item.emp_proyectos_id.emp_empresas_id.nombre})
+                        <Typography 
+                            variant="h6"
+                            noWrap
+                            sx={{
+                                maxWidth: '60%',
+                                overflow: 'hidden',
+                                textOverflow: "ellipsis",   
+                            }}
+                        >
+                            {item.emp_proyectos_id.emp_empresas_id.nombre}
                         </Typography>
+                        <Box sx={{
+                            display: 'flex',
+                            flexGrow: 1,
+                            justifyContent: 'flex-end'
+                        }}>
+                            <PostDate createdAtDate={item.fecha_creacion} />
+                        </Box>
                     </Box>
                     <Box sx={{
                         display: 'flex',
                         flexGrow: 1,
-                        alignItems: 'flex-start',
+                        flexDirection: 'column',
                         overflowY: 'hidden',
                     }}>
-                        <Typography
+                        <Box sx={{
+                            width: '100%',
+                            height: '200px',
+                            borderRadius: 4,
+                            overflow: 'hidden'
+                        }}>
+                            <Box 
+                                component={'img'}
+                                src={item.mst_emp_sector_id.link_imagen || "https://img.freepik.com/vector-gratis/fondo-hexagonal-degradado_23-2148956844.jpg?t=st=1741080551~exp=1741084151~hmac=9ee6a64e078fb23821181eef8afd6aee20b248d88f12f1abfcde3fc5308e89fb&w=1060"}
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    objectPosition: 'center'
+                                }}
+                            />
+                        </Box>
+                        <Typography 
                             variant="body1"
+                            noWrap
+                            sx={{
+                                fontWeight: '600',
+                                mt: 2,
+                                mb: 0.5,
+                                maxWidth: '100%',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                            }}
+                        >
+                            {item.nombre}
+                        </Typography>
+
+                        <Typography
+                            variant="body2"
                             sx={{
                                 overflow: "hidden",
                                 textOverflow: "ellipsis", 
                                 display: "-webkit-box",
                                 WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 13,
+                                WebkitLineClamp: 3,
                             }}
                         >
                             {item.descripcion}
@@ -192,7 +256,7 @@ const OfferApplyCard = ({ item }) => {
                                 color: "black",
                                 borderRadius: 2,
                                 ":hover": {
-                                    bgcolor: "primary.light",
+                                    bgcolor: theme.palette.primary.light,
                                 },
                             }}
                             onClick={handleOpenModal}
