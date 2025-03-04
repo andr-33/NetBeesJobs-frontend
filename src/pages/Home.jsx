@@ -90,15 +90,18 @@ const HomePage = () => {
                     overflowY: 'hidden',
                     display: 'flex',
                     alignItems: 'center',
-                    ml: 3,
-                    cursor: 'pointer'
+                    ml: 3
                 }}
-                onClick={() => navigate('/')}
             >
                 <Box
                     component={'img'}
                     src="./logos/netbees-logo.png"
-                    sx={{ width: 152, height: 121 }}
+                    sx={{ 
+                        width: 152, 
+                        height: 121,
+                        cursor: 'pointer'
+                     }}
+                    onClick={()  => navigate('/')}
                 />
             </Box>
             {accessToken && (

@@ -55,16 +55,16 @@ const OfferApplyCard = ({ item }) => {
         setAvailableToUpload(false);
     };
 
-    const PostDate = ({createdAtDate}) => {
+    const PostDate = ({ createdAtDate }) => {
         const difference = dayjs().diff(dayjs(createdAtDate), 'days');
         return (
-            <Typography 
+            <Typography
                 variant="caption"
                 sx={{
                     color: theme.palette.secondary.main
                 }}
             >
-                Hace {difference} {difference === 1 ? 'día':'días'}
+                Hace {difference} {difference === 1 ? 'día' : 'días'}
             </Typography>
         )
     };
@@ -130,13 +130,13 @@ const OfferApplyCard = ({ item }) => {
                                     .toUpperCase()}
                             </Avatar>
                         )}
-                        <Typography 
+                        <Typography
                             variant="h6"
                             noWrap
                             sx={{
                                 maxWidth: '60%',
                                 overflow: 'hidden',
-                                textOverflow: "ellipsis",   
+                                textOverflow: "ellipsis",
                             }}
                         >
                             {item.emp_proyectos_id.emp_empresas_id.nombre}
@@ -161,7 +161,7 @@ const OfferApplyCard = ({ item }) => {
                             borderRadius: 4,
                             overflow: 'hidden'
                         }}>
-                            <Box 
+                            <Box
                                 component={'img'}
                                 src={item.mst_emp_sector_id.link_imagen || "https://img.freepik.com/vector-gratis/fondo-hexagonal-degradado_23-2148956844.jpg?t=st=1741080551~exp=1741084151~hmac=9ee6a64e078fb23821181eef8afd6aee20b248d88f12f1abfcde3fc5308e89fb&w=1060"}
                                 sx={{
@@ -172,7 +172,7 @@ const OfferApplyCard = ({ item }) => {
                                 }}
                             />
                         </Box>
-                        <Typography 
+                        <Typography
                             variant="body1"
                             noWrap
                             sx={{
@@ -191,7 +191,7 @@ const OfferApplyCard = ({ item }) => {
                             variant="body2"
                             sx={{
                                 overflow: "hidden",
-                                textOverflow: "ellipsis", 
+                                textOverflow: "ellipsis",
                                 display: "-webkit-box",
                                 WebkitBoxOrient: "vertical",
                                 WebkitLineClamp: 3,
@@ -209,13 +209,11 @@ const OfferApplyCard = ({ item }) => {
                             mt: 2,
                         }}
                     >
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                gap: 1,
-                            }}
-                        >
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 1
+                        }}>
                             <Typography
                                 variant="body2"
                                 sx={{
@@ -223,33 +221,44 @@ const OfferApplyCard = ({ item }) => {
                                     borderRadius: 2,
                                     bgcolor: "#D680F8",
                                     color: "#7E10C7",
+                                    width: 'fit-content'
                                 }}
                             >
                                 {item.mst_ciudades_id.nombre}
                             </Typography>
-                            <Typography
-                                variant="body2"
+                            <Box
                                 sx={{
-                                    px: 1,
-                                    borderRadius: 2,
-                                    bgcolor: "#96FDD0",
-                                    color: "#16BF58",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    gap: 1,
                                 }}
                             >
-                                {item.mst_puestos_id.nombre}
-                            </Typography>
-                            <Typography
-                                variant="body2"
-                                sx={{
-                                    px: 1,
-                                    borderRadius: 2,
-                                    bgcolor: "#9A8AF7",
-                                    color: "#2520BD",
-                                }}
-                            >
-                                {item.mst_emp_sector_id.descripcion}
-                            </Typography>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        px: 1,
+                                        borderRadius: 2,
+                                        bgcolor: "#96FDD0",
+                                        color: "#16BF58",
+                                    }}
+                                >
+                                    {item.mst_puestos_id.nombre}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        px: 1,
+                                        borderRadius: 2,
+                                        bgcolor: "#9A8AF7",
+                                        color: "#2520BD",
+                                    }}
+                                >
+                                    {item.mst_emp_sector_id.descripcion}
+                                </Typography>
+                            </Box>
+
                         </Box>
+
                         <Button
                             variant="contained"
                             sx={{
