@@ -14,7 +14,7 @@ const OfferApplyCard = ({ item }) => {
     const { accessToken } = useAuth();
     const theme = useTheme();
     const navigate = useNavigate();
-    console.log(item)
+
     const handleOpenModal = async () => {
         setOpenModal(true);
 
@@ -23,9 +23,7 @@ const OfferApplyCard = ({ item }) => {
             return;
         }
 
-        if (cvFiles.length !== 0) {
-            return
-        }
+        if (cvFiles.length !== 0) return
 
         setIsLoading(true);
         try {
@@ -55,6 +53,10 @@ const OfferApplyCard = ({ item }) => {
         setAvailableToUpload(false);
     };
 
+    const handleShowOfferPage = () => {
+        navigate(`/vista-oferta-completa/${item.emp_ofertas_id}`);
+    }; 
+
     const PostDate = ({ createdAtDate }) => {
         const difference = dayjs().diff(dayjs(createdAtDate), 'days');
         return (
@@ -73,6 +75,8 @@ const OfferApplyCard = ({ item }) => {
         <>
             <Paper
                 elevation={3}
+                component={'div'}
+                onClick={handleShowOfferPage}
                 sx={{
                     p: 2,
                     mb: 1,

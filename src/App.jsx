@@ -9,6 +9,7 @@ import HomePage from './pages/Home';
 import CompanyProfilePage from './pages/CompanyProfile';
 import ExamplePage from './pages/Example';
 import CompanyDashboardPage from './pages/CompanyDashboard';
+import OfferInformationPage from './pages/OfferInformation';
 
 const App = () =>{
 
@@ -18,6 +19,7 @@ const App = () =>{
         <Route path='/' element={<WelcomePage/>} />
         <Route path='/autenticacion' element={<AuthPage/>} />
         <Route path='/pagina-principal' element={<HomePage />} />
+        <Route path='/vista-oferta-completa/:offerId' element={<OfferInformationPage />} />
         <Route element={<ProtectedRoute />} >
           <Route path='/seleccion-rol' element={<SelectRole/>} />
           <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />

@@ -21,6 +21,7 @@ import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideB
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
 import OptionPicker from "../components/Picker/OptionPicker/OptionPicker";
 import CustomTextFieldWithIcon from "../components/TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
+import LogoHeader from "../components/Header/LogoHeader/LogoHeader";
 
 const HomePage = () => {
     const [searchFilters, setSearchFilters] = useState({
@@ -83,27 +84,9 @@ const HomePage = () => {
             position: 'relative',
             pl: accessToken ? '70px' : '0px',
         }}>
-            <Box
-                component='div'
-                sx={{
-                    height: 80,
-                    overflowY: 'hidden',
-                    display: 'flex',
-                    alignItems: 'center',
-                    ml: 3
-                }}
-            >
-                <Box
-                    component={'img'}
-                    src="./logos/netbees-logo.png"
-                    sx={{ 
-                        width: 152, 
-                        height: 121,
-                        cursor: 'pointer'
-                     }}
-                    onClick={()  => navigate('/')}
-                />
-            </Box>
+            <LogoHeader 
+                href={'/'}
+            />
             {accessToken && (
                 <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
             )}
