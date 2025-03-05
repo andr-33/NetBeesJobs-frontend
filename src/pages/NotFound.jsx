@@ -1,14 +1,24 @@
 import { Container, Box, Typography } from "@mui/material";
+import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
 
 const NotFoundPage = () =>{
+    const { isMobile } = useScreenWidth();
+
     return(
-        <Container>
+        <Container sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '100vh'
+        }}>
             <Box
                 component='img'
                 src="./images/404.png"
                 sx={{
-                    display: 'block',
-                    margin: 'auto'
+                    width: isMobile ? 300 : 500,
+                    height: 'auto'
                 }}
             />
             <Typography 
@@ -21,6 +31,7 @@ const NotFoundPage = () =>{
                 404
             </Typography>
             <Typography
+                variant="body1"
                 sx={{
                     textAlign: 'center'
                 }}

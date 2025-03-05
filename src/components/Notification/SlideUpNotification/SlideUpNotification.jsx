@@ -16,7 +16,7 @@ const SlideUpNotification = ({ message, type, open, handleClose }) => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
             <Alert
-                severity={type} 
+                severity={type || 'success'} 
                 variant="standard"
                 sx={{ width: '100%' }}
             >
