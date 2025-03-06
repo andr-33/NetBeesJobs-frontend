@@ -7,6 +7,7 @@ import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContex
 import LogoHeader from "../components/Header/LogoHeader/LogoHeader";
 import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
 import axios from "axios";
+import ServerError from "../components/Error/ServerError/ServerError";
 
 const OfferInfromationPage = () => {
     const [offerData, setOfferData] = useState();
@@ -96,27 +97,9 @@ const OfferInfromationPage = () => {
             )}
 
             {existsAnError && (
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Box 
-                        component={'img'}
-                        src="/images/illustrations/server-error.svg"
-                        sx={{
-                            width: isMobile ? 300 : 500,
-                            height: 'auto'
-                        }}
-                    />
-                    <Typography sx={{
-                        mx: 2,
-                        textAlign: 'center'
-                    }}>
-                        Algo salió mal al intentar obtener la información de esta oferta
-                    </Typography>
-                </Box>
+                <ServerError 
+                    message='Algo salió mal al intentar obtener la información de esta oferta'
+                />
             )}
 
             <SlideUpNotification 
