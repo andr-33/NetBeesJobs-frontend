@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Typography, Divider } from "@mui/material";
 import { ContentCopyRounded } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
-import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
 import LogoHeader from "../components/Header/LogoHeader/LogoHeader";
 import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
 import axios from "axios";
@@ -19,7 +18,6 @@ const OfferInfromationPage = () => {
     const navigate = useNavigate();
     const { offerId } = useParams();
     const { accessToken } = useAuth();
-    const { isMobile } = useScreenWidth();
 
     const handleCopyOfferUrl = async () => {
         const currentUrl = window.location.href;

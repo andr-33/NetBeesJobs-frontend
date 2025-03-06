@@ -15,13 +15,26 @@ import {
     LocationOnRounded
 } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
 import OptionPicker from "../components/Picker/OptionPicker/OptionPicker";
 import CustomTextFieldWithIcon from "../components/TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LogoHeader from "../components/Header/LogoHeader/LogoHeader";
+import ServerError from "../components/Error/ServerError/ServerError";
+
+
+const LoadingSkeletons = () => {
+    return (
+        <>
+            {Array.from({ length: 6 }).map((_, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                    <Skeleton variant="rectangular" height={200} />
+                </Box>
+            ))}
+        </>
+    );
+};
 
 const HomePage = () => {
     const [searchFilters, setSearchFilters] = useState({
@@ -33,24 +46,26 @@ const HomePage = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [offersData, setOffersData] = useState([]);
+    const [existsAnError, setExistsAnError] = useState(false);
     const theme = useTheme();
-    const navigate = useNavigate();
     const { accessToken } = useAuth();
 
     const itemsPerPage = 6;
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     useEffect(() => {
-        try {
-            const fetchAllOffers = async () => {
-                const response = await axios.get('/api/companies/all-active-offers');
+        const fetchAllOffers = async () => {
+            try {
+                const response = await axios.get('/api/companies/all-active-offert');
                 setOffersData(response.data);
                 setFilteredData(response.data);
-            };
-            fetchAllOffers();
-        } catch (error) {
-            console.error(error.message);
-        }
+                setExistsAnError(false);
+            } catch (error) {
+                setExistsAnError(true);
+                console.error("Error: ", error.message);
+            }
+        };
+        fetchAllOffers();
     }, []);
 
     const handleSearch = async () => {
@@ -84,9 +99,7 @@ const HomePage = () => {
             position: 'relative',
             pl: accessToken ? '70px' : '0px',
         }}>
-            <LogoHeader 
-                href={'/'}
-            />
+            <LogoHeader href={'/'} />
             {accessToken && (
                 <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
             )}
@@ -135,31 +148,31 @@ const HomePage = () => {
                     </Box>
                 </Box>
 
-                <Grid 
-                    container
-                    spacing={2}
-                >
-                    {offersData.length === 0 ? (
-                        Array.from({ length: 6 }).map((_, index) => (
-                            <Box key={index} sx={{ mb: 2 }}>
-                                <Skeleton variant="rectangular" height={200} />
-                            </Box>
-                        ))
-                    ) : (
-                        filteredData.length === 0 ? (
-                            <Typography variant="h6" align="center">Ups.. No se encontraron resultados</Typography>
+                {existsAnError ? (
+                    <ServerError message={'Algo salió mal al intentar obtener las ofertas :('} />
+                ) : (
+                    <Grid
+                        container
+                        spacing={2}
+                    >
+                        {offersData.length === 0 ? (
+                            <LoadingSkeletons />
                         ) : (
-                            paginatedData.map((item, index) => (
-                                <Grid 
-                                    key={index}
-                                    size={{xs:12, sm:6, md:4}}
-                                >
-                                    <OfferApplyCard item={item} />
-                                </Grid>
-                            ))
-                        )
-                    )}
-                </Grid>
+                            filteredData.length === 0 ? (
+                                <Typography variant="h6" align="center">Ups.. No se encontraron resultados</Typography>
+                            ) : (
+                                paginatedData.map((item, index) => (
+                                    <Grid
+                                        key={index}
+                                        size={{ xs: 12, sm: 6, md: 4 }}
+                                    >
+                                        <OfferApplyCard item={item} />
+                                    </Grid>
+                                ))
+                            )
+                        )}
+                    </Grid>
+                )}
 
                 {filteredData.length > 0 && (
                     <Pagination
