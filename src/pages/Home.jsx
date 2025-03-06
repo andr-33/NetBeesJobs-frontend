@@ -56,7 +56,7 @@ const HomePage = () => {
     useEffect(() => {
         const fetchAllOffers = async () => {
             try {
-                const response = await axios.get('/api/companies/all-active-offert');
+                const response = await axios.get('/api/companies/all-active-offers');
                 setOffersData(response.data);
                 setFilteredData(response.data);
                 setExistsAnError(false);
