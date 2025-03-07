@@ -15,7 +15,7 @@ const WarningModal = ({ warningQuestion, message, setConfirmation, openModal, ha
                 width: 400,
                 bgcolor: "background.paper",
                 boxShadow: 24,
-                p: 4,
+                p: 3,
                 borderRadius: 2,
             }}>
                 <Typography 
@@ -24,34 +24,43 @@ const WarningModal = ({ warningQuestion, message, setConfirmation, openModal, ha
                 >
                     {warningQuestion}
                 </Typography>
-                <Typography
-                    variant="body1"
-                    align="justify"
-                    color="secondary"
-                    marginTop={1} 
-                >
-                    <WarningRounded sx={{mr: 0.5}} />
-                    {message}
-                </Typography>
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    gap: 1,
+                    my: 2,
+                }}>
+                    <WarningRounded color="error" />
+                    <Typography 
+                        variant="body1"
+                        color="secondary"
+                        sx={{
+                            lineHeight: 1
+                        }}
+                    >
+                        {message}
+                    </Typography>
+                </Box>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     width: '100%',
                     justifyContent: 'space-between',
-                    mt: 2
                 }}>
+                    <Button
+                        variant="contained"
+                        onClick={() => setConfirmation(true)}
+                    >
+                        SI
+                    </Button>
                     <Button
                         variant="contained"
                         onClick={handleCloseModal}
                         color="error"
                     >
                         NO
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={() => setConfirmation(true)}
-                    >
-                        SI
                     </Button>
                 </Box>
             </Box>
