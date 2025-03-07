@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Modal, Box, Typography } from "@mui/material";
+import { Modal, Box, Typography, IconButton } from "@mui/material";
+import { LinkedIn, AddCircleOutlineRounded } from "@mui/icons-material";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import axios from "axios";
-import { LinkedIn } from "@mui/icons-material";
+import TextDynamicList from "../../DynamicList/TextDynamicList/TextDynamicList";
 
 const INITIAL_VALUES = {
     name: "",
     description: "",
-    offer_link: "",
     salary: 0,
     job_id: "",
     sector_id: "",
@@ -17,7 +17,8 @@ const INITIAL_VALUES = {
     province_id: 28,
     city_id: "",
     project_id: 0,
-    created_at: null
+    created_at: null, 
+    requirements_list: []
 };
 
 const CreateOfferModal = ({ 
@@ -29,6 +30,7 @@ const CreateOfferModal = ({
     setNotificationType 
 }) => {
     const [formValues, setFormValues] = useState(INITIAL_VALUES);
+    const [requirements, setRequirements] = useState([""]);
     const [loading, setLoading] = useState(false);
 
     const handleOnChange = (event) => {
@@ -42,6 +44,7 @@ const CreateOfferModal = ({
         formValues.project_id = proyectId;
         formValues.salary = parseInt(formValues.salary);
         formValues.created_at = new Date();
+        formValues.requirements_list = requirements;
 
         try {
             const response = await axios.post("/api/companies/create-offer-in-project", formValues);
@@ -70,7 +73,7 @@ const CreateOfferModal = ({
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: 400,
+                    width: 700,
                     maxHeight: "80vh",
                     overflowY: "auto",
                     bgcolor: "background.paper",
@@ -110,14 +113,6 @@ const CreateOfferModal = ({
                     required
                 />
 
-                <CustomTextFieldWithIcon
-                    label="Link de la Oferta (LinkedIn)"
-                    name="offer_link"
-                    value={formValues.offer_link}
-                    onChange={handleOnChange}
-                    icon={LinkedIn}
-                />
-
                 <Typography variant="h6" sx={{ mb: 1 }}>
                     Detalles de la Oferta
                 </Typography>
@@ -140,6 +135,12 @@ const CreateOfferModal = ({
                     onChange={handleOnChange}
                     idKey="mst_emp_sector_id"
                     labelKey="descripcion"
+                />
+
+                <TextDynamicList 
+                    title={'Requisitos'}
+                    items={requirements}
+                    setItems={setRequirements}    
                 />
 
                 <Typography variant="h6" sx={{ mb: 1 }}>
