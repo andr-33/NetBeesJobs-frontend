@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
+import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
 import TextDynamicList from "../../DynamicList/TextDynamicList/TextDynamicList";
@@ -24,14 +25,12 @@ const INITIAL_VALUES = {
 
 const CreateOfferForm = ({
     proyectId, 
-    setNotification, 
-    setMessage, 
-    setNotificationType,
     handleCloseModal
 }) => {
     const [formValues, setFormValues] = useState(INITIAL_VALUES);
     const [requirements, setRequirements] = useState([""]);
     const [loading, setLoading] = useState(false);
+    const { updateNotification, openNotification } = useNotification();
 
     const handleOnChange = (event) => {
         const { name, value } = event.target;
@@ -48,14 +47,12 @@ const CreateOfferForm = ({
 
         try {
             const response = await axios.post("/api/companies/create-offer-in-project", formValues);
-            setMessage(response.data.message);
-            setNotification(true);
-            setNotificationType('success');
+            updateNotification(response.data.message, 'success');
+            openNotification();
         } catch (error) {
             console.error("Error al crear la oferta:", error);
-            setMessage("Ocurrió un error. Inténtalo de nuevo");
-            setNotification(true);
-            setNotificationType('error');
+            updateNotification("Ocurrió un error. Inténtalo de nuevo", 'error');
+            openNotification();
         } finally {
             setLoading(false);
             setFormValues(INITIAL_VALUES);

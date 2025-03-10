@@ -3,6 +3,7 @@ import { Box, Button, Grid2 as Grid, Skeleton, Typography, useTheme } from "@mui
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { AddCircleOutlineRounded } from "@mui/icons-material";
 import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
+import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext"; 
 import ImageAvatar from "../components/Avatar/ImageAvatar/ImageAvatar";
 import CompanySidebar from "../components/Sidebar/CompanySidebar/CompanySidebar";
 import axios from "axios";
@@ -59,6 +60,7 @@ const CompanyProfilePage = () => {
     const theme = useTheme();
     const { accessToken } = useAuth();
     const { isMobile } = useScreenWidth();
+    const { notification, closeNotification } = useNotification();
 
     const handleDeleteProject = async (projectId) => {
         try {
@@ -229,13 +231,17 @@ const CompanyProfilePage = () => {
                 setProjectsData={setProjectsData}
             />
             <SlideUpNotification
-                message={notificationMessage}
-                type={notificationType}
-                open={openNotification}
-                handleClose={() => setOpenNotification(false)}
+                message={notification.message}
+                type={notification.type}
+                open={notification.open}
+                handleClose={closeNotification}
             />
         </>
     );
 };
 
-export default CompanyProfilePage;
+export default () => (
+    <NotificationProvider>
+        <CompanyProfilePage />
+    </NotificationProvider>
+);

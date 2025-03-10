@@ -5,9 +5,6 @@ const CreateOfferModal = ({
     openModal, 
     handleCloseModal, 
     proyectId, 
-    setNotification, 
-    setMessage, 
-    setNotificationType 
 }) => {
 
     return (
@@ -29,9 +26,6 @@ const CreateOfferModal = ({
             >
                 <CreateOfferForm 
                     proyectId={proyectId} 
-                    setNotification={setNotification} 
-                    setMessage={setMessage} 
-                    setNotificationType={setNotificationType}
                     handleCloseModal={handleCloseModal}
                 />   
             </Box>
