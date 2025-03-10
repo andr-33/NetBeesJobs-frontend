@@ -12,6 +12,8 @@ const INITIAL_VALUES = {
     description: "",
     salary: 0,
     job_id: "",
+    job_modality_id: 1,
+    working_day_id: 1,
     sector_id: "",
     community_id: 7,
     province_id: 28,
@@ -117,6 +119,25 @@ const CreateOfferModal = ({
                 <Typography variant="h6" sx={{ mb: 1 }}>
                     Detalles de la Oferta
                 </Typography>
+                <OptionPicker 
+                    urlData="/api/master/job-modality"
+                    label="Modalidad"
+                    name="job_modality_id"
+                    value={formValues.job_modality_id}
+                    onChange={handleOnChange}
+                    idKey="mst_modalidad_id"
+                    labelKey="descripcion"
+                />
+
+                <OptionPicker 
+                    urlData="/api/master/working-day"
+                    label="Jornada Laboral"
+                    name="working_day_id"
+                    value={formValues.working_day_id}
+                    onChange={handleOnChange}
+                    idKey="mst_jornada_id"
+                    labelKey="descripcion"
+                />
 
                 <OptionPicker
                     urlData="/api/master/job-positions"
