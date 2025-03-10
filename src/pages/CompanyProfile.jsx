@@ -1,34 +1,12 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Grid2 as Grid, Skeleton, Typography, useTheme } from "@mui/material";
+import { Box, Skeleton, Typography, useTheme } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
-import { AddCircleOutlineRounded } from "@mui/icons-material";
-import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
 import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext"; 
 import ImageAvatar from "../components/Avatar/ImageAvatar/ImageAvatar";
 import CompanySidebar from "../components/Sidebar/CompanySidebar/CompanySidebar";
 import axios from "axios";
-import ProjectCard from "../components/Card/ProjectCard/ProjectCard";
-import CreateProjectModal from "../components/Modal/CreateProjectModal/CreateProjectModal";
 import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
-import ServerError from "../components/Error/ServerError/ServerError";
-
-const ProjectsLoadingSkeletons = () => {
-    return (
-        <>
-            {Array.from({ length: 4 }).map((_, index) => (
-                <Grid key={index} size={{ md: 6, sm: 12 }}>
-                    <Skeleton
-                        variant="rectangular"
-                        height={150}
-                        sx={{
-                            borderRadius: '16px'
-                        }}
-                    />
-                </Grid>
-            ))}
-        </>
-    );
-};
+import CompanyProjectsSection from "../components/Section/CompanyProjectsSection/CompanyProjectsSection";
 
 const InformationLoadingSkeletons = () => {
     return (
@@ -49,57 +27,10 @@ const InformationLoadingSkeletons = () => {
 
 const CompanyProfilePage = () => {
     const [expanded, setExpanded] = useState(false);
-    const [projectsData, setProjectsData] = useState([]);
     const [companyInfo, setCompanyInfo] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [openModalAddProject, setOpenModalAddProject] = useState(false);
-    const [openNotification, setOpenNotification] = useState(false);
-    const [notificationMessage, setNotificationMessage] = useState("");
-    const [notificationType, setNotificationType] = useState();
-    const [existsAnError, setExistsAnError] = useState(false);
     const theme = useTheme();
     const { accessToken } = useAuth();
-    const { isMobile } = useScreenWidth();
-    const { notification, closeNotification } = useNotification();
-
-    const handleDeleteProject = async (projectId) => {
-        try {
-            const response = await axios.delete(`/api/companies/delete-project/${projectId}`);
-            setNotificationMessage(response.data.message);
-            setNotificationType('success');
-            setOpenNotification(true);
-            setProjectsData(projectsData.filter(project => project.emp_proyectos_id !== projectId));
-        } catch (error) {
-            console.error("Error: ", error.message);
-            setNotificationMessage('Hubo un problema al eliminar este proyecto');
-            setNotificationType('error');
-            setOpenNotification(true);
-        }
-    };
-
-    useEffect(() => {
-        const fetchAllCompanyProjects = async () => {
-            setIsLoading(true);
-            try {
-                const response = await axios.get('/api/companies/all-company-projects', {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                });
-                setProjectsData(response.data);
-                setExistsAnError(false);
-            } catch (error) {
-                console.error('Error: ', error.message);
-                setExistsAnError(true);
-                setNotificationMessage('No pudimos obtener tus proyectos');
-                setNotificationType('error');
-                setOpenNotification(true);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchAllCompanyProjects();
-    }, []);
+    const { notification, closeNotification, updateNotification, openNotification } = useNotification();
 
     useEffect(() => {
         const fetchCompanyInformation = async () => {
@@ -112,6 +43,8 @@ const CompanyProfilePage = () => {
                 setCompanyInfo(response.data);
             } catch (error) {
                 console.error('Error: ',error.message);
+                updateNotification("No pudimos obtener tu información", 'error');
+                openNotification();
             }
         };
         fetchCompanyInformation();
@@ -170,66 +103,12 @@ const CompanyProfilePage = () => {
                             </Box>
                         )}
                     </Box>
-                    <Box sx={{
-                        mt: 2,
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}>
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                textDecoration: 'underline'
-                            }}
-                        >
-                            Tus proyectos
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            endIcon={<AddCircleOutlineRounded />}
-                            onClick={() => setOpenModalAddProject(true)}
-                        >
-                            {isMobile ? '' : 'Crear proyecto'}
-                        </Button>
-                    </Box>
+                    
 
-                    {projectsData.length > 0 && (
-                        <Grid container spacing={2} mt={2}>
-                            {projectsData.map((project, index) => (
-                                <Grid key={index} size={{ md: 6, sm: 12 }}>
-                                    <ProjectCard
-                                        id={project.emp_proyectos_id}
-                                        name={project.nombre}
-                                        description={project.descripcion}
-                                        startDate={formatDate(project.fecha_inicio)}
-                                        endDate={formatDate(project.fecha_fin)}
-                                        state={project.estado}
-                                        handleDeleteProject={handleDeleteProject}
-                                    />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    )}
-
-                    {existsAnError && (
-                        <ServerError
-                            message={"Vaya... No pudimos obtener tus proyectos"}
-                        />
-                    )}
-
-                    {isLoading && (
-                        <Grid container spacing={2} mt={2}>
-                            <ProjectsLoadingSkeletons />
-                        </Grid>
-                    )}
+                    <CompanyProjectsSection />
                 </Box>
             </Box>
-            <CreateProjectModal
-                openModal={openModalAddProject}
-                handleCloseModal={() => setOpenModalAddProject(false)}
-                setProjectsData={setProjectsData}
-            />
+            
             <SlideUpNotification
                 message={notification.message}
                 type={notification.type}
