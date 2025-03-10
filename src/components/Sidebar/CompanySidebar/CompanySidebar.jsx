@@ -1,6 +1,5 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, useTheme } from "@mui/material";
 import { 
-    DashboardRounded, 
     PeopleAltRounded, 
     AccountTreeRounded, 
     AllInboxRounded, 
@@ -8,12 +7,11 @@ import {
 } from "@mui/icons-material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 
-const CompanySidebar = ({ expanded, setExpanded }) => {
+const CompanySidebar = ({ expanded, setExpanded, setActiveSection }) => {
     const menuItems = [
-        { name: "Dashboard", icon: <DashboardRounded /> },
-        { name: "Candidatos", icon: <PeopleAltRounded /> },
-        { name: "Proyectos", icon: <AccountTreeRounded /> },
-        { name: "Tus ofertas", icon: <AllInboxRounded /> }
+        { id: 'candidates', name: "Candidatos", icon: <PeopleAltRounded /> },
+        { id: 'projects', name: "Proyectos", icon: <AccountTreeRounded /> },
+        {  id: 'offers', name: "Tus ofertas", icon: <AllInboxRounded /> },
     ];
 
     const theme = useTheme();
@@ -45,7 +43,9 @@ const CompanySidebar = ({ expanded, setExpanded }) => {
                 <List>
                     {menuItems.map((item) => (
                         <ListItem key={item.name} disablePadding>
-                            <ListItemButton>
+                            <ListItemButton
+                                onClick={() => setActiveSection(item.id)}
+                            >
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 {expanded && 
                                     <ListItemText 

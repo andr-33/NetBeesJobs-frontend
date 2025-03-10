@@ -34,8 +34,8 @@ const ProjectsLoadingSkeletons = () => {
 };
 
 const CompanyProjectsSection = () => {
-    const [existsAnError, setExistsAnError] = useState(false);
     const [projectsData, setProjectsData] = useState([]);
+    const [existsAnError, setExistsAnError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [openModalAddProject, setOpenModalAddProject] = useState(false);
     const { isMobile } = useScreenWidth();
@@ -89,7 +89,6 @@ const CompanyProjectsSection = () => {
     return (
         <>
             <Box sx={{
-                mt: 2,
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',

@@ -6,7 +6,9 @@ import ImageAvatar from "../components/Avatar/ImageAvatar/ImageAvatar";
 import CompanySidebar from "../components/Sidebar/CompanySidebar/CompanySidebar";
 import axios from "axios";
 import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
-import CompanyProjectsSection from "../components/Section/CompanyProjectsSection/CompanyProjectsSection";
+import ProjectsSection from "../components/Section/ProjectsSection/ProjectsSection";
+import CandidatesSection from "../components/Section/CandidatesSection/CandidatesSection";
+import OfferSection from "../components/Section/OffersSection/OffersSection";
 
 const InformationLoadingSkeletons = () => {
     return (
@@ -28,9 +30,16 @@ const InformationLoadingSkeletons = () => {
 const CompanyProfilePage = () => {
     const [expanded, setExpanded] = useState(false);
     const [companyInfo, setCompanyInfo] = useState(null);
+    const [activeSection, setActiveSection] = useState('projects');
     const theme = useTheme();
     const { accessToken } = useAuth();
     const { notification, closeNotification, updateNotification, openNotification } = useNotification();
+
+    const sectionComponents = {
+        projects: <ProjectsSection />,
+        candidates: <CandidatesSection />,
+        offers: <OfferSection />
+    };
 
     useEffect(() => {
         const fetchCompanyInformation = async () => {
@@ -69,7 +78,11 @@ const CompanyProfilePage = () => {
                 position: 'relative',
                 pl: '70px'
             }}>
-                <CompanySidebar expanded={expanded} setExpanded={setExpanded} />
+                <CompanySidebar 
+                    expanded={expanded} 
+                    setExpanded={setExpanded} 
+                    setActiveSection={setActiveSection}
+                />
                 <Box sx={{ flexGrow: 1, p: 3 }}>
                     <Box sx={{
                         width: '100%',
@@ -104,8 +117,9 @@ const CompanyProfilePage = () => {
                         )}
                     </Box>
                     
-
-                    <CompanyProjectsSection />
+                    <Box component='main' sx={{ mt: 2 }}>
+                        {sectionComponents[activeSection]}
+                    </Box>
                 </Box>
             </Box>
             
