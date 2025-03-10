@@ -47,7 +47,7 @@ const FormLogin = () => {
             }
         } catch (error) {
             console.error('Error during login: ', error);
-            setError(error.response?.data?.error || 'Ups... algo ha salido mal, intentalo nuevamente');
+            setError('Correo o contraseña incorrectos');
         } finally {
             setLoading(false);
         }
@@ -96,7 +96,7 @@ const FormLogin = () => {
                 >
                     <Typography
                         variant="body1"
-                        maxWidth={250}
+                        maxWidth={270}
                         textAlign='center'
                         sx={{
                             color: theme.palette.error.main,
