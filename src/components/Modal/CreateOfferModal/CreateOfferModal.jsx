@@ -53,12 +53,13 @@ const CreateOfferModal = ({
             setNotificationType('success');
         } catch (error) {
             console.error("Error al crear la oferta:", error);
-            setNotification("Ocurrió un error. Inténtalo de nuevo");
+            setMessage("Ocurrió un error. Inténtalo de nuevo");
             setNotification(true);
             setNotificationType('error');
         } finally {
             setLoading(false);
             setFormValues(INITIAL_VALUES);
+            setRequirements([""]);
             handleCloseModal();
         }
     };
