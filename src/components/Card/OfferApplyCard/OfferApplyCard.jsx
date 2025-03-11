@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 
 const OfferApplyCard = ({ item }) => {
     const [openModal, setOpenModal] = useState(false);
+    const [offerId, setOfferId] = useState();
     const [cvFiles, setCvFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [availableToUpload, setAvailableToUpload] = useState(false);
@@ -17,6 +18,7 @@ const OfferApplyCard = ({ item }) => {
 
     const handleOpenModal = async () => {
         setOpenModal(true);
+        setOfferId(item.emp_ofertas_id);
 
         if (!accessToken) {
             navigate('/autenticacion');
@@ -295,6 +297,7 @@ const OfferApplyCard = ({ item }) => {
                 isLoading={isLoading}
                 availableToUpload={availableToUpload}
                 setAvailableToUpload={setAvailableToUpload}
+                offerId={offerId}
             />
         </>
     );

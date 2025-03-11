@@ -21,7 +21,8 @@ const SelectCvModal = ({
     cvFilesData,
     isLoading,
     availableToUpload,
-    setAvailableToUpload
+    setAvailableToUpload,
+    offerId
 }) => {
     const [file, setFile] = useState();
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -47,6 +48,26 @@ const SelectCvModal = ({
             updateNotification('Uy... no se puedo subir el archivo', 'error');
             openNotification();
         }
+    };
+
+    const handleRegisterIntoOffer = async () => {
+        const cvSelected = cvFilesData[selectedIndex];        
+        try {
+            const response = await axios.post('/api/users/register-into-offer', {
+                "offerId": offerId,
+                "cvId": cvSelected.can_cv_id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            updateNotification(response.data.message, 'success');
+            openNotification();
+        } catch (error) {
+            console.error("Error registering into offer:", error);
+            updateNotification('No se pudo hacer el registro en la oferta', 'error');
+            openNotification();
+        } 
     };
 
     const formatDate = (dateISO) => {
@@ -162,6 +183,7 @@ const SelectCvModal = ({
                             <Button
                                 variant="contained"
                                 color="success"
+                                onClick={handleRegisterIntoOffer}
                             >
                                 <Typography
                                     variant="button"
