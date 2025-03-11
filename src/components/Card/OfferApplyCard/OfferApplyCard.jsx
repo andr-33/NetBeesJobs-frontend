@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Paper, Box, Typography, Avatar, Button, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
@@ -25,27 +25,6 @@ const OfferApplyCard = ({ item }) => {
 
         if (cvFiles.length !== 0) return
 
-        setIsLoading(true);
-        try {
-            const response = await axios.get(
-                'api/users/get-cvs-info',
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    }
-                }
-            );
-
-            if (response.data.length === 0) {
-                setAvailableToUpload(true);
-            } else {
-                setCvFiles(response.data);
-            }
-        } catch (error) {
-            console.error("Error al cargar los CVs:", error);
-        } finally {
-            setIsLoading(false);
-        }
     };
 
     const handleCloseModal = () => {
@@ -55,7 +34,7 @@ const OfferApplyCard = ({ item }) => {
 
     const handleShowOfferPage = () => {
         navigate(`/vista-oferta-completa/${item.emp_ofertas_id}`);
-    }; 
+    };
 
     const PostDate = ({ createdAtDate }) => {
         const difference = dayjs().diff(dayjs(createdAtDate), 'days');
@@ -71,12 +50,37 @@ const OfferApplyCard = ({ item }) => {
         )
     };
 
+    useEffect(() => {
+        const fetchCvsData = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(
+                    'api/users/get-cvs-info',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        }
+                    }
+                );
+
+                if (response.data.length === 0) {
+                    setAvailableToUpload(true);
+                } else {
+                    setCvFiles(response.data);
+                }
+            } catch (error) {
+                console.error("Error al cargar los CVs:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchCvsData();
+    }, [availableToUpload, openModal]);
+
     return (
         <>
             <Paper
                 elevation={3}
-                component={'div'}
-                onClick={handleShowOfferPage}
                 sx={{
                     p: 2,
                     mb: 1,
@@ -84,7 +88,6 @@ const OfferApplyCard = ({ item }) => {
                     maxHeight: '430px',
                     borderRadius: 2,
                     bgcolor: theme.palette.background.paper,
-                    cursor: 'pointer',
                     transition: 'all 0.2s ease-in',
                     ":hover": {
                         boxShadow: 6,
@@ -153,12 +156,17 @@ const OfferApplyCard = ({ item }) => {
                             <PostDate createdAtDate={item.fecha_creacion} />
                         </Box>
                     </Box>
-                    <Box sx={{
-                        display: 'flex',
-                        flexGrow: 1,
-                        flexDirection: 'column',
-                        overflowY: 'hidden',
-                    }}>
+                    <Box
+                        component={'div'}
+                        onClick={handleShowOfferPage}
+                        sx={{
+                            display: 'flex',
+                            flexGrow: 1,
+                            flexDirection: 'column',
+                            overflowY: 'hidden',
+                            cursor: 'pointer',
+                        }}
+                    >
                         <Box sx={{
                             width: '100%',
                             height: '200px',

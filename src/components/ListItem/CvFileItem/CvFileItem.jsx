@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Radio, Typography } from "@mui/material";
 
-const CvFileItem = ({ fileName, uploadDate }) => {
+const CvFileItem = ({ fileName, uploadDate, isSelected, onSelect }) => {
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -9,7 +9,6 @@ const CvFileItem = ({ fileName, uploadDate }) => {
 
         return formattedDate.replace('.', '.');
     }
-
 
     return (
         <Box
@@ -23,6 +22,7 @@ const CvFileItem = ({ fileName, uploadDate }) => {
                 overflow: 'hidden',
                 cursor: 'pointer'
             }}
+            onClick={onSelect}
         >
             <Box sx={{
                 minWidth: 50,
@@ -35,7 +35,7 @@ const CvFileItem = ({ fileName, uploadDate }) => {
                 <Typography
                     variant="body2"
                     sx={{
-                        fontWeight: '400'
+                        fontWeight: '600'
                     }}
                 >
                     PDF
@@ -68,6 +68,15 @@ const CvFileItem = ({ fileName, uploadDate }) => {
                 >
                     {`Subido el: ${formatDate(uploadDate)}`}
                 </Typography>
+            </Box>
+            <Divider orientation="vertical"/>
+            <Box sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }}>
+                <Radio checked={isSelected} color="success"/>
             </Box>
         </Box>
     );

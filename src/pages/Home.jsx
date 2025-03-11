@@ -15,6 +15,7 @@ import {
     LocationOnRounded
 } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
+import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
@@ -22,6 +23,7 @@ import OptionPicker from "../components/Picker/OptionPicker/OptionPicker";
 import CustomTextFieldWithIcon from "../components/TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LogoHeader from "../components/Header/LogoHeader/LogoHeader";
 import ServerError from "../components/Error/ServerError/ServerError";
+import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
 
 
 const LoadingSkeletons = () => {
@@ -49,6 +51,7 @@ const HomePage = () => {
     const [existsAnError, setExistsAnError] = useState(false);
     const theme = useTheme();
     const { accessToken } = useAuth();
+    const { notification, closeNotification, updateNotification, openNotification } = useNotification();
 
     const itemsPerPage = 6;
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -62,6 +65,8 @@ const HomePage = () => {
                 setExistsAnError(false);
             } catch (error) {
                 setExistsAnError(true);
+                updateNotification('Algo salio mal...', 'error');
+                openNotification();
                 console.error("Error: ", error.message);
             }
         };
@@ -183,8 +188,18 @@ const HomePage = () => {
                     />
                 )}
             </Box>
+            <SlideUpNotification 
+                message={notification.message}
+                type={notification.type}
+                open={notification.open}
+                handleClose={closeNotification}
+            />
         </Box>
     );
 };
 
-export default HomePage;
+export default () => (
+    <NotificationProvider>
+        <HomePage />
+    </NotificationProvider>
+);
