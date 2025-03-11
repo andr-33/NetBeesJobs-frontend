@@ -1,38 +1,26 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Typography, Divider } from "@mui/material";
-import { ContentCopyRounded } from "@mui/icons-material";
+import { ShareRounded } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
+import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext";
 import LogoHeader from "../components/Header/LogoHeader/LogoHeader";
 import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
 import axios from "axios";
 import ServerError from "../components/Error/ServerError/ServerError";
+import ShareOfferModal from "../components/Modal/ShareOfferModal/ShareOfferModal";
 
 const OfferInfromationPage = () => {
     const [offerData, setOfferData] = useState();
-    const [openNotification, setOpenNotification] = useState(false);
-    const [notificationMessage, setNotificationMessage] = useState("");
-    const [notificationType, setNotificationType] = useState();
+    const [openShareModal, setOpenShareModal] = useState(false);
     const [existsAnError, setExistsAnError] = useState(false);
     const [callToAction, setCallToAction] = useState(true);
     const navigate = useNavigate();
     const { offerId } = useParams();
     const { accessToken } = useAuth();
+    const { notification, closeNotification, updateNotification, openNotification } = useNotification();
 
-    const handleCopyOfferUrl = async () => {
-        const currentUrl = window.location.href;
-        try{
-            await navigator.clipboard.writeText(currentUrl);
-            setNotificationMessage("URL copiada en el portapapeles!");
-            setNotificationType('success');
-            setOpenNotification(true);
-        } catch (error) {
-            setNotificationMessage("Ups! Algo salio mal al copiar la URL");
-            setNotificationType('error');
-            setOpenNotification(true);
-        }
-    };
-
+    
     useEffect(()=>{
         if(accessToken){
             setCallToAction(false);
@@ -50,9 +38,8 @@ const OfferInfromationPage = () => {
                 if(status === 404) navigate('/pagina-no-encontrada');
                 
                 setExistsAnError(true);
-                setNotificationMessage("Algo salió mal, vuelve a intentar...");
-                setNotificationType("error");
-                setOpenNotification(true);
+                updateNotification("Algo salió mal al intentar obtener la información de esta oferta", 'error');
+                openNotification();
             }
         };
         fetchOfferData();
@@ -64,8 +51,8 @@ const OfferInfromationPage = () => {
                 href={'/pagina-principal'}
                 callToAction={callToAction}
             >
-                <IconButton onClick={handleCopyOfferUrl}>
-                    <ContentCopyRounded />
+                <IconButton onClick={()=> setOpenShareModal(true)}>
+                    <ShareRounded />
                 </IconButton>
             </LogoHeader>
             {offerData && (
@@ -100,14 +87,23 @@ const OfferInfromationPage = () => {
                 />
             )}
 
+            <ShareOfferModal 
+                openModal={openShareModal}
+                handleCloseModal={()=> setOpenShareModal(false)}
+            />
+
             <SlideUpNotification 
-                message={notificationMessage}
-                type={notificationType}
-                open={openNotification}
-                handleClose={()=> setOpenNotification(false)}
+                message={notification.message}
+                type={notification.type}
+                open={notification.open}
+                handleClose={closeNotification}
             />
         </Box>
     );
 };
 
-export default OfferInfromationPage;
+export default () => (
+    <NotificationProvider>
+        <OfferInfromationPage />
+    </NotificationProvider>
+);
