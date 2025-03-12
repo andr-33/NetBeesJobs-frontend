@@ -1,16 +1,16 @@
+import { useState, useEffect } from "react";
 import { Modal, Typography, Box, IconButton, useTheme } from "@mui/material";
 import { ContentCopyRounded, WhatsApp, LinkedIn } from "@mui/icons-material";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 
-const CURRENT_URL = window.location.href;
-
 const ShareOfferModal = ({ openModal, handleCloseModal }) => {
+    const [currentUrl, setCurrentUrl] = useState(window.location.href);
     const theme = useTheme();
     const { openNotification, updateNotification } = useNotification();
 
     const handleCopyOfferUrl = async () => {
         try {
-            await navigator.clipboard.writeText(CURRENT_URL);
+            await navigator.clipboard.writeText(currentUrl);
             updateNotification("URL copiada en el portapapeles!", 'success');
             openNotification();
         } catch (error) {
@@ -20,15 +20,19 @@ const ShareOfferModal = ({ openModal, handleCloseModal }) => {
     };
 
     const handleShareWhatsApp = () => {
-        const whatsappMessage = encodeURIComponent(`Mira esta oferta: ${CURRENT_URL}`);
+        const whatsappMessage = encodeURIComponent(`Mira esta oferta: ${currentUrl}`);
         const whatsappUrl = `https://wa.me/?text=${whatsappMessage}`;
         window.open(whatsappUrl, '_blank');
     };
 
     const handleShareLinkedIn = () => {
-        const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(CURRENT_URL)}`;
+        const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
         window.open(linkedInUrl, '_blank');
     };
+
+    useEffect(()=>{
+        setCurrentUrl(window.location.href);
+    },[]);
 
     return (
         <Modal
@@ -64,7 +68,7 @@ const ShareOfferModal = ({ openModal, handleCloseModal }) => {
                             borderRadius: 3
                         }}
                     >
-                        {CURRENT_URL}
+                        {currentUrl}
                     </Typography>
                     <Box
                         sx={{
