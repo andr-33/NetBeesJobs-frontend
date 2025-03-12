@@ -1,35 +1,29 @@
 import React, { useRef } from "react";
-import { Box, Typography, Grid2 as Grid } from "@mui/material";
+import { Box, Typography, Grid2 as Grid, useTheme } from "@mui/material";
 import WelcomePageSection from "../../Section/WelcomePageSection/WelcomePageSection";
 import WelcomePageNavBar from "../../NavBar/WelcomePageNavBar/WelcomePageNavBar";
 import WelcomePageFooter from "../../Footer/WelcomePageFooter/WelcomePageFooter";
 import LogoCarousel from "../../Carousel/LogoCarousel/LogoCarousel";
 import CategoryCard from "../../Card/CategoryCard/CategoryCard";
 import VerifiedCard from "../../Card/VerifiedCard/VirifiedCard";
-import { useTheme } from '@mui/material';
+import { useScreenWidth } from "../../../contexts/ScreenWidthContext/ScreenWidthContext";
 
 const WelcomePageContainer = () => {
     const theme = useTheme();
-
+    const { isMobile } = useScreenWidth();
     const partnerRef = useRef(null);
     const contactRef = useRef(null);
 
-    const sectionRefs = {
-        'colaboradores': partnerRef,
-        'contacto': contactRef,
-    };
-
-    const handleScrollToSection = (section) => {
-        const sectionRef = sectionRefs[section];
-        if (sectionRef && sectionRef.current) {
-            sectionRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     return (
-        <Box sx={{ scrollSnapType: 'y mandatory', overflowY: 'scroll', overflowX: 'hidden', maxHeight: '100vh', scrollBehavior: 'smooth', bgcolor: theme.palette.background.default }}>
-            <WelcomePageNavBar onScrollToSection={handleScrollToSection} />
-
+        <Box sx={{ 
+            scrollSnapType: isMobile ? 'unset' : 'y mandatory', 
+            overflowY: 'scroll', 
+            overflowX: 'hidden', 
+            maxHeight: '100vh', 
+            scrollBehavior: 'smooth', 
+            bgcolor: theme.palette.background.default 
+        }}>
+            <WelcomePageNavBar />
             <Grid container spacing={2}>
                 <Grid size={12}>
                     <WelcomePageSection>
@@ -122,7 +116,14 @@ const WelcomePageContainer = () => {
 
                 <Grid size={{ xs: 12, sm: 12 }} ref={partnerRef}>
                     <WelcomePageSection>
-                        <Typography variant="h2" sx={{ textDecoration: 'underline', textDecorationColor: (theme) => theme.palette.primary.main }}>
+                        <Typography 
+                            variant="h2" 
+                            sx={{ 
+                                textDecoration: 'underline', 
+                                textDecorationColor: (theme) => theme.palette.primary.main,
+                                textAlign: 'center'
+                            }}
+                        >
                             Nuestro principales colaboradores
                         </Typography>
                         <LogoCarousel />

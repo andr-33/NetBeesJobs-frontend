@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 const HomePageSideBar = ({ expanded, setExpanded }) => {
     const menuItems = [
         { name: "Mi perfil", icon: <PersonRounded /> },
-        { name: "Candidaturas", icon: <BusinessRounded /> },
-        { name: "CVs", icon: <DescriptionRounded /> },
+        /*{ name: "Candidaturas", icon: <BusinessRounded /> },
+        { name: "CVs", icon: <DescriptionRounded /> },*/
     ];
 
     const theme = useTheme();

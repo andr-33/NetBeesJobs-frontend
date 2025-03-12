@@ -1,15 +1,14 @@
-import { AppBar, Box, Button, List, Toolbar } from "@mui/material";
+import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { useTheme } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import NavBarItem from "../../ListItem/NavBarItem/NavBarItem";
+import { useState } from 'react';
+import { useScreenWidth } from "../../../contexts/ScreenWidthContext/ScreenWidthContext";
 
-const NAV_ITEMS = ['Colaboradores', 'Contacto', 'Iniciar sesión'];
-
-const WelcomePageNavBar = ({ onScrollToSection }) => {
+const WelcomePageNavBar = () => {
     const [isVibrating, setIsVibrating] = useState(false);
     const theme = useTheme();
     const navigate = useNavigate();
+    const { isMobile } = useScreenWidth();
 
     useState(() => {
         const interval = setInterval(() => {
@@ -25,29 +24,20 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
             <Toolbar>
                 <Box component='img' src="./logos/netbees-logo.png" sx={{ width: 152, height: 121 }} />
                 <Box sx={{ marginLeft: 'auto', display: 'flex', flexDirection: 'row', gap: 1 }}>
-                    <List disablePadding sx={{ display: 'flex', flexDirection: 'row' }}>
-                        {NAV_ITEMS.map((item, index) => (
-                            <NavBarItem 
-                                key={index}
-                                label={item}
-                                handleOnClick={()=> index === 2 ?
-                                    navigate('/autenticacion') :
-                                    onScrollToSection(item.toLowerCase())
-                                }
-                            />
-                        ))}
-                    </List>
                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center' }}>
-
                         <Button
                             variant="outlined"
-                            sx={{ 
-                                bgcolor: 'transparent', 
-                                color: 'black', 
-                                borderColor: 'black', 
-                                borderRadius: 3, 
-                                transition: 'transform 0.1s ease-in-out', 
-                                ':hover': { transform: 'scale(1.02)' } }
+                            sx={{
+                                bgcolor: 'transparent',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: isMobile ? 2 : 3,
+                                padding: isMobile ? '6px 12px' : '10px 20px', 
+                                minWidth: isMobile ? 'auto' : '150px',
+                                fontSize: isMobile ? '0.8rem' : '1rem',
+                                transition: 'transform 0.1s ease-in-out',
+                                ':hover': { transform: 'scale(1.02)' }
+                            }
                             }
                             onClick={() => navigate('/perfil-empresa')}
                         >
@@ -58,10 +48,13 @@ const WelcomePageNavBar = ({ onScrollToSection }) => {
                             sx={{
                                 bgcolor: theme.palette.primary.main,
                                 color: 'black',
-                                borderRadius: 3,
+                                borderRadius: isMobile ? 2 : 3,
+                                padding: isMobile ? '6px 12px' : '10px 20px', 
+                                minWidth: isMobile ? 'auto' : '150px',
+                                fontSize: isMobile ? '0.8rem' : '1rem',
                                 transition: 'transform 0.1s ease-in-out',
                                 ':hover': { transform: 'scale(1.02)' },
-                                animation: isVibrating ? 'vibration 0.4s ease-in-out' : 'none'
+                                animation: isVibrating ? 'vibration 0.4s ease-in-out' : 'none',
                             }}
                             onClick={() => navigate('/pagina-principal')}
                         >

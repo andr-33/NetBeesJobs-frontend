@@ -16,6 +16,8 @@ import {
 } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext";
+import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import HomePageSideBar from "../components/Sidebar/HomePageSideBar/HomePageSideBar";
 import OfferApplyCard from "../components/Card/OfferApplyCard/OfferApplyCard";
@@ -50,8 +52,10 @@ const HomePage = () => {
     const [offersData, setOffersData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
     const theme = useTheme();
+    const navigate = useNavigate();
     const { accessToken } = useAuth();
     const { notification, closeNotification, updateNotification, openNotification } = useNotification();
+    const { isMobile } = useScreenWidth();
 
     const itemsPerPage = 6;
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -104,43 +108,68 @@ const HomePage = () => {
             position: 'relative',
             pl: accessToken ? '70px' : '0px',
         }}>
-            <LogoHeader href={'/'} />
+            <LogoHeader href={'/'} >
+                {!accessToken && (
+                    <Typography
+                        variant={isMobile ? "body2" : "body1"}
+                        component={'p'}
+                        onClick={() => navigate('/autenticacion')}
+                        color="secondary"
+                        sx={{
+                            cursor: 'pointer',
+                            textDecoration: 'underline',
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        ENTRAR
+                    </Typography>
+                )}
+            </LogoHeader>
             {accessToken && (
                 <HomePageSideBar expanded={expanded} setExpanded={setExpanded} />
             )}
 
             <Box sx={{ flexGrow: 1, p: 3 }}>
                 <Box sx={{
-                    display: "flex",
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 1,
-                    mb: 3
+                    display: 'flex',
+                    flexDirection: 'row'
                 }}>
-                    <CustomTextFieldWithIcon
-                        label={'Buscar por nombre'}
-                        name={'name'}
-                        value={searchFilters.name}
-                        onChange={handleOnChange}
-                        icon={ContentPasteSearchRounded}
-                    />
-                    <OptionPicker
-                        urlData={'/api/master/sectors'}
-                        label="Buscar por sector"
-                        name="sector"
-                        value={searchFilters.sector}
-                        onChange={handleOnChange}
-                        idKey={'mst_emp_sector_id'}
-                        labelKey={'descripcion'}
-                    />
-                    <CustomTextFieldWithIcon
-                        label={'Buscar por ciudad'}
-                        name={'city'}
-                        value={searchFilters.city}
-                        onChange={handleOnChange}
-                        icon={LocationOnRounded}
-                    />
-                    <Box sx={{ display: 'flex', mb: 2 }}>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: isMobile ? 0.25 : 1,
+                        flexDirection: isMobile ? 'column' : 'row',
+                        flexGrow: 1
+                    }}>
+                        <CustomTextFieldWithIcon
+                            label={'Buscar por nombre'}
+                            name={'name'}
+                            value={searchFilters.name}
+                            onChange={handleOnChange}
+                            icon={ContentPasteSearchRounded}
+                        />
+                        <OptionPicker
+                            urlData={'/api/master/sectors'}
+                            label="Buscar por sector"
+                            name="sector"
+                            value={searchFilters.sector}
+                            onChange={handleOnChange}
+                            idKey={'mst_emp_sector_id'}
+                            labelKey={'descripcion'}
+                        />
+                        <CustomTextFieldWithIcon
+                            label={'Buscar por ciudad'}
+                            name={'city'}
+                            value={searchFilters.city}
+                            onChange={handleOnChange}
+                            icon={LocationOnRounded}
+                        />
+                    </Box>
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: isMobile ? 'column' : 'row',
+                    }}>
                         <IconButton color="primary" onClick={handleSearch}>
                             <Search />
                         </IconButton>
@@ -188,7 +217,7 @@ const HomePage = () => {
                     />
                 )}
             </Box>
-            <SlideUpNotification 
+            <SlideUpNotification
                 message={notification.message}
                 type={notification.type}
                 open={notification.open}

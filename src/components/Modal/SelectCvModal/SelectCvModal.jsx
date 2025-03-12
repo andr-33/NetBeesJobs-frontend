@@ -11,6 +11,7 @@ import { CloseRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
+import { useScreenWidth } from "../../../contexts/ScreenWidthContext/ScreenWidthContext";
 import FilePicker from "../../Picker/FilePicker/FilePicker";
 import CvFileItem from "../../ListItem/CvFileItem/CvFileItem";
 import axios from "axios";
@@ -29,6 +30,7 @@ const SelectCvModal = ({
     const theme = useTheme();
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
+    const { isMobile } = useScreenWidth();
 
     const handleUploadFile = async () => {
         try {
@@ -94,7 +96,7 @@ const SelectCvModal = ({
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: 700,
+                    width: isMobile ? 300 : 700,
                     minHeight: 300,
                     bgcolor: theme.palette.background.paper,
                     px: 2,

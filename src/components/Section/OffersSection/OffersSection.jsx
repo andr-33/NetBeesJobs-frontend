@@ -31,7 +31,6 @@ const OfferSection = () => {
                     }
                 });
                 setOffersData(response.data);
-                console.log("Offers data: ", response.data);
                 setExistsAnError(false);
             } catch (error) {
                 console.error("Error: ", error.message);

@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Modal, Typography, Box, IconButton, useTheme } from "@mui/material";
 import { ContentCopyRounded, WhatsApp, LinkedIn } from "@mui/icons-material";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
+import { useScreenWidth } from "../../../contexts/ScreenWidthContext/ScreenWidthContext";
 
 const ShareOfferModal = ({ openModal, handleCloseModal }) => {
     const [currentUrl, setCurrentUrl] = useState(window.location.href);
     const theme = useTheme();
     const { openNotification, updateNotification } = useNotification();
+    const { isMobile } = useScreenWidth();
 
     const handleCopyOfferUrl = async () => {
         try {
@@ -45,7 +47,7 @@ const ShareOfferModal = ({ openModal, handleCloseModal }) => {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: 600,
+                    width: isMobile ? 300 : 600,
                     bgcolor: theme.palette.background.paper,
                     p: 2, 
                     borderRadius: 3,

@@ -42,7 +42,6 @@ const CandidatesSection = () => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                console.log("Candidates data: ", response.data);
                 setCandidatesData(response.data);
                 setExistsAnError(false);
             } catch (error) {

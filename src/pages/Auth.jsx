@@ -9,7 +9,7 @@ const AuthPage = () => {
     const [isLoginForm, setIsLoginForm] = useState(true);
     const theme = useTheme();
     const navigate = useNavigate();
-    const { isMobile, isSmall, } = useScreenWidth();
+    const { isMobile } = useScreenWidth();
 
     return (
         <Grid
@@ -48,7 +48,12 @@ const AuthPage = () => {
                 justifyItems='center'
             >
                 <Paper
-                    sx={{ ...style.formWrapper, bgcolor: theme.palette.background.paper }}
+                    sx={{ 
+                        width: isMobile ? "320px" : "400px",
+                        padding: isMobile ? "16px" : "32px",
+                        borderRadius: "8px",
+                        bgcolor: theme.palette.background.paper 
+                    }}
                     elevation={3}
                 >
                     <Box sx={{
@@ -106,11 +111,6 @@ const style = {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-    },
-    formWrapper: {
-        width: "400px",
-        padding: "32px",
-        borderRadius: "8px",
     },
     tab: {
         marginBottom: 3,
