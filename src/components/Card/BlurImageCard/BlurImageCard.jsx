@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const BlurImageCard = ({imgSrc, text}) => {
+const BlurImageCard = ({imgSrc, text, sx}) => {
     const [hover, setHover] = useState(false);
     const theme = useTheme();
     return (
@@ -14,6 +14,7 @@ const BlurImageCard = ({imgSrc, text}) => {
             width: '100%',
             height: '100%',
             overflow: 'hidden',
+            ...sx
         }}>
             <Box
                 sx={{
@@ -34,7 +35,7 @@ const BlurImageCard = ({imgSrc, text}) => {
                     position: 'absolute',
                     inset: 0,
                     bgcolor: 'rgba(0,0,0,0.5)',
-                    backdropFilter: 'blur(4px)',
+                    backdropFilter: 'blur(3px)',
                     zIndex: 1,
                     display: 'flex',
                     alignItems: 'center',
@@ -43,15 +44,13 @@ const BlurImageCard = ({imgSrc, text}) => {
                     ':hover':{
                         bgcolor: `${theme.palette.primary.main}66`
                     },
-                    m: 3,
-                    borderRadius: 2
                 }}
             >
                 <Typography
                     variant="h3"
                     sx={{
                         color: theme.palette.background.paper,
-                        ml: 2
+                        ml: 4
                     }}
                 >
                     {text}
