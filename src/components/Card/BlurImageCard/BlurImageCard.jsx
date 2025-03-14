@@ -44,6 +44,7 @@ const BlurImageCard = ({imgSrc, text, sx}) => {
                     ':hover':{
                         bgcolor: `${theme.palette.primary.main}66`
                     },
+                    m:  { xs: 2, sm: 1,  md: 0 },
                 }}
             >
                 <Typography
