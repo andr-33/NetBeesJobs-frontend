@@ -38,6 +38,10 @@ const CompanyProjectsSection = () => {
     const [existsAnError, setExistsAnError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [openModalAddProject, setOpenModalAddProject] = useState(false);
+    const [editSettings, setEditSettings] = useState({
+        active: false,
+        projectToEdit: null
+    }); 
     const { isMobile } = useScreenWidth();
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
@@ -51,6 +55,24 @@ const CompanyProjectsSection = () => {
             updateNotification("No pudimos eliminar tu proyecto", 'error');
             openNotification();
         }
+    };
+
+    const handleEditProject = async (projectId) => {
+        setOpenModalAddProject(true);
+        setEditSettings({
+            ...editSettings,
+            active: true,
+            projectToEdit: projectId
+        });
+    };
+
+    const handleAddProject = async () => {
+        setOpenModalAddProject(true);
+        setEditSettings({
+            ...editSettings,
+            active: false,
+            projectToEdit: null
+        });
     };
 
     useEffect(() => {
@@ -105,7 +127,7 @@ const CompanyProjectsSection = () => {
                 <Button
                     variant="contained"
                     endIcon={<AddCircleOutlineRounded />}
-                    onClick={() => setOpenModalAddProject(true)}
+                    onClick={handleAddProject}
                 >
                     {isMobile ? '' : 'Crear proyecto'}
                 </Button>
@@ -123,6 +145,7 @@ const CompanyProjectsSection = () => {
                                 endDate={formatDate(project.fecha_fin)}
                                 state={project.estado}
                                 handleDeleteProject={handleDeleteProject}
+                                handleEditProject={()=> handleEditProject(project.emp_proyectos_id)}
                             />
                         </Grid>
                     ))}
@@ -145,6 +168,7 @@ const CompanyProjectsSection = () => {
                 openModal={openModalAddProject}
                 handleCloseModal={() => setOpenModalAddProject(false)}
                 setProjectsData={setProjectsData}
+                editSettings={editSettings}
             />
         </>
     );

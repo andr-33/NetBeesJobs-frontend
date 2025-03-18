@@ -1,6 +1,6 @@
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const CustomDatePicker = ({label, onChangeDate}) => {
+const CustomDatePicker = ({label, value, onChangeDate}) => {
     return(
         <DatePicker 
           slotProps={{
@@ -17,6 +17,7 @@ const CustomDatePicker = ({label, onChangeDate}) => {
             mb: 2,
             width: '100%'
           }} 
+          value={value}
       />
     );
 };

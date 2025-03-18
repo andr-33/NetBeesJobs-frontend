@@ -32,7 +32,16 @@ const TextDate = ({ text, date }) => {
     );
 };
 
-const ProjectCard = ({ id, name, description, startDate, endDate, state, handleDeleteProject }) => {
+const ProjectCard = ({ 
+    id, 
+    name, 
+    description, 
+    startDate, 
+    endDate, 
+    state, 
+    handleDeleteProject,
+    handleEditProject 
+    }) => {
     const [openModalAddOffer, setOpenModalAddOffer] = useState(false);
     const [openWarningModal, setOpenWarningModal] = useState(false);
     const [confirmation, setConfirmation] = useState(false);
@@ -109,6 +118,7 @@ const ProjectCard = ({ id, name, description, startDate, endDate, state, handleD
                                         color: theme.palette.success.main
                                     }
                                 }}
+                                onClick={handleEditProject}
                             >
                                 <EditOutlined />
                             </IconButton>

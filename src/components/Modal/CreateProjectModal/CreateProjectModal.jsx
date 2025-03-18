@@ -1,7 +1,7 @@
 import { Modal, Box } from "@mui/material";
 import CreateProjectForm from "../../Form/CreateProjectForm/CreateProjectForm";
 
-const CreateProjectModal = ({ openModal, handleCloseModal, setProjectsData }) => {
+const CreateProjectModal = ({ openModal, handleCloseModal, setProjectsData, editSettings }) => {
  
   return (
     <Modal open={openModal} onClose={handleCloseModal}>
@@ -21,6 +21,8 @@ const CreateProjectModal = ({ openModal, handleCloseModal, setProjectsData }) =>
         <CreateProjectForm 
           setProjectsData={setProjectsData} 
           handleCloseModal={handleCloseModal} 
+          editMode={editSettings.active}
+          projectId={editSettings.projectToEdit}
         />
       </Box>
     </Modal>
