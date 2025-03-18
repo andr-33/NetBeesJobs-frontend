@@ -134,7 +134,7 @@ const CandidatesSection = () => {
                                     </Typography>
                                     <Tag
                                         icon={<PlaceRounded color='secondary' />}
-                                        text={candidate.nombre_ciudad}
+                                        text={candidate.mst_ciudades_id.nombre}
                                     />
                                     <Tag
                                         icon={<CallRounded color='secondary' />}
