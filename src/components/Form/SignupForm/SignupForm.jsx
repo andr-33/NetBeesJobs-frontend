@@ -38,7 +38,7 @@ const FormSignup = () => {
             const response = await axios.post('api/auth/signup', formSignupValues);
             const { session } = response.data;
             saveToken(session);
-            navigate('/seleccion-role');
+            navigate('/seleccion-rol');
         } catch (error) {
             console.error('Error during signup: ', error);
             setError(error.response?.data?.error || 'Ups...algo ha salido mal, intentalo nuevamente');

@@ -1,8 +1,9 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
@@ -30,16 +31,14 @@ const INITIAL_VALUES = {
 const ProfileUserForm = () => {
   const [formValues, setFormValues] = useState(INITIAL_VALUES);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const theme = useTheme();
   const navigate = useNavigate();
   const { selectedImage } = useImageProfile(); 
   const { accessToken } = useAuth();
+  const { updateNotification, openNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError(null);
     formValues.image = selectedImage; 
 
     try {
@@ -52,13 +51,17 @@ const ProfileUserForm = () => {
           }
         }
       );
-      navigate('/pagina-principal');
+
+      updateNotification('Perfil creado con exito!', 'success');
+      openNotification();
+      setTimeout(()=>{
+        navigate('/pagina-principal');
+        setFormValues(INITIAL_VALUES);
+      }, 2500);
     } catch (error) {
       console.error("Error creating user:", error);
-      setError(
-        error.response?.data?.error ||
-        "Ups... algo ha salido mal, intentalo nuevamente"
-      );
+      updateNotification('Lo sentimos, algo ha salido mal', 'error');
+      openNotification();
     } finally {
       setLoading(false);
     }
@@ -189,20 +192,7 @@ const ProfileUserForm = () => {
         onChange={handleOnChange}
         required
       />
-
       <LoaderButton text="Crear perfil" loading={loading} />
-
-      {error && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
-          <Typography
-            variant="body1"
-            textAlign="center"
-            sx={{ color: theme.palette.error.main }}
-          >
-            {error}
-          </Typography>
-        </Box>
-      )}
     </Box>
   );
 };

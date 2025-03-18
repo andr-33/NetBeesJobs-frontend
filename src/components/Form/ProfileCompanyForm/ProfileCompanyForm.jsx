@@ -1,7 +1,9 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
@@ -19,19 +21,18 @@ const INITIAL_VALUES = {
 const ProfileCompanyForm = () => {
     const [formValues, setFormValues] = useState(INITIAL_VALUES);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const theme = useTheme();
+    const navigate = useNavigate();
     const { selectedImage } = useImageProfile();
     const { accessToken } = useAuth();
+    const { updateNotification, openNotification } = useNotification();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        setError(null);
         formValues.image = selectedImage;
 
         try {
-            const response = await axios.post(
+            await axios.post(
                 '/api/companies/create-company-profile',
                 formValues,
                 {
@@ -40,10 +41,17 @@ const ProfileCompanyForm = () => {
                     }
                 }
             );
-            console.log('Company created:', response.data);
+
+            updateNotification('Perfil creado con exito!', 'success');
+            openNotification();
+            setTimeout(()=>{
+                navigate('/perfil-empresa');
+                setFormValues(INITIAL_VALUES);
+            }, 2500);
         } catch (error) {
             console.error('Error creating company:', error);
-            setError(error.response?.data?.error || 'Ups... algo ha salido mal, intentalo nuevamente');
+            updateNotification('Vaya no se puedo crear tu perfil', 'error');
+            openNotification();
         } finally {
             setLoading(false);
         }
@@ -104,17 +112,6 @@ const ProfileCompanyForm = () => {
                 text="Crear perfil de empresa"
                 loading={loading}
             />
-            {error && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
-                    <Typography
-                        variant="body1"
-                        textAlign="center"
-                        sx={{ color: theme.palette.error.main }}
-                    >
-                        {error}
-                    </Typography>
-                </Box>
-            )}
         </Box>
     );
 };

@@ -21,7 +21,7 @@ const App = () =>{
         <Route path='/pagina-principal' element={<HomePage />} />
         <Route path='/vista-oferta-completa/:offerId' element={<OfferInformationPage />} />
         <Route element={<ProtectedRoute />} >
-          <Route path='/seleccion-role' element={<SelectRole/>} />
+          <Route path='/seleccion-rol' element={<SelectRole/>} />
           <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
           <Route path='/perfil-empresa' element={<CompanyProfilePage />} />
         </Route>
