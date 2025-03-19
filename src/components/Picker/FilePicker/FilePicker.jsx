@@ -34,25 +34,30 @@ const FilePicker = ({ file, setFile }) => {
   return (
     <Box>
       {file ? (
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: 2,
-          p: 1,
-          border: '1px solid',
-          borderColor: theme.palette.divider,
-          borderRadius: 2
+        <Box sx={{
+          height: '80px',
+          py: 4,
         }}>
-          <Typography variant="body1">
-            {file.file.name}
-          </Typography>
-          <IconButton 
-            onClick={handleDeleteFile}
-            color="error"
-            sx={{ ml: 'auto' }}
-          >
-            <DeleteRounded />
-          </IconButton>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            p: 1,
+            border: '1px solid',
+            borderColor: theme.palette.divider,
+            borderRadius: 2
+          }}>
+            <Typography variant="body1">
+              {file.file.name}
+            </Typography>
+            <IconButton
+              onClick={handleDeleteFile}
+              color="error"
+              sx={{ ml: 'auto' }}
+            >
+              <DeleteRounded />
+            </IconButton>
+          </Box>
         </Box>
       ) : (
         <Box

@@ -8,7 +8,6 @@ import CreateProfilePage from './pages/CreateProfile';
 import HomePage from './pages/Home';
 import CompanyProfilePage from './pages/CompanyProfile';
 import ExamplePage from './pages/Example';
-import CompanyDashboardPage from './pages/CompanyDashboard';
 import OfferInformationPage from './pages/OfferInformation';
 
 const App = () =>{
@@ -25,7 +24,7 @@ const App = () =>{
           <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
           <Route path='/perfil-empresa' element={<CompanyProfilePage />} />
         </Route>
-        <Route path='/example' element={<CompanyDashboardPage />} />
+        <Route path='/example' element={<ExamplePage />} />
         <Route path='*' element={<NotFoundPage/>} />
       </Routes>
     </Router>

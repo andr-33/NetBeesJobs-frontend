@@ -34,7 +34,7 @@ const SelectCvModal = ({
 
     const handleUploadFile = async () => {
         try {
-                await axios.post('/api/users/upload-cv-file', {
+            await axios.post('/api/users/upload-cv-file', {
                 "name": file.file.name,
                 "file": file.dataURL
             }, {
@@ -44,7 +44,7 @@ const SelectCvModal = ({
             });
             setAvailableToUpload(false);
             updateNotification('CV subido con exito!', 'success');
-            openNotification();            
+            openNotification();
         } catch (error) {
             console.error("Error uploading file:", error);
             updateNotification('Uy... no se puedo subir el archivo', 'error');
@@ -53,7 +53,7 @@ const SelectCvModal = ({
     };
 
     const handleRegisterIntoOffer = async () => {
-        const cvSelected = cvFilesData[selectedIndex];        
+        const cvSelected = cvFilesData[selectedIndex];
         try {
             const response = await axios.post('/api/users/register-into-offer', {
                 "offerId": offerId,
@@ -63,13 +63,14 @@ const SelectCvModal = ({
                     Authorization: `Bearer ${accessToken}`
                 }
             });
+            handleCloseModal();
             updateNotification(response.data.message, 'success');
             openNotification();
         } catch (error) {
             console.error("Error registering into offer:", error);
             updateNotification('No se pudo hacer el registro en la oferta', 'error');
             openNotification();
-        } 
+        }
     };
 
     const formatDate = (dateISO) => {
@@ -130,7 +131,12 @@ const SelectCvModal = ({
                 )}
 
                 {cvFilesData.length > 0 && !availableToUpload && (
-                    <List sx={{
+                    <Box sx={{
+                        height: '144px',
+                        maxHeight: '144px',
+                        overflowY: 'auto'
+                    }}>
+                        <List sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         gap: 1,
@@ -145,6 +151,7 @@ const SelectCvModal = ({
                             />
                         ))}
                     </List>
+                    </Box>
                 )}
 
                 {availableToUpload && (
@@ -161,13 +168,15 @@ const SelectCvModal = ({
                             justifyContent: 'space-between',
                             width: '100%',
                         }}>
-                            <Button
-                                variant="contained"
-                                onClick={() => setAvailableToUpload(false)}
-                                color="error"
-                            >
-                                Cancelar
-                            </Button>
+                            {cvFilesData.length !== 0 && (
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setAvailableToUpload(false)}
+                                    color="error"
+                                >
+                                    Cancelar
+                                </Button>
+                            )}
                             <Button
                                 variant="contained"
                                 onClick={handleUploadFile}
