@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const HomePageSideBar = ({ expanded, setExpanded }) => {
     const menuItems = [
-        { name: "Mi perfil", icon: <PersonRounded /> },
-        /*{ name: "Candidaturas", icon: <BusinessRounded /> },
+        /*{ name: "Mi perfil", icon: <PersonRounded /> },
+        { name: "Candidaturas", icon: <BusinessRounded /> },
         { name: "CVs", icon: <DescriptionRounded /> },*/
     ];
 
@@ -18,12 +18,12 @@ const HomePageSideBar = ({ expanded, setExpanded }) => {
         <Drawer
             variant="permanent"
             sx={{
-                width: expanded ? 200 : 70,
+                width: expanded ? 200 : 50,
                 overflowX: 'hidden',
                 position: 'absolute',
                 zIndex: 5,
                 "& .MuiDrawer-paper": {
-                    width: expanded ? 200 : 70,
+                    width: expanded ? 200 : 50,
                     transition: "width 0.3s",
                     overflowX: 'hidden',
                     bgcolor: theme.palette.secondary.light,

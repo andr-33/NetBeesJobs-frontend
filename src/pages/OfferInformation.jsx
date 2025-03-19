@@ -25,6 +25,15 @@ const OfferInfromationPage = () => {
     const { accessToken } = useAuth();
     const { notification, closeNotification, updateNotification, openNotification } = useNotification();
 
+    const handleOpenModal = () => {
+        if (!accessToken) {
+            navigate('/autenticacion');
+            return;
+        }
+
+        setOpenCvModal(true);
+    }
+
     const handleCloseModal = () => {
         setOpenCvModal(false);
         setAvailableToUpload(false);
@@ -135,18 +144,16 @@ const OfferInfromationPage = () => {
                 justifyContent: 'flex-end',
                 bottom: 0
             }}>
-                {accessToken && (
-                    <Button
-                        variant="contained"
-                        sx={{
-                            mr: 4,
-                            mb: 4
-                        }}
-                        onClick={() => setOpenCvModal(true)}
-                    >
-                        APLICAR
-                    </Button>
-                )}
+                <Button
+                    variant="contained"
+                    sx={{
+                        mr: 4,
+                        mb: 4
+                    }}
+                    onClick={handleOpenModal}
+                >
+                    APLICAR
+                </Button>
             </Box>
 
             <ShareOfferModal
