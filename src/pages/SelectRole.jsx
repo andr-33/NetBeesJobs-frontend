@@ -1,12 +1,14 @@
 import { Box, Grid2 as Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
+import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
 import axios from "axios";
 import BlurImageCard from "../components/Card/BlurImageCard/BlurImageCard";
 
 const SelectRolePage = () => {
     const navigate = useNavigate();
     const { accessToken } = useAuth();
+    const { isMobile } = useScreenWidth(); 
     const theme = useTheme();
 
     const handleRoleSelection = async (roleId) => {
@@ -36,7 +38,11 @@ const SelectRolePage = () => {
                 </Box>
             </Grid>
             <Grid size={12} >
-                <Box sx={{ height: '70vh', padding: 5, mx: {md: 15, sm: 10, xs: 1} }}>
+                <Box sx={{ 
+                    height: '70vh', 
+                    padding: isMobile ? 2 : 5,
+                    mx: {md: 15, sm: 10, xs: 1}, 
+                }}>
                     <Grid
                         container
                         sx={{

@@ -4,10 +4,13 @@ import {
     useTheme
 } from "@mui/material";
 import { useState } from "react";
+import { useScreenWidth } from "../../../contexts/ScreenWidthContext/ScreenWidthContext";
 
 const BlurImageCard = ({imgSrc, text, sx}) => {
     const [hover, setHover] = useState(false);
     const theme = useTheme();
+    const { isMobile } = useScreenWidth();
+
     return (
         <Box sx={{
             position: 'relative',
@@ -48,7 +51,7 @@ const BlurImageCard = ({imgSrc, text, sx}) => {
                 }}
             >
                 <Typography
-                    variant="h3"
+                    variant={ isMobile ? "h4" : "h3"}
                     sx={{
                         color: theme.palette.background.paper,
                         ml: 4
