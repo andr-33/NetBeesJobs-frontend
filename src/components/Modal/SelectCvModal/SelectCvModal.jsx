@@ -63,6 +63,7 @@ const SelectCvModal = ({
                     Authorization: `Bearer ${accessToken}`
                 }
             });
+            handleCloseModal();
             updateNotification(response.data.message, 'success');
             openNotification();
         } catch (error) {
