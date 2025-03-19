@@ -57,7 +57,7 @@ const OfferApplyCard = ({ item }) => {
             setIsLoading(true);
             try {
                 const response = await axios.get(
-                    'api/users/get-cvs-info',
+                    '/api/users/get-cvs-info',
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
