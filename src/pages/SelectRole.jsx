@@ -1,33 +1,12 @@
 import { Box, Grid2 as Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
-import axios from "axios";
 import BlurImageCard from "../components/Card/BlurImageCard/BlurImageCard";
 
 const SelectRolePage = () => {
     const navigate = useNavigate();
-    const { accessToken } = useAuth();
     const { isMobile } = useScreenWidth(); 
     const theme = useTheme();
-
-    const handleRoleSelection = async (roleId) => {
-        try {
-            const response = await axios.post(
-                'api/master/set-role',
-                { roleId: roleId },
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    }
-                },
-            );
-            console.log(response.data.message);
-            navigate(`/crea-tu-perfil/${roleId}`);
-        } catch (error) {
-            console.error('Error during signup: ', error);
-        }
-    };
 
     return (
         <Grid container sx={{ backgroundColor: theme.palette.background.default }}>
@@ -53,7 +32,7 @@ const SelectRolePage = () => {
                         <Grid
                             size={{ xs: 12, md: 6 }}
                             component='div'
-                            onClick={() => handleRoleSelection(1)}
+                            onClick={() => navigate('/crea-tu-perfil/1')}
                         >
                             <BlurImageCard
                                 sx={{
@@ -77,7 +56,7 @@ const SelectRolePage = () => {
                                     height: '100%',
                                 }}
                                 component='div'
-                                onClick={() => handleRoleSelection(2)}
+                                onClick={() => navigate('/crea-tu-perfil/2')}
                             >
                                 <BlurImageCard
                                     sx={{

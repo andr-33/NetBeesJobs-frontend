@@ -16,30 +16,31 @@ const INITIAL_VALUES = {
   surname: "",
   second_surname: "",
   genre: "",
-  birth_day: "", 
+  birth_day: "",
   phone_number: "",
   nationality: "",
   document_type: 1,
   document_number: '',
-  community_id: 7,  
-  province_id: 28,  
-  city_id: "",  
-  zip_code: "",  
-  image: "",    
+  community_id: 7,
+  province_id: 28,
+  city_id: "",
+  zip_code: "",
+  image: "",
 };
 
 const ProfileUserForm = () => {
   const [formValues, setFormValues] = useState(INITIAL_VALUES);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { selectedImage } = useImageProfile(); 
+  const { selectedImage } = useImageProfile();
   const { accessToken } = useAuth();
   const { updateNotification, openNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    formValues.image = selectedImage; 
+    formValues.image = selectedImage;
+    await handleSetUserRole();
 
     try {
       await axios.post(
@@ -47,14 +48,14 @@ const ProfileUserForm = () => {
         formValues,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`, 
+            Authorization: `Bearer ${accessToken}`,
           }
         }
       );
 
       updateNotification('Perfil creado con exito!', 'success');
       openNotification();
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate('/pagina-principal');
         setFormValues(INITIAL_VALUES);
       }, 2500);
@@ -67,24 +68,42 @@ const ProfileUserForm = () => {
     }
   };
 
+  const handleSetUserRole = async () => {
+    try {
+      await axios.post(
+        '/api/master/set-role',
+        { roleId: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        },
+      );
+    } catch (error) {
+      console.error('Error setting role: ', error);
+    }
+  };
+
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleDateChange = (name) => (date) => {
-    setFormValues((prev) => ({...prev, [name]: date.format('YYYY-MM-DD')}));
+    if(!date) return;
+
+    setFormValues((prev) => ({ ...prev, [name]: date.format('YYYY-MM-DD') }));
   }
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
-      <Typography 
+      <Typography
         variant="h6"
         sx={{
           mb: 1
         }}
       >
-        Sobre ti: 
+        Sobre ti:
       </Typography>
       <CustomTextFieldWithIcon
         label="Nombre"
@@ -115,7 +134,7 @@ const ProfileUserForm = () => {
         idKey='mst_sexo_id'
         labelKey='descripcion'
       />
-      <CustomTextFieldWithIcon 
+      <CustomTextFieldWithIcon
         label="Teléfono"
         name="phone_number"
         value={formValues.phone_number}
@@ -132,11 +151,11 @@ const ProfileUserForm = () => {
         idKey='mst_paises_id'
         labelKey='nombre'
       />
-      <CustomDatePicker 
+      <CustomDatePicker
         label='Fecha de cumpleaños'
         onChangeDate={handleDateChange('birth_day')}
       />
-      <TextFieldWithPicker 
+      <TextFieldWithPicker
         urlData='/api/master/document-types'
         labelPicker='Tipo de documento'
         namePicker='document_type'
@@ -149,7 +168,7 @@ const ProfileUserForm = () => {
         valueTextField={formValues.document_number}
         onChangeTextField={handleOnChange}
       />
-      <Typography 
+      <Typography
         variant="h6"
         sx={{
           mb: 1
@@ -184,7 +203,7 @@ const ProfileUserForm = () => {
         idKey='mst_ciudades_id'
         labelKey='nombre'
       />
-      <CustomTextFieldWithIcon 
+      <CustomTextFieldWithIcon
         label="Código postal"
         name="zip_code"
         value={formValues.zip_code}

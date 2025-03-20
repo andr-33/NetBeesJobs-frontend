@@ -29,7 +29,7 @@ const CrearPerfilPage = () => {
                     width: "100%",
                     height: "100dvh",
                     overflowY: 'scroll',
-                    bgcolor: theme.palette.primary.light
+                    bgcolor: theme.palette.background.default
                 }}
             >
                 <Paper
