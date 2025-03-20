@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, FormControl, InputLabel, Switch, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, InputLabel, Switch, Typography } from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
@@ -36,6 +36,10 @@ const CreateProjectForm = ({
         setFormValues((prev) => ({ ...prev, [name]: date.format("YYYY-MM-DD") }));
     };
 
+    const handleStateChange = (event) => {
+        setFormValues((prev) => ({...prev, estado: event.target.checked ? 1 : 0}));
+    };
+
     const handleSubmitCreate = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -66,7 +70,14 @@ const CreateProjectForm = ({
 
         try {
             const response = await axios.put(`/api/companies/update-project/${projectId}`, formValues);
-            updateNotification(response.data.message, "success");
+            const updatedRecord = response.data;
+            console.log(response.data);
+            setProjectsData((prev)=>
+                prev.map((project)=>
+                    project.emp_proyectos_id === projectId ? { ...project, ...updatedRecord } : project
+                )
+            );
+            updateNotification("Proyecto actualizado con exito", "success");
             openNotification();
             handleCloseModal();
         } catch (error) {
@@ -105,7 +116,7 @@ const CreateProjectForm = ({
             <Box sx={{
                 display: 'flex',
                 width: '100%',
-                gap: 2
+                gap: 1
             }}>
                 <CustomTextFieldWithIcon
                     label="Nombre del Proyecto"
@@ -117,17 +128,24 @@ const CreateProjectForm = ({
 
                 {editMode && (
                     <FormControl
-                        variant="outlined"
+                        variant="filled"
                         sx={{
                             px: 2,
                             mb: 2,
                             display: 'flex',
                             justifyContent: 'center',
+                            borderRadius: 1,
+                            border: '1px solid #AAAD'
                         }}
                     >
-                        <InputLabel>Estado</InputLabel>
-                        <Switch 
-                            checked={formValues.estado === 1 ? true : false}
+                        <FormControlLabel 
+                            control={
+                                <Switch 
+                                    checked={formValues.estado === 1}
+                                    onChange={handleStateChange}
+                                />
+                            }
+                            label="Estado"
                         />
                     </FormControl>
                 )}
