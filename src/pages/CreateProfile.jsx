@@ -27,9 +27,9 @@ const CrearPerfilPage = () => {
                 sx={{
                     position: "relative",
                     width: "100%",
-                    height: "100vh",
+                    height: "100dvh",
                     overflowY: 'scroll',
-                    bgcolor: theme.palette.background.default
+                    bgcolor: theme.palette.primary.light
                 }}
             >
                 <Paper
