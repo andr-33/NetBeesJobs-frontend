@@ -30,6 +30,7 @@ const ProfileCompanyForm = () => {
         event.preventDefault();
         setLoading(true);
         formValues.image = selectedImage;
+        await handleSetCompanyRole();
 
         try {
             await axios.post(
@@ -54,6 +55,22 @@ const ProfileCompanyForm = () => {
             openNotification();
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSetCompanyRole = async () => {
+        try {
+            await axios.post(
+                '/api/master/set-role',
+                { roleId: 2 },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                },
+            );
+        } catch (error) {
+            console.error('Error setting role: ', error);
         }
     };
 

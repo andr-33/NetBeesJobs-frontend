@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Box, Button, Paper, Typography, useTheme } from "@mui/material";
 import { ImageProfileProvider } from "../contexts/ImageProfileContext/ImageProfileContext";
 import { useParams } from "react-router-dom";
-import {  NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext"; 
+import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext"; 
+import { useScreenWidth } from "../contexts/ScreenWidthContext/ScreenWidthContext";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ProfileCompanyForm from "../components/Form/ProfileCompanyForm/ProfileCompanyForm";
 import ProfileUserForm from "../components/Form/ProfileUserForm/ProfileUserForm";
@@ -14,6 +15,7 @@ const CrearPerfilPage = () => {
     const theme = useTheme();
     const { roleId } = useParams();
     const { notification, closeNotification } = useNotification();
+    const { isMobile } = useScreenWidth();
 
     const handleSlideUp = () => {
         setIsBoxVisible(false);
@@ -25,7 +27,7 @@ const CrearPerfilPage = () => {
                 sx={{
                     position: "relative",
                     width: "100%",
-                    height: "100vh",
+                    height: "100dvh",
                     overflowY: 'scroll',
                     bgcolor: theme.palette.background.default
                 }}
@@ -47,7 +49,7 @@ const CrearPerfilPage = () => {
                         zIndex: 1
                     }}
                 >
-                    <Typography variant="h5" gutterBottom>
+                    <Typography variant={ isMobile ? "h6": "h5"} gutterBottom>
                         Antes de comenzar, nos gustaría conocer un poco más sobre ti
                     </Typography>
                     <Button
@@ -78,8 +80,8 @@ const CrearPerfilPage = () => {
                 >
                     <Paper
                         sx={{
-                            width: "400px",
-                            padding: "32px",
+                            width: isMobile ? "350px" : "400px",
+                            padding: isMobile ? "16px" : "32px",
                             borderRadius: "8px",
                             bgcolor: theme.palette.background.paper,
                             my: 2
