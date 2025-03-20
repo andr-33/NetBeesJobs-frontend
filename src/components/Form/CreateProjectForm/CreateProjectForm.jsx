@@ -71,7 +71,6 @@ const CreateProjectForm = ({
         try {
             const response = await axios.put(`/api/companies/update-project/${projectId}`, formValues);
             const updatedRecord = response.data;
-            console.log(response.data);
             setProjectsData((prev)=>
                 prev.map((project)=>
                     project.emp_proyectos_id === projectId ? { ...project, ...updatedRecord } : project
