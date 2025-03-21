@@ -5,8 +5,8 @@ const CreateOfferModal = ({
     openModal, 
     handleCloseModal, 
     proyectId, 
+    editSettings
 }) => {
-
     return (
         <Modal open={openModal} onClose={handleCloseModal}>
             <Box
@@ -27,6 +27,8 @@ const CreateOfferModal = ({
                 <CreateOfferForm 
                     proyectId={proyectId} 
                     handleCloseModal={handleCloseModal}
+                    editMode={editSettings?.active}
+                    offerId={editSettings?.offerToEdit}
                 />   
             </Box>
         </Modal>

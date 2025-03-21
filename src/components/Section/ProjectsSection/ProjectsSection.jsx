@@ -57,7 +57,7 @@ const CompanyProjectsSection = () => {
         }
     };
 
-    const handleEditProject = async (projectId) => {
+    const handleEditProject = (projectId) => {
         setOpenModalAddProject(true);
         setEditSettings({
             ...editSettings,

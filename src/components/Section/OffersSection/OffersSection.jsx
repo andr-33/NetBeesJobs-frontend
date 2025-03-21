@@ -1,25 +1,37 @@
 import { 
     Typography, 
     Grid2 as Grid, 
-    Paper,
-    IconButton,
-    Box,
     useTheme
 } from "@mui/material";
-import { DeleteOutlineRounded, EditOutlined } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import ServerError from "../../Error/ServerError/ServerError";
 import axios from "axios";
+import CreateOfferModal from "../../Modal/CreateOfferModal/CreateOfferModal";
+import OfferCard from "../../Card/OfferCard/OfferCard";
 
 const OfferSection = () => {
     const [offersData, setOffersData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [openModalEditOffer, setOpenModalEditOffer] =  useState(false);
+    const [editSettings, setEditSettings] = useState({
+        active: false,
+        offerToEdit: null
+    });
     const theme = useTheme();
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
+
+    const handleEditOffer = (offerId) => {
+        setOpenModalEditOffer(true);
+        setEditSettings({
+            ...editSettings,
+            active: true,
+            offerToEdit: offerId
+        });
+    };
     
     useEffect(() => {
         const fetchAllCompanyOffers = async () => {
@@ -30,6 +42,7 @@ const OfferSection = () => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
+                console.log(response.data);
                 setOffersData(response.data);
                 setExistsAnError(false);
             } catch (error) {
@@ -76,66 +89,20 @@ const OfferSection = () => {
                 <Grid container spacing={2} mt={2}>
                     {offersData.map((offer, index) => (
                         <Grid key={index} size={{ lg: 4, md: 6, sm: 12 }}>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    height: 150,
-                                    borderRadius: 3,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    overflow: 'hidden',
-                                }}
-                            >
-                                <Box sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-end',
-                                    width: '100%',
-                                    mt: 0.5
-                                }}>
-                                    <IconButton sx={{
-                                        ":hover":{
-                                            color: theme.palette.error.main
-                                        }
-                                    }}>
-                                        <DeleteOutlineRounded/>
-                                    </IconButton>
-                                    <IconButton sx={{
-                                        ":hover":{
-                                            color: theme.palette.success.main
-                                        }
-                                    }}>
-                                        <EditOutlined />
-                                    </IconButton>
-                                </Box>
-                                <Typography 
-                                    variant="body1"
-                                    sx={{
-                                        ml: 1
-                                    }}
-                                >
-                                    {offer.nombre}
-                                </Typography>
-                                <Typography 
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: '600',
-                                        ml: 1
-                                    }}
-                                >
-                                    Proyecto: 
-                                    <Typography 
-                                        variant="body2"
-                                        component={'span'}
-                                    >
-                                        &nbsp;{offer.emp_proyectos_id?.nombre}
-                                    </Typography>
-                                </Typography>
-                            </Paper>
+                            <OfferCard
+                                name={offer.nombre}
+                                project={offer.emp_proyectos_id.nombre}
+                                handleEditOffer={()=> handleEditOffer(offer.emp_ofertas_id)}
+                            />
                         </Grid>
                     ))}
                 </Grid>
             )}
+            <CreateOfferModal
+                openModal={openModalEditOffer}
+                handleCloseModal={()=> setOpenModalEditOffer(false)}
+                editSettings={editSettings}
+            />
         </>
     );
 };
