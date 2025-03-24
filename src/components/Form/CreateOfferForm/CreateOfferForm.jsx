@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, Switch, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
@@ -20,11 +20,12 @@ const INITIAL_VALUES = {
     mst_ciudades_id: "",
     emp_proyectos_id: 0,
     fecha_creacion: null,
-    stado: 1,
+    estado: 1,
     requirements_list: []
 };
 
 const CreateOfferForm = ({
+    setOffersData,
     proyectId, 
     handleCloseModal,
     editMode,
@@ -40,12 +41,16 @@ const CreateOfferForm = ({
         setFormValues((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleStateChange = (event) => {
+        setFormValues((prev)=> ({...prev, estado: event.target.checked ? 1 : 0}));
+    };
+
+    const handleSubmitCreate = async (event) => {
         event.preventDefault();
         setLoading(true);
-        formValues.project_id = proyectId;
-        formValues.salary = parseInt(formValues.salary);
-        formValues.created_at = new Date();
+        formValues.emp_proyectos_id = proyectId;
+        formValues.salario_anual = parseInt(formValues.salario_anual);
+        formValues.fecha_creacion = new Date();
         formValues.requirements_list = requirements;
 
         try {
@@ -61,6 +66,31 @@ const CreateOfferForm = ({
             setFormValues(INITIAL_VALUES);
             setRequirements([""]);
             handleCloseModal();
+        }
+    };
+
+    const handleSubmitUpdate = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        formValues.salario_anual = parseInt(formValues.salario_anual);
+
+        try {
+            const response = await axios.put(`/api/companies/update-offer/${offerId}`, formValues);
+            const updatedRecord = response.data; 
+            setOffersData((prev)=>
+                prev.map((offer)=>
+                    offer.emp_ofertas_id === offerId ? { ...offer, ...updatedRecord } : offer
+                )
+            );
+            updateNotification("Oferta actualizado con exito", "success");
+            openNotification();
+            handleCloseModal();
+        } catch (error) {
+            console.error("Error al actualizar la oferta:", error);
+            updateNotification("Ocurrió un error al actualizar la oferta", "error");
+            openNotification();
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -95,19 +125,49 @@ const CreateOfferForm = ({
     return (
         <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={ editMode ? handleSubmitUpdate : handleSubmitCreate}
         >
             <Typography variant="h6" sx={{ mb: 1 }}>
                 {editMode ? "Editemos tu oferta" : "Crear Nueva Oferta de Empleo"}
             </Typography>
 
-            <CustomTextFieldWithIcon
-                label="Nombre de la Oferta"
-                name="nombre"
-                value={formValues.nombre}
-                onChange={handleOnChange}
-                required
-            />
+            <Box sx={{
+                display: 'flex',
+                width: '100%',
+                gap: 1
+            }}>
+                <CustomTextFieldWithIcon
+                    label="Nombre de la Oferta"
+                    name="nombre"
+                    value={formValues.nombre}
+                    onChange={handleOnChange}
+                    required
+                />
+
+                {editMode && (
+                    <FormControl
+                        variant="filled"
+                        sx={{
+                            px: 2,
+                            mb: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            borderRadius: 1,
+                            border: '1px solid #AAAD'
+                        }}
+                    >
+                        <FormControlLabel 
+                            control={
+                                <Switch 
+                                    checked={formValues.estado === 1}
+                                    onChange={handleStateChange}
+                                />
+                            }
+                            label="Estado"
+                        />
+                    </FormControl>
+                )}
+            </Box>
 
             <CustomTextFieldWithIcon
                 label="Descripción"

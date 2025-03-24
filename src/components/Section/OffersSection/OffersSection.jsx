@@ -102,6 +102,7 @@ const OfferSection = () => {
                 openModal={openModalEditOffer}
                 handleCloseModal={()=> setOpenModalEditOffer(false)}
                 editSettings={editSettings}
+                setOffersData={setOffersData}
             />
         </>
     );
