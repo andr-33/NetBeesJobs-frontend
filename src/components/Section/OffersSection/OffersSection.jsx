@@ -55,7 +55,6 @@ const OfferSection = () => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                console.log(response.data);
                 setOffersData(response.data);
                 setExistsAnError(false);
             } catch (error) {

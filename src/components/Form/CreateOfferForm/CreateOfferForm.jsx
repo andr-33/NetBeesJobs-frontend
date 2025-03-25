@@ -98,7 +98,7 @@ const CreateOfferForm = ({
         const fetchOfferData = async () => {
             try{
                 const response = await axios.get(`/api/companies/offer-information/${offerId}`);
-                const offerData = response.data[0];
+                const offerData = response.data;
                 const mappedData = {
                     nombre: offerData.nombre,
                     descripcion: offerData.descripcion,
@@ -111,8 +111,8 @@ const CreateOfferForm = ({
                     mst_provincias_id: offerData.mst_ciudades_id.mst_provincias_id.mst_provincias_id,
                     mst_ciudades_id: offerData.mst_ciudades_id.mst_ciudades_id,
                     estado: offerData.estado,
-                    requirements_list: []
                 };
+                setRequirements(offerData.requirements_list);
                 setFormValues(mappedData);
             } catch(error){
                 console.error(error)
