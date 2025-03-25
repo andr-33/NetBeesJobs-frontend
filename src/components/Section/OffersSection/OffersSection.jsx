@@ -24,6 +24,19 @@ const OfferSection = () => {
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
+    const handleDeleteOffer = async (offerId) => {
+        try{
+            await axios.delete(`/api/companies/delete-offer/${offerId}`);
+            setOffersData(offersData.filter(offer => offer.emp_ofertas_id !== offerId));
+            updateNotification("Oferta eliminada con exito", "success");
+            openNotification();
+        } catch (error) {
+            console.error("Error: ", error);
+            updateNotification("No pudimos eliminar esta oferta", "error");
+            openNotification();
+        }
+    };
+
     const handleEditOffer = (offerId) => {
         setOpenModalEditOffer(true);
         setEditSettings({
@@ -90,8 +103,10 @@ const OfferSection = () => {
                     {offersData.map((offer, index) => (
                         <Grid key={index} size={{ lg: 4, md: 6, sm: 12 }}>
                             <OfferCard
+                                id={offer.emp_ofertas_id}
                                 name={offer.nombre}
                                 project={offer.emp_proyectos_id.nombre}
+                                handleDeleteOffer={handleDeleteOffer}
                                 handleEditOffer={()=> handleEditOffer(offer.emp_ofertas_id)}
                             />
                         </Grid>
