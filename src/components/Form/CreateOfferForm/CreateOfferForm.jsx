@@ -73,6 +73,7 @@ const CreateOfferForm = ({
         event.preventDefault();
         setLoading(true);
         formValues.salario_anual = parseInt(formValues.salario_anual);
+        formValues.requirements_list = requirements;
 
         try {
             const response = await axios.put(`/api/companies/update-offer/${offerId}`, formValues);
@@ -112,7 +113,10 @@ const CreateOfferForm = ({
                     mst_ciudades_id: offerData.mst_ciudades_id.mst_ciudades_id,
                     estado: offerData.estado,
                 };
-                setRequirements(offerData.requirements_list);
+                const offerRequirements = offerData.requirements_list;
+                setRequirements(offerRequirements.map(
+                    (requirement) => requirement.descripcion
+                ));
                 setFormValues(mappedData);
             } catch(error){
                 console.error(error)
