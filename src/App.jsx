@@ -9,6 +9,8 @@ import HomePage from './pages/Home';
 import CompanyProfilePage from './pages/CompanyProfile';
 import ExamplePage from './pages/Example';
 import OfferInformationPage from './pages/OfferInformation';
+import StripeSuccess from "./pages/StripeSuccess";
+import CreatingProfile from "./pages/CreatingProfile";
 
 const App = () =>{
 
@@ -19,10 +21,12 @@ const App = () =>{
         <Route path='/autenticacion' element={<AuthPage/>} />
         <Route path='/pagina-principal' element={<HomePage />} />
         <Route path='/vista-oferta-completa/:offerId' element={<OfferInformationPage />} />
+        <Route path="/empresa/creando-perfil" element={<CreatingProfile />} />
         <Route element={<ProtectedRoute />} >
           <Route path='/seleccion-rol' element={<SelectRole/>} />
           <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
           <Route path='/perfil-empresa' element={<CompanyProfilePage />} />
+          <Route path="/empresa/success" element={<StripeSuccess />} />
         </Route>
         <Route path='/example' element={<ExamplePage />} />
         <Route path='*' element={<NotFoundPage/>} />
