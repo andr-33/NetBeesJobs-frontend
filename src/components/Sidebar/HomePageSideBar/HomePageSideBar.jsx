@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const HomePageSideBar = ({ expanded, setExpanded }) => {
     const menuItems = [
-        /*{ name: "Mi perfil", icon: <PersonRounded /> },
-        { name: "Candidaturas", icon: <BusinessRounded /> },
+        { name: "Mi perfil", icon: <PersonRounded />, route: "/mi-perfil" },
+        /*{ name: "Candidaturas", icon: <BusinessRounded /> },
         { name: "CVs", icon: <DescriptionRounded /> },*/
     ];
 
@@ -40,7 +40,9 @@ const HomePageSideBar = ({ expanded, setExpanded }) => {
                 <List>
                     {menuItems.map((item) => (
                         <ListItem key={item.name} disablePadding>
-                            <ListItemButton>
+                            <ListItemButton
+                                onClick={()=> navigate(item.route)}
+                            >
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 {expanded && 
                                     <ListItemText 

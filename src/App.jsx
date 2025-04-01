@@ -7,6 +7,7 @@ import NotFoundPage from './pages/NotFound';
 import CreateProfilePage from './pages/CreateProfile';
 import HomePage from './pages/Home';
 import CompanyProfilePage from './pages/CompanyProfile';
+import UserProfilePage from './pages/UserProfile';
 import ExamplePage from './pages/Example';
 import OfferInformationPage from './pages/OfferInformation';
 
@@ -23,6 +24,7 @@ const App = () =>{
           <Route path='/seleccion-rol' element={<SelectRole/>} />
           <Route path='/crea-tu-perfil/:roleId' element={<CreateProfilePage />} />
           <Route path='/perfil-empresa' element={<CompanyProfilePage />} />
+          <Route path='/mi-perfil' element={<UserProfilePage />} />
         </Route>
         <Route path='/example' element={<ExamplePage />} />
         <Route path='*' element={<NotFoundPage/>} />

@@ -21,12 +21,12 @@ const CompanySidebar = ({ expanded, setExpanded, setActiveSection }) => {
         <Drawer
             variant="permanent"
             sx={{
-                width: expanded ? 200 : 70,
+                width: expanded ? 200 : 50,
                 overflowX: 'hidden',
                 position: 'absolute',
                 zIndex: 5,
                 "& .MuiDrawer-paper": {
-                    width: expanded ? 200 : 70,
+                    width: expanded ? 200 : 50,
                     transition: "width 0.3s",
                     overflowX: 'hidden',
                     bgcolor: theme.palette.secondary.light,
