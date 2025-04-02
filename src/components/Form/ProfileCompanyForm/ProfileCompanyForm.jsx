@@ -1,5 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import { Box, Typography, Button, Grid2 as Grid } from "@mui/material";
 import { useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
@@ -59,7 +58,7 @@ const ProfileCompanyForm = () => {
     }
   };
 
-  const handleFreePlan = async () => {
+  const handleCreateCompany = async () => {
     try {
       await handleSetCompanyRole();
       await axios.post(
@@ -72,18 +71,21 @@ const ProfileCompanyForm = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
+    } catch (error) {
+      console.error("Error al crear empresa: ", error);
+    }
+  };
 
+  const handleFreePlan = async () => {
+    try{
+      await handleCreateCompany();
       updateNotification("Perfil creado con el plan gratuito", "success");
       openNotification();
-
-      
-      navigate("/empresa/creando-perfil");
-    } catch (error) {
-      console.error("Error con plan gratuito:", error);
-      updateNotification(
-        "Error al crear el perfil con el plan gratuito",
-        "error"
-      );
+      setTimeout(()=>{
+        navigate("/empresa/creando-perfil");
+      }, 2000);
+    } catch(error) {
+      updateNotification("Error al crear el perfil con el plan gratuito", "error");
       openNotification();
     }
   };
@@ -182,7 +184,7 @@ const ProfileCompanyForm = () => {
 
       {showPlans && (
         <Grid container spacing={2} mt={4}>
-          <Grid item xs={12} md={6}>
+          <Grid  size={{xs:12, md:6}}>
             <Box
               sx={{
                 border: "2px solid",
@@ -210,7 +212,7 @@ const ProfileCompanyForm = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{xs:12, md:6}}>
             <Box
               sx={{
                 border: "2px solid",
