@@ -92,15 +92,13 @@ const ProfileCompanyForm = () => {
 
   const handlePremiumPlan = async () => {
     setLoading(true);
+    const baseUrl = window.location.origin;
+  
     try {
       const dataToSave = { ...formValues, image: selectedImage };
       sessionStorage.setItem("companyFormData", JSON.stringify(dataToSave));
 
-      const res = await axios.post("/api/stripe/create-checkout-session", {
-        success_url: "http://localhost:5173/perfil-empresa",
-        cancel_url: "http://localhost:5173/empresa/cancel",
-      });
-
+      const res = await axios.post("/api/stripe/create-checkout-session", { baseUrl });
       window.location.href = res.data.url;
     } catch (error) {
       console.error("Error iniciando pago:", error);
