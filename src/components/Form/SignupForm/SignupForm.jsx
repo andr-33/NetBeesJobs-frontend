@@ -1,8 +1,9 @@
-import { Box, useTheme, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { AlternateEmailRounded, LockRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
@@ -16,20 +17,19 @@ const INITIAL_VALUES = {
 const FormSignup = () => {
     const [formSignupValues, setFormSignupValues] = useState(INITIAL_VALUES);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const theme = useTheme();
     const navigate = useNavigate();
     const { saveToken } = useAuth();
+    const { updateNotification, openNotification } = useNotification();
 
     const handleSignup = async (event) => {
         event.preventDefault();
-        setError(null);
         setLoading(true);
 
         const { password, confirmPassword } = formSignupValues;
 
         if (password !== confirmPassword) {
-            setError("Las contraseñas no coinciden");
+            updateNotification('Las contraseñas no coinciden', 'error');
+            openNotification();
             setLoading(false);
             return;
         }
@@ -41,7 +41,8 @@ const FormSignup = () => {
             navigate('/seleccion-rol');
         } catch (error) {
             console.error('Error during signup: ', error);
-            setError(error.response?.data?.error || 'Ups...algo ha salido mal, intentalo nuevamente');
+            updateNotification('No pudimos registrarte, intenta luego', 'error');
+            openNotification();
         } finally {
             setLoading(false);
         }
@@ -88,27 +89,6 @@ const FormSignup = () => {
                 text='Registrarse'
                 loading={loading}
             />
-
-            {error && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        mt: 1,
-                    }}
-                >
-                    <Typography
-                        variant="body1"
-                        maxWidth={250}
-                        textAlign='center'
-                        sx={{
-                            color: theme.palette.error.main,
-                        }}
-                    >
-                        {error}
-                    </Typography>
-                </Box>
-            )}
         </Box>
     );
 };

@@ -50,6 +50,8 @@ const CompanyProjectsSection = () => {
         try {
             await axios.delete(`/api/companies/delete-project/${projectId}`);
             setProjectsData(projectsData.filter(project => project.emp_proyectos_id !== projectId));
+            updateNotification("Proyecto eliminada con exito","success");
+            openNotification();
         } catch (error) {
             console.error("Error: ", error.message);
             updateNotification("No pudimos eliminar tu proyecto", 'error');
@@ -57,7 +59,7 @@ const CompanyProjectsSection = () => {
         }
     };
 
-    const handleEditProject = async (projectId) => {
+    const handleEditProject = (projectId) => {
         setOpenModalAddProject(true);
         setEditSettings({
             ...editSettings,

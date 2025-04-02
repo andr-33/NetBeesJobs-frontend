@@ -80,7 +80,7 @@ const CreateProjectForm = ({
             openNotification();
             handleCloseModal();
         } catch (error) {
-            console.error("Error al crear el proyecto:", error);
+            console.error("Error al actualizar el proyecto:", error);
             updateNotification("Ocurrió un error al actualizar el proyecto. Inténtalo de nuevo", "error");
             openNotification();
         } finally {

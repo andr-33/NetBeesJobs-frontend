@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, FormControl, FormControlLabel, Switch, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
@@ -8,24 +8,28 @@ import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import axios from "axios";
 
 const INITIAL_VALUES = {
-    name: "",
-    description: "",
-    salary: 0,
-    job_id: "",
-    job_modality_id: 1,
-    working_day_id: 1,
-    sector_id: "",
-    community_id: 7,
-    province_id: 28,
-    city_id: "",
-    project_id: 0,
-    created_at: null,
+    nombre: "",
+    descripcion: "",
+    salario_anual: 0,
+    mst_puestos_id: "",
+    mst_modalidad_id: 1,
+    mst_jornada_id: 1,
+    mst_emp_sector_id: "",
+    mst_comunidades_id: 7,
+    mst_provincias_id: 28,
+    mst_ciudades_id: "",
+    emp_proyectos_id: 0,
+    fecha_creacion: null,
+    estado: 1,
     requirements_list: []
 };
 
 const CreateOfferForm = ({
+    setOffersData,
     proyectId, 
-    handleCloseModal
+    handleCloseModal,
+    editMode,
+    offerId
 }) => {
     const [formValues, setFormValues] = useState(INITIAL_VALUES);
     const [requirements, setRequirements] = useState([""]);
@@ -37,12 +41,16 @@ const CreateOfferForm = ({
         setFormValues((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleStateChange = (event) => {
+        setFormValues((prev)=> ({...prev, estado: event.target.checked ? 1 : 0}));
+    };
+
+    const handleSubmitCreate = async (event) => {
         event.preventDefault();
         setLoading(true);
-        formValues.project_id = proyectId;
-        formValues.salary = parseInt(formValues.salary);
-        formValues.created_at = new Date();
+        formValues.emp_proyectos_id = proyectId;
+        formValues.salario_anual = parseInt(formValues.salario_anual);
+        formValues.fecha_creacion = new Date();
         formValues.requirements_list = requirements;
 
         try {
@@ -60,27 +68,115 @@ const CreateOfferForm = ({
             handleCloseModal();
         }
     };
+
+    const handleSubmitUpdate = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        formValues.salario_anual = parseInt(formValues.salario_anual);
+        formValues.requirements_list = requirements;
+
+        try {
+            const response = await axios.put(`/api/companies/update-offer/${offerId}`, formValues);
+            const updatedRecord = response.data; 
+            setOffersData((prev)=>
+                prev.map((offer)=>
+                    offer.emp_ofertas_id === offerId ? { ...offer, ...updatedRecord } : offer
+                )
+            );
+            updateNotification("Oferta actualizado con exito", "success");
+            openNotification();
+            handleCloseModal();
+        } catch (error) {
+            console.error("Error al actualizar la oferta:", error);
+            updateNotification("Ocurrió un error al actualizar la oferta", "error");
+            openNotification();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(()=> {
+        const fetchOfferData = async () => {
+            try{
+                const response = await axios.get(`/api/companies/offer-information/${offerId}`);
+                const offerData = response.data;
+                const mappedData = {
+                    nombre: offerData.nombre,
+                    descripcion: offerData.descripcion,
+                    salario_anual: offerData.salario_anual,
+                    mst_puestos_id: offerData.mst_puestos_id.mst_puestos_id,
+                    mst_modalidad_id: offerData.mst_modalidad_id,
+                    mst_jornada_id: offerData.mst_jornada_id,
+                    mst_emp_sector_id: offerData.mst_emp_sector_id.mst_emp_sector_id,
+                    mst_comunidades_id: offerData.mst_ciudades_id.mst_provincias_id.mst_comunidades_id.mst_comunidades_id,
+                    mst_provincias_id: offerData.mst_ciudades_id.mst_provincias_id.mst_provincias_id,
+                    mst_ciudades_id: offerData.mst_ciudades_id.mst_ciudades_id,
+                    estado: offerData.estado,
+                };
+                const offerRequirements = offerData.requirements_list;
+                setRequirements(offerRequirements.map(
+                    (requirement) => requirement.descripcion
+                ));
+                setFormValues(mappedData);
+            } catch(error){
+                console.error(error)
+            }
+        };
+
+        if(editMode) fetchOfferData();
+    },[]);
+
     return (
         <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={ editMode ? handleSubmitUpdate : handleSubmitCreate}
         >
             <Typography variant="h6" sx={{ mb: 1 }}>
-                Crear Nueva Oferta de Empleo
+                {editMode ? "Editemos tu oferta" : "Crear Nueva Oferta de Empleo"}
             </Typography>
 
-            <CustomTextFieldWithIcon
-                label="Nombre de la Oferta"
-                name="name"
-                value={formValues.name}
-                onChange={handleOnChange}
-                required
-            />
+            <Box sx={{
+                display: 'flex',
+                width: '100%',
+                gap: 1
+            }}>
+                <CustomTextFieldWithIcon
+                    label="Nombre de la Oferta"
+                    name="nombre"
+                    value={formValues.nombre}
+                    onChange={handleOnChange}
+                    required
+                />
+
+                {editMode && (
+                    <FormControl
+                        variant="filled"
+                        sx={{
+                            px: 2,
+                            mb: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            borderRadius: 1,
+                            border: '1px solid #AAAD'
+                        }}
+                    >
+                        <FormControlLabel 
+                            control={
+                                <Switch 
+                                    checked={formValues.estado === 1}
+                                    onChange={handleStateChange}
+                                />
+                            }
+                            label="Estado"
+                        />
+                    </FormControl>
+                )}
+            </Box>
 
             <CustomTextFieldWithIcon
                 label="Descripción"
-                name="description"
-                value={formValues.description}
+                name="descripcion"
+                value={formValues.descripcion}
                 onChange={handleOnChange}
                 required
                 multiline
@@ -89,9 +185,9 @@ const CreateOfferForm = ({
 
             <CustomTextFieldWithIcon
                 label="Salario Anual (€)"
-                name="salary"
+                name="salario_anual"
                 type="number"
-                value={formValues.salary}
+                value={formValues.salario_anual}
                 onChange={handleOnChange}
                 required
             />
@@ -102,8 +198,8 @@ const CreateOfferForm = ({
             <OptionPicker
                 urlData="/api/master/job-modality"
                 label="Modalidad"
-                name="job_modality_id"
-                value={formValues.job_modality_id}
+                name="mst_modalidad_id"
+                value={formValues.mst_modalidad_id}
                 onChange={handleOnChange}
                 idKey="mst_modalidad_id"
                 labelKey="descripcion"
@@ -112,8 +208,8 @@ const CreateOfferForm = ({
             <OptionPicker
                 urlData="/api/master/working-day"
                 label="Jornada Laboral"
-                name="working_day_id"
-                value={formValues.working_day_id}
+                name="mst_jornada_id"
+                value={formValues.mst_jornada_id}
                 onChange={handleOnChange}
                 idKey="mst_jornada_id"
                 labelKey="descripcion"
@@ -122,8 +218,8 @@ const CreateOfferForm = ({
             <OptionPicker
                 urlData="/api/master/job-positions"
                 label="Puesto"
-                name="job_id"
-                value={formValues.job_id}
+                name="mst_puestos_id"
+                value={formValues.mst_puestos_id}
                 onChange={handleOnChange}
                 idKey="mst_puestos_id"
                 labelKey="nombre"
@@ -132,8 +228,8 @@ const CreateOfferForm = ({
             <OptionPicker
                 urlData="/api/master/sectors"
                 label="Sector"
-                name="sector_id"
-                value={formValues.sector_id}
+                name="mst_emp_sector_id"
+                value={formValues.mst_emp_sector_id}
                 onChange={handleOnChange}
                 idKey="mst_emp_sector_id"
                 labelKey="descripcion"
@@ -152,34 +248,38 @@ const CreateOfferForm = ({
             <OptionPicker
                 urlData='/api/master/communities'
                 label="Comunidad Autonoma"
-                name="community_id"
-                value={formValues.community_id}
+                name="mst_comunidades_id"
+                value={formValues.mst_comunidades_id}
                 onChange={handleOnChange}
                 idKey='mst_comunidades_id'
                 labelKey='nombre_corto'
             />
 
             <OptionPicker
-                urlData={`/api/master/communities/${formValues.community_id}/provinces`}
+                urlData={`/api/master/communities/${formValues.mst_comunidades_id}/provinces`}
                 label="Provincia"
-                name="province_id"
-                value={formValues.province_id}
+                name="mst_provincias_id"
+                value={formValues.mst_provincias_id}
                 onChange={handleOnChange}
                 idKey='mst_provincias_id'
                 labelKey='nombre'
             />
 
             <OptionPicker
-                urlData={`/api/master/provinces/${formValues.province_id}/cities`}
+                urlData={`/api/master/provinces/${formValues.mst_provincias_id}/cities`}
                 label="Ciudad"
-                name="city_id"
-                value={formValues.city_id}
+                name="mst_ciudades_id"
+                value={formValues.mst_ciudades_id}
                 onChange={handleOnChange}
                 idKey='mst_ciudades_id'
                 labelKey='nombre'
             />
 
-            <LoaderButton text="Crear Oferta" loading={loading} sx={{ mt: 2 }} />
+            <LoaderButton 
+                text={editMode ? "Actualizar" : "Crear Oferta"} 
+                loading={loading} 
+                sx={{ mt: 2 }} 
+            />
         </Box>
     );
 };

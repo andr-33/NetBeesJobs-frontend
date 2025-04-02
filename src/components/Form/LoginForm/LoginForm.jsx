@@ -1,7 +1,8 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { AlternateEmailRounded, LockRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
@@ -15,15 +16,13 @@ const INITIAL_VALUES = {
 const FormLogin = () => {
     const [formLoginValues, setFormLoginValues] = useState(INITIAL_VALUES);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const theme = useTheme();
     const navigate = useNavigate();
     const { saveToken } = useAuth();
+    const { updateNotification, openNotification } = useNotification();
 
     const handleLogin = async (event) => {
         event.preventDefault();
         setLoading(true);
-        setError(null);
 
         try {
             const response = await axios.post('api/auth/login', formLoginValues);
@@ -46,8 +45,8 @@ const FormLogin = () => {
                 navigate('/perfil-empresa');
             }
         } catch (error) {
-            console.error('Error during login: ', error);
-            setError('Correo o contraseña incorrectos');
+            updateNotification('Correo o contraseña incorrectos', 'error');
+            openNotification();
         } finally {
             setLoading(false);
         }
@@ -85,27 +84,6 @@ const FormLogin = () => {
                 text='Iniciar sesión'
                 loading={loading}
             />
-
-            {error && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        mt: 1,
-                    }}
-                >
-                    <Typography
-                        variant="body1"
-                        maxWidth={270}
-                        textAlign='center'
-                        sx={{
-                            color: theme.palette.error.main,
-                        }}
-                    >
-                        {error}
-                    </Typography>
-                </Box>
-            )}
         </Box>
     );
 }
