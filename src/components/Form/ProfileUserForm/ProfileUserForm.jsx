@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,10 @@ const INITIAL_VALUES = {
   image: "",
 };
 
-const ProfileUserForm = () => {
+const ProfileUserForm = ({
+  userInfo,
+  editMode
+}) => {
   const [formValues, setFormValues] = useState(INITIAL_VALUES);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -93,7 +96,12 @@ const ProfileUserForm = () => {
     if(!date) return;
 
     setFormValues((prev) => ({ ...prev, [name]: date.format('YYYY-MM-DD') }));
-  }
+  };
+
+  useEffect(()=>{
+    console.log(userInfo);
+    //if(editMode) setFormValues(userInfo);
+  },[]);
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
@@ -211,7 +219,10 @@ const ProfileUserForm = () => {
         onChange={handleOnChange}
         required
       />
-      <LoaderButton text="Crear perfil" loading={loading} />
+      <LoaderButton 
+        text={ editMode ? "Actualizar" : "Crear perfil"} 
+        loading={loading} 
+      />
     </Box>
   );
 };
