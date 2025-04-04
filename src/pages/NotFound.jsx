@@ -15,7 +15,7 @@ const NotFoundPage = () =>{
         }}>
             <Box
                 component='img'
-                src="./images/404.png"
+                src="./images/404.webp"
                 sx={{
                     width: isMobile ? 300 : 500,
                     height: 'auto'
