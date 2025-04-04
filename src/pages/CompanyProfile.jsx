@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Skeleton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Skeleton, Typography, useTheme } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { NotificationProvider, useNotification } from "../contexts/NotificationContext/NotificationContext"; 
 import ImageAvatar from "../components/Avatar/ImageAvatar/ImageAvatar";
@@ -9,6 +9,8 @@ import SlideUpNotification from "../components/Notification/SlideUpNotification/
 import ProjectsSection from "../components/Section/ProjectsSection/ProjectsSection";
 import CandidatesSection from "../components/Section/CandidatesSection/CandidatesSection";
 import OfferSection from "../components/Section/OffersSection/OffersSection";
+import { EditRounded } from "@mui/icons-material";
+import EditCompanyProfileModal from "../components/Modal/EditCompanyProfileModal/EditCompanyProfile";
 
 const InformationLoadingSkeletons = () => {
     return (
@@ -31,6 +33,7 @@ const CompanyProfilePage = () => {
     const [expanded, setExpanded] = useState(false);
     const [companyInfo, setCompanyInfo] = useState(null);
     const [activeSection, setActiveSection] = useState('projects');
+    const [openEditProfileModal, setOpenEditProfileModal] = useState(false);
     const theme = useTheme();
     const { accessToken } = useAuth();
     const { notification, closeNotification, updateNotification, openNotification } = useNotification();
@@ -94,6 +97,23 @@ const CompanyProfilePage = () => {
                         <ImageAvatar roleId={2} />
                         {companyInfo ? (
                             <Box>
+                                <Box sx={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end'
+                                }}>
+                                    <IconButton 
+                                        size="small"
+                                        onClick={()=> setOpenEditProfileModal(true)}
+                                        sx={{
+                                            ":hover": {
+                                                color: theme.palette.success.main
+                                            }
+                                        }}
+                                    >
+                                        <EditRounded />
+                                    </IconButton>
+                                </Box>
                                 <Typography
                                     variant="body1"
                                     sx={{
@@ -122,6 +142,11 @@ const CompanyProfilePage = () => {
                     </Box>
                 </Box>
             </Box>
+
+            <EditCompanyProfileModal 
+                openModal={openEditProfileModal}
+                handleCloseModal={() => setOpenEditProfileModal(false)}
+            />
             
             <SlideUpNotification
                 message={notification.message}

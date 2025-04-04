@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
-import { useState } from "react";
+import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -10,15 +10,18 @@ import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
 
 const INITIAL_VALUES = {
-    name: '',
-    acronym: '',
-    community_id: 7,
-    province_id: 28,
-    city_id: '',
+    nombre: '',
+    acronimo: '',
+    mst_comunidades_id: 7,
+    mst_provincias_id: 28,
+    mst_ciudades_id: '',
     image: ''
 };
 
-const ProfileCompanyForm = () => {
+const ProfileCompanyForm = ({
+    editMode,
+    handleCloseModal
+}) => {
     const [formValues, setFormValues] = useState(INITIAL_VALUES);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -26,7 +29,7 @@ const ProfileCompanyForm = () => {
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
-    const handleSubmit = async (event) => {
+    const handleSubmitCreate = async (event) => {
         event.preventDefault();
         setLoading(true);
         formValues.image = selectedImage;
@@ -45,7 +48,7 @@ const ProfileCompanyForm = () => {
 
             updateNotification('Perfil creado con exito!', 'success');
             openNotification();
-            setTimeout(()=>{
+            setTimeout(() => {
                 navigate('/perfil-empresa');
                 setFormValues(INITIAL_VALUES);
             }, 2500);
@@ -74,59 +77,118 @@ const ProfileCompanyForm = () => {
         }
     };
 
+    const handleSubmitUpdate = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+
+        try{
+            const response = await axios.put('/api/companies/update-profile', formValues, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            });
+
+            updateNotification('Perfil actualizado con exito!', 'success');
+            openNotification();
+        } catch (error) {
+            console.error('Error updating company:', error);
+            updateNotification('Lo sentimos, algo ha salido mal', 'error');
+            openNotification();
+        } finally {
+            setLoading(false);
+            setFormValues(INITIAL_VALUES);
+            handleCloseModal();
+        }
+    };
+
     const handleOnChange = (event) => {
         const { name, value } = event.target;
         setFormValues(prev => ({ ...prev, [name]: value }));
     };
 
+    useEffect(() => {
+        const fetchCompanyData = async () => {
+            try {
+                const response = await axios.get('/api/companies/company-information', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                });
+                const companyData = response.data;
+                const mappedData = {
+                    nombre: companyData.nombre,
+                    acronimo: companyData.acronimo,
+                    mst_comunidades_id: companyData.mst_ciudades_id.mst_provincias_id.mst_comunidades_id.mst_comunidades_id,
+                    mst_provincias_id: companyData.mst_ciudades_id.mst_provincias_id.mst_provincias_id,
+                    mst_ciudades_id: companyData.mst_ciudades_id.mst_ciudades_id,
+                }
+                setFormValues(mappedData);
+            } catch (error) {
+                console.error('Error fetching company data:', error);
+                updateNotification("No pudimos obtener la información", 'error');
+                openNotification();
+            }
+        };
+
+        if (editMode) fetchCompanyData();
+    },[]);
+
     return (
         <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={editMode ? handleSubmitUpdate : handleSubmitCreate}
         >
+            <Typography
+                variant="h6"
+                sx={{
+                    mb: 1
+                }}
+            >
+                {editMode ? "Datos de la empresa: " : "Sobre tu empresa:"}
+            </Typography>
             <CustomTextFieldWithIcon
                 label="Nombre de la empresa"
-                name="name"
-                value={formValues.name}
+                name="nombre"
+                value={formValues.nombre}
                 onChange={handleOnChange}
                 required
             />
             <CustomTextFieldWithIcon
                 label="Acrónimo"
-                name="acronym"
-                value={formValues.acronym}
+                name="acronimo"
+                value={formValues.acronimo}
                 onChange={handleOnChange}
                 required
             />
             <OptionPicker
                 urlData='/api/master/communities'
                 label="Comunidad Autonoma"
-                name="community_id"
-                value={formValues.community_id}
+                name="mst_comunidades_id"
+                value={formValues.mst_comunidades_id}
                 onChange={handleOnChange}
                 idKey='mst_comunidades_id'
                 labelKey='nombre_corto'
             />
             <OptionPicker
-                urlData={`/api/master/communities/${formValues.community_id}/provinces`}
+                urlData={`/api/master/communities/${formValues.mst_comunidades_id}/provinces`}
                 label="Provincia"
-                name="province_id"
-                value={formValues.province_id}
+                name="mst_provincias_id"
+                value={formValues.mst_provincias_id}
                 onChange={handleOnChange}
                 idKey='mst_provincias_id'
                 labelKey='nombre'
             />
             <OptionPicker
-                urlData={`/api/master/provinces/${formValues.province_id}/cities`}
+                urlData={`/api/master/provinces/${formValues.mst_provincias_id}/cities`}
                 label="Ciudad"
-                name="city_id"
-                value={formValues.city_id}
+                name="mst_ciudades_id"
+                value={formValues.mst_ciudades_id}
                 onChange={handleOnChange}
                 idKey='mst_ciudades_id'
                 labelKey='nombre'
             />
             <LoaderButton
-                text="Crear perfil de empresa"
+                text={editMode ? "Actulizar" : "Crear perfil de empresa"}
                 loading={loading}
             />
         </Box>

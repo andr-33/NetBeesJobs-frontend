@@ -93,13 +93,12 @@ const ProfileUserForm = ({
     setLoading(true);
 
     try{
-      const response = await axios.put('/api/users/update-user-profile', formValues, {
+      const response = await axios.put('/api/users/update-profile', formValues, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         }
       });
 
-      console.log('Response: ', response.data);
       updateNotification('Perfil actualizado con exito!', 'success');
       openNotification();
     } catch (error) {
@@ -150,7 +149,7 @@ const ProfileUserForm = ({
         };
         setFormValues(mappedData);
       } catch (error) {
-        console.error('Error: ', error.message);
+        console.error('Error fetching user data: ', error.message);
         updateNotification("No pudimos obtener tu información", 'error');
         openNotification();
       }
