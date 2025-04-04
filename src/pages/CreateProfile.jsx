@@ -93,7 +93,9 @@ const CrearPerfilPage = () => {
                             {roleId === '2' ? (
                                 <ProfileCompanyForm />
                             ) : (
-                                <ProfileUserForm />
+                                <ProfileUserForm 
+                                    editMode={false}
+                                />
                             )}
                         </Box>
                     </Paper>

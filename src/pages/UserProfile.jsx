@@ -107,7 +107,16 @@ const UserProfilePage = () => {
                                         fontSize: 30
                                     }}
                                 >
-                                    {userInfo.nombre} {userInfo.primer_apellido}
+                                    {userInfo.nombre}
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    sx={{
+                                        fontWeight: '600',
+                                        fontSize: 30
+                                    }}
+                                >
+                                    {userInfo.primer_apellido} {userInfo.segundo_apellido}
                                 </Typography>
                                 <Typography variant="body2" fontWeight={'600'}>En:
                                     <Typography component={'span'}> {userInfo.mst_ciudades_id?.nombre}</Typography>

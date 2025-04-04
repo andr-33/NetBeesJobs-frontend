@@ -13,25 +13,31 @@ const EditUserProfileModal = ({openModal, handleCloseModal}) => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     width: 700,
+                    maxHeight: "90vh",
+                    overflowY: "auto",
                     bgcolor: "background.paper",
                     boxShadow: 24,
-                    p: 4,
+                    px: 4,
+                    py: 2,
                     borderRadius: 2,
                   }}
             >
                 <ProfileUserForm 
                     editMode={true}
+                    handleCloseModal={handleCloseModal}
                 />
             </Box>
         </Modal>
     );
 };
 
-export default ({openModal, handleCloseModal}) => (
+const EditUserProfileModalWrapper = ({ openModal, handleCloseModal }) => (
     <ImageProfileProvider>
         <EditUserProfileModal 
             openModal={openModal} 
             handleCloseModal={handleCloseModal}
         />
     </ImageProfileProvider>
-)
+);
+
+export default EditUserProfileModalWrapper;
