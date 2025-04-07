@@ -1,15 +1,13 @@
 import { Box } from '@mui/material';
 
-const WelcomePageSection = ({children}) => {
+const WelcomePageSection = ({children, sx}) => {
     return (
         <Box
             sx={{
                 minHeight: '100vh',
                 display: 'flex',
-                flexDirection: 'column',
-                scrollSnapAlign: 'start',
-                justifyContent: 'center',
                 alignItems: 'center',
+                ...sx
             }}
         >
             {children}
