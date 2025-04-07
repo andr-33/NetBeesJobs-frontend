@@ -100,10 +100,16 @@ const OfferSection = () => {
             {offersData.length > 0 && (
                 <Grid container spacing={2} mt={2}>
                     {offersData.map((offer, index) => (
-                        <Grid key={index} size={{ lg: 4, md: 6, sm: 12 }}>
+                        <Grid key={index} size={{ lg: 6, md: 6, sm: 12 }}>
                             <OfferCard
                                 id={offer.emp_ofertas_id}
                                 name={offer.nombre}
+                                state={offer.estado}
+                                city={offer.mst_ciudades_id.nombre}
+                                createdDate={offer.fecha_creacion}
+                                workday={offer.mst_jornada_id === 1 ? "Completa" : offer.mst_jornada_id === 2 ? "Parcial" : "No especificada"}
+                                sectorName={offer.mst_emp_sector_id.descripcion}
+                                salary={offer.salario_anual}
                                 project={offer.emp_proyectos_id.nombre}
                                 handleDeleteOffer={handleDeleteOffer}
                                 handleEditOffer={()=> handleEditOffer(offer.emp_ofertas_id)}
