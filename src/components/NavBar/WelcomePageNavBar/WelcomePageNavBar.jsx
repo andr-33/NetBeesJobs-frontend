@@ -20,7 +20,7 @@ const WelcomePageNavBar = () => {
     }, []);
 
     return (
-        <AppBar position="fixed" component='nav' sx={{ bgcolor: theme.palette.background.paper, height: 80 }}>
+        <AppBar  component='nav' sx={{ bgcolor: theme.palette.background.paper, height: 80 }}>
             <Toolbar>
                 <Box component='img' src="./logos/netbees-logo.png" sx={{ width: 152, height: 121 }} />
                 <Box sx={{ marginLeft: 'auto', display: 'flex', flexDirection: 'row', gap: 1 }}>
