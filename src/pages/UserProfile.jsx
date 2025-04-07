@@ -7,7 +7,7 @@ import axios from "axios";
 import SlideUpNotification from "../components/Notification/SlideUpNotification/SlideUpNotification";
 import UserSideBar from "../components/Sidebar/UserSidebar/UserSidebar";
 import ImageAvatar from "../components/Avatar/ImageAvatar/ImageAvatar";
-import RegistersSection from "../components/Section/RegistersSection/RegistersSection";
+import CandidaturesSection from "../components/Section/CandidaturesSection/CandidaturesSection";
 import EditUserProfileModal from "../components/Modal/EditUserProfileModal/EditUserProfileModal";
 
 const InformationLoadingSkeletons = () => {
@@ -37,7 +37,7 @@ const UserProfilePage = () => {
     const { notification, closeNotification, updateNotification, openNotification } = useNotification();
 
     const sectionComponents = {
-        registers: <RegistersSection />,
+        registers: <CandidaturesSection />,
     };
 
     useEffect(() => {
