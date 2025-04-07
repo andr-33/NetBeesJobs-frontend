@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useScreenWidth } from "../../../contexts/ScreenWidthContext/ScreenWidthContext";
 
-const ServerError = ({ message }) => {
+const DataNullError = ({ message }) => {
     const { isMobile } = useScreenWidth();
 
     return (
@@ -13,7 +13,7 @@ const ServerError = ({ message }) => {
         }}>
             <Box
                 component={'img'}
-                src="/images/server_error.webp"
+                src="/images/data_null.webp"
                 sx={{
                     width: isMobile ? 180 : 300,
                     height: 'auto'
@@ -32,4 +32,4 @@ const ServerError = ({ message }) => {
     );
 };
 
-export default ServerError;
+export default DataNullError;

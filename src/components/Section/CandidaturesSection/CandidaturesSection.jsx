@@ -5,10 +5,12 @@ import { useNotification } from "../../../contexts/NotificationContext/Notificat
 import ServerError from "../../Error/ServerError/ServerError";
 import axios from "axios";
 import CandidatureCard from "../../Card/CandidatureCard/CandidatureCard";
+import DataNullError from "../../Error/DataNullError/DataNullError";
 
 const CandidaturesSection = () => {
     const [candidaturesData, setCandidaturesData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
+    const [isDataNull, setIsDataNull] = useState(false);
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
@@ -35,6 +37,9 @@ const CandidaturesSection = () => {
                 });
                 setCandidaturesData(response.data);
                 setExistsAnError(false);
+                if(response.data.length === 0) {
+                    setIsDataNull(true);
+                }
             } catch (error) {
                 console.error('Error fetching candidatures:', error.message);
                 setExistsAnError(true);
@@ -59,6 +64,12 @@ const CandidaturesSection = () => {
             {existsAnError && (
                 <ServerError
                     message="Vaya... No pudimos obtener tus candidaturas"
+                />
+            )}
+
+            {isDataNull && !existsAnError && (
+                <DataNullError 
+                    message="Aún no tienes candidaturas registradas"
                 />
             )}
 
