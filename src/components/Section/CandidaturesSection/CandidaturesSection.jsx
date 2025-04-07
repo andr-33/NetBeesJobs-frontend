@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"; 
-import { Box, Grid2 as Grid, Typography } from "@mui/material";
+import { Grid2 as Grid, Typography } from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import ServerError from "../../Error/ServerError/ServerError";
@@ -7,10 +7,23 @@ import axios from "axios";
 import CandidatureCard from "../../Card/CandidatureCard/CandidatureCard";
 
 const CandidaturesSection = () => {
-    const [candidaturesData, setcandidaturesData] = useState([]);
+    const [candidaturesData, setCandidaturesData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
+
+    const handleDeleteCandidature = async (candidatureId) => {
+        try {
+            await axios.delete(`/api/users/delete-candidature/${candidatureId}`);
+            setCandidaturesData(candidaturesData.filter(candidature => candidature.can_cv_ofertas_id !== candidatureId));
+            updateNotification("Candidatura eliminada con exito", "success");
+            openNotification();
+        } catch (error) {
+            console.error("Error: ", error);
+            updateNotification("No pudimos eliminar esta candidatura", "error");
+            openNotification();
+        }
+    };
 
     useEffect(()=>{
         const fetchCandidatures = async () => {
@@ -20,8 +33,7 @@ const CandidaturesSection = () => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                console.log(response.data);
-                setcandidaturesData(response.data);
+                setCandidaturesData(response.data);
                 setExistsAnError(false);
             } catch (error) {
                 console.error('Error fetching candidatures:', error.message);
@@ -60,6 +72,7 @@ const CandidaturesSection = () => {
                         <Grid key={index} size={{ lg: 4, md: 6, sm: 12 }}>
                             <CandidatureCard 
                                 candidature={candidature}
+                                handleDeleteCandidature={handleDeleteCandidature}
                             />
                         </Grid>
                     ))}

@@ -50,7 +50,7 @@ const UserProfilePage = () => {
                 });
                 setUserInfo(response.data);
             } catch (error) {
-                console.error('Error: ', error.message);
+                console.error('Error fetching candidatutres data: ', error.message);
                 updateNotification("No pudimos obtener tu información", 'error');
                 openNotification();
             }
