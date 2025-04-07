@@ -44,7 +44,7 @@ const ProfileCompanyForm = () => {
 
   const handleSetCompanyRole = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         "/api/master/set-role",
         { roleId: 2 },
         {
@@ -53,15 +53,17 @@ const ProfileCompanyForm = () => {
           },
         }
       );
+      return response.data;
     } catch (error) {
       console.error("Error setting role: ", error);
+      throw error;
     }
   };
 
   const handleCreateCompany = async () => {
     try {
       await handleSetCompanyRole();
-      await axios.post(
+      const response = await axios.post(
         "/api/companies/create-company-profile",
         {
           ...formValues,
@@ -71,34 +73,81 @@ const ProfileCompanyForm = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
+      console.log("Respuesta del servidor al crear la empresa:", response.data);
+      console.log("ID de la empresa creada:", response.data[0].emp_empresas_id);
+
+      if (!response.data || !response.data[0] || !response.data[0].emp_empresas_id) {
+        throw new Error("No se pudo obtener el ID de la empresa de la respuesta del servidor");
+      }
+
+      return response.data[0].emp_empresas_id;
     } catch (error) {
-      console.error("Error al crear empresa: ", error);
+      console.error("Error al crear empresa:", error);
+      throw error;
     }
   };
 
   const handleFreePlan = async () => {
-    try{
-      await handleCreateCompany();
+    setLoading(true);
+    const baseUrl = window.location.origin;
+
+    try {
+      const companyId = await handleCreateCompany();
+
+      if (!companyId) {
+        console.error("companyId is undefined");
+        updateNotification(
+          "No se pudo obtener el ID de la empresa creada",
+          "error"
+        );
+        openNotification();
+        setLoading(false);
+        return;
+      }
+
+      const dataToSave = { ...formValues, image: selectedImage };
+      sessionStorage.setItem("companyFormData", JSON.stringify(dataToSave));
+
       updateNotification("Perfil creado con el plan gratuito", "success");
       openNotification();
-      setTimeout(()=>{
-        navigate("/empresa/creando-perfil");
+      setTimeout(() => {
+        navigate(`/empresa/creando-perfil?companyId=${companyId}`);
       }, 2000);
-    } catch(error) {
-      updateNotification("Error al crear el perfil con el plan gratuito", "error");
+    } catch (error) {
+      console.error("Error al crear la empresa:", error);
+      if (error.response) {
+        updateNotification(
+          error.response.data.error || "Error al crear el perfil con el plan gratuito",
+          "error"
+        );
+      } else {
+        updateNotification("Error de conexión con el servidor", "error");
+      }
       openNotification();
+      setLoading(false);
     }
   };
 
   const handlePremiumPlan = async () => {
     setLoading(true);
     const baseUrl = window.location.origin;
-  
+
     try {
+      const companyId = await handleCreateCompany();
+
+      if (!companyId) {
+        throw new Error("No se pudo obtener el ID de la empresa creada");
+      }
+
       const dataToSave = { ...formValues, image: selectedImage };
       sessionStorage.setItem("companyFormData", JSON.stringify(dataToSave));
 
-      const res = await axios.post("/api/stripe/create-checkout-session", { baseUrl });
+      const res = await axios.post("/api/stripe/create-checkout-session", {
+        baseUrl,
+        companyId,
+        plan: "premium",
+      });
+
       window.location.href = res.data.url;
     } catch (error) {
       console.error("Error iniciando pago:", error);
@@ -182,7 +231,7 @@ const ProfileCompanyForm = () => {
 
       {showPlans && (
         <Grid container spacing={2} mt={4}>
-          <Grid  size={{xs:12, md:6}}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box
               sx={{
                 border: "2px solid",
@@ -210,7 +259,7 @@ const ProfileCompanyForm = () => {
             </Box>
           </Grid>
 
-          <Grid size={{xs:12, md:6}}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box
               sx={{
                 border: "2px solid",

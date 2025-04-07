@@ -26,7 +26,7 @@ const StripeSuccess = () => {
         updateNotification("Perfil creado con éxito tras el pago", "success");
         openNotification();
         sessionStorage.removeItem("companyFormData");
-        setTimeout(() => navigate("/perfil-empresa"), 2500);
+        //setTimeout(() => navigate("/perfil-empresa"), 2500);
       } catch (error) {
         console.error("Error al crear perfil tras pago:", error);
         updateNotification("Error creando perfil tras pago", "error");
