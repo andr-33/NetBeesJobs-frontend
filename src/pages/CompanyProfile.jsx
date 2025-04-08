@@ -35,16 +35,16 @@ const InformationLoadingSkeletons = () => {
 };
 
 const CompanyProfilePage = () => {
-    const [expanded, setExpanded] = useState(false);
-    const [FetchingCompanyInfo, setFetchingCompanyInfo] = useState(false);
-    const [companyInfo, setCompanyInfo] = useState(null);
-    const [activeSection, setActiveSection] = useState('projects');
-    const [openEditProfileModal, setOpenEditProfileModal] = useState(false);
-    const theme = useTheme();
-    const [loading, setLoading] = useState(false);
-    const { accessToken } = useAuth();
-    const { notification, closeNotification, updateNotification, openNotification } = useNotification();
-    const location = useLocation();
+  const [expanded, setExpanded] = useState(false);
+  const [FetchingCompanyInfo, setFetchingCompanyInfo] = useState(false);
+  const [companyInfo, setCompanyInfo] = useState(null);
+  const [activeSection, setActiveSection] = useState('projects');
+  const [openEditProfileModal, setOpenEditProfileModal] = useState(false);
+  const theme = useTheme();
+  const [loading, setLoading] = useState(false);
+  const { accessToken } = useAuth();
+  const { notification, closeNotification, updateNotification, openNotification } = useNotification();
+  const location = useLocation();
 
   const sectionComponents = {
     projects: <ProjectsSection />,
@@ -151,63 +151,63 @@ const CompanyProfilePage = () => {
     }
   };
 
-    return (
-        <>
-            <Box sx={{
-                display: 'flex',
-                backgroundColor: theme.palette.background.default,
-                position: 'relative',
-                pl: '70px'
-            }}>
-                <CompanySidebar 
-                    expanded={expanded} 
-                    setExpanded={setExpanded} 
-                    setActiveSection={setActiveSection}
-                />
-                <Box sx={{ flexGrow: 1, p: 3 }}>
-                    <Box sx={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: 2
-                    }}>
-                        <ImageAvatar roleId={2} />
-                        {companyInfo ? (
-                            <Box>
-                                <Box sx={{
-                                    width: '100%',
-                                    display: 'flex',
-                                    justifyContent: 'flex-end'
-                                }}>
-                                    <IconButton 
-                                        size="small"
-                                        onClick={()=> setOpenEditProfileModal(true)}
-                                        sx={{
-                                            ":hover": {
-                                                color: theme.palette.success.main
-                                            }
-                                        }}
-                                    >
-                                        <EditRounded />
-                                    </IconButton>
-                                </Box>
-                                <Typography
-                                    variant="body1"
-                                    sx={{
-                                        fontWeight: '600',
-                                        fontSize: 30
-                                    }}
-                                >
-                                    {companyInfo.nombre} ({companyInfo.acronimo})
-                                </Typography>
-                                <Typography variant="body2" fontWeight={'600'}>Fecha de alta:
-                                    <Typography component={'span'}> {formatDate(companyInfo.fecha_alta)}</Typography>
-                                </Typography>
-                                <Typography variant="body2" fontWeight={'600'}>En:
-                                    <Typography component={'span'}> {companyInfo.mst_ciudades_id.nombre}</Typography>
-                                </Typography>
-                                {companyInfo.suscripcion === "premium" && (
+  return (
+    <>
+      <Box sx={{
+        display: 'flex',
+        backgroundColor: theme.palette.background.default,
+        position: 'relative',
+        pl: '70px'
+      }}>
+        <CompanySidebar
+          expanded={expanded}
+          setExpanded={setExpanded}
+          setActiveSection={setActiveSection}
+        />
+        <Box sx={{ flexGrow: 1, p: 3 }}>
+          <Box sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2
+          }}>
+            <ImageAvatar roleId={2} />
+            {companyInfo ? (
+              <Box>
+                <Box sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-end'
+                }}>
+                  <IconButton
+                    size="small"
+                    onClick={() => setOpenEditProfileModal(true)}
+                    sx={{
+                      ":hover": {
+                        color: theme.palette.success.main
+                      }
+                    }}
+                  >
+                    <EditRounded />
+                  </IconButton>
+                </Box>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: '600',
+                    fontSize: 30
+                  }}
+                >
+                  {companyInfo.nombre} ({companyInfo.acronimo})
+                </Typography>
+                <Typography variant="body2" fontWeight={'600'}>Fecha de alta:
+                  <Typography component={'span'}> {formatDate(companyInfo.fecha_alta)}</Typography>
+                </Typography>
+                <Typography variant="body2" fontWeight={'600'}>En:
+                  <Typography component={'span'}> {companyInfo.mst_ciudades_id.nombre}</Typography>
+                </Typography>
+                {companyInfo.suscripcion === "premium" && (
                   <Button
                     sx={{
                       mt: 2,
@@ -239,33 +239,33 @@ const CompanyProfilePage = () => {
                   </Button>
                 )}
 
-                            </Box>
-                        ) : (
-                            <Box>
-                                <InformationLoadingSkeletons />
-                            </Box>
-                        )}
-                    </Box>
-                    
-                    <Box component='main' sx={{ mt: 2 }}>
-                        {sectionComponents[activeSection]}
-                    </Box>
-                </Box>
-            </Box>
+              </Box>
+            ) : (
+              <Box>
+                <InformationLoadingSkeletons />
+              </Box>
+            )}
+          </Box>
 
-            <EditCompanyProfileModal 
-                openModal={openEditProfileModal}
-                handleCloseModal={() => setOpenEditProfileModal(false)}
-            />
-            
-            <SlideUpNotification
-                message={notification.message}
-                type={notification.type}
-                open={notification.open}
-                handleClose={closeNotification}
-            />
-        </>
-    );
+          <Box component='main' sx={{ mt: 2 }}>
+            {sectionComponents[activeSection]}
+          </Box>
+        </Box>
+      </Box>
+
+      <EditCompanyProfileModal
+        openModal={openEditProfileModal}
+        handleCloseModal={() => setOpenEditProfileModal(false)}
+      />
+
+      <SlideUpNotification
+        message={notification.message}
+        type={notification.type}
+        open={notification.open}
+        handleClose={closeNotification}
+      />
+    </>
+  );
 };
 
 export default () => (

@@ -283,7 +283,10 @@ const ProfileCompanyForm = ({
       />
 
       {!showPlans && (
-        <LoaderButton text="Crear perfil de empresa" loading={loading} />
+        <LoaderButton 
+          text={ editMode ? "Actualizar" : "Crear perfil de empresa"}
+          loading={loading} 
+        />
       )}
 
       {showPlans && (
