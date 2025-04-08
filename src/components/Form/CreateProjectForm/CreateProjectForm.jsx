@@ -33,6 +33,8 @@ const CreateProjectForm = ({
     };
 
     const handleDateChange = (name) => (date) => {
+        if (!date) return;
+        
         setFormValues((prev) => ({ ...prev, [name]: date.format("YYYY-MM-DD") }));
     };
 

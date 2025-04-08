@@ -91,9 +91,13 @@ const CrearPerfilPage = () => {
                         <PhotoPicker />
                         <Box>
                             {roleId === '2' ? (
-                                <ProfileCompanyForm />
+                                <ProfileCompanyForm 
+                                    editMode={false}
+                                />
                             ) : (
-                                <ProfileUserForm />
+                                <ProfileUserForm 
+                                    editMode={false}
+                                />
                             )}
                         </Box>
                     </Paper>
