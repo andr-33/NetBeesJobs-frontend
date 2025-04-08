@@ -55,28 +55,14 @@ const CompanyProfilePage = () => {
   const fetchCompanyInformation = async () => {
     setFetchingCompanyInfo(true);
     try {
-      console.log(
-        "📤 Enviando solicitud a /api/companies/company-information con accessToken:",
-        accessToken
-      );
       const response = await axios.get("/api/companies/company-information", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(
-        "📥 Respuesta de /api/companies/company-information:",
-        response.data
-      );
       setCompanyInfo(response.data);
     } catch (error) {
       console.error("Error al obtener información de la empresa:", error);
-      if (error.response) {
-        console.error("Detalles del error:", {
-          status: error.response.status,
-          data: error.response.data,
-        });
-      }
       updateNotification("No pudimos obtener tu información", "error");
       openNotification();
     } finally {
