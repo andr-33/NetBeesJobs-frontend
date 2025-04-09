@@ -2,9 +2,11 @@ import { Box, Button, Grid2 as Grid, Typography, useTheme } from '@mui/material'
 import React from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
 
 const ComparisonCards = () => {
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const FeatureItem = ({ hasFeature, text }) => (
         <Box sx={{
@@ -89,6 +91,7 @@ const ComparisonCards = () => {
                                 backgroundColor: theme.palette.primary.dark
                             }
                         }}
+                        onClick={() => navigate('/perfil-empresa')}
                         fullWidth
                     >
                         Regístrate como empresa

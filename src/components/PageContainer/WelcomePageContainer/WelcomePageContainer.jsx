@@ -12,9 +12,11 @@ import CompanyStepsCard from "../../Card/CompanyStepsCard/CompanyStepsCard";
 import "./WelcomePageContainer.css";
 import ComparisonCards from "../../Card/ComparisonCard/ComparisonCard";
 import JobPostCard from "../../Card/JobPostCard/JobPostCard";
+import { useNavigate } from "react-router-dom";
 
 const WelcomePageContainer = () => {
     const theme = useTheme();
+    const navigate = useNavigate();
     const { isMobile } = useScreenWidth();
     const partnerRef = useRef(null);
     const contactRef = useRef(null);
@@ -54,7 +56,11 @@ const WelcomePageContainer = () => {
                                             </Box>
                                             ofertas de empleo <br /> se mueren por conocer tu CV
                                         </Typography>
-                                        <Button variant="contained" sx={{ mt: 5, backgroundColor: theme.palette.primary.main, color: 'black', fontSize: 20, padding: '10px 30px', borderRadius: 5, }} >
+                                        <Button
+                                            variant="contained"
+                                            sx={{ mt: 5, backgroundColor: theme.palette.primary.main, color: 'black', fontSize: 20, padding: '10px 30px', borderRadius: 5, }}
+                                            onClick={() => navigate('/pagina-principal')}
+                                        >
                                             Explorar trabajos
                                         </Button>
                                     </Box>
@@ -128,7 +134,7 @@ const WelcomePageContainer = () => {
                 <Grid size={{ xs: 12, sm: 12 }}>
 
                     <Box sx={{ width: '100%', my: 10 }}>
-                        <Grid container spacing={2} sx={{ mx: { xs: 1, sm: 10, md: 10, lg: 20}    }}>
+                        <Grid container spacing={2} sx={{ mx: { xs: 1, sm: 10, md: 10, lg: 20 } }}>
                             <Grid size={{ xs: 12, sm: 12, md: 12 }} sx={{ textAlign: 'center', width: '100%' }}>
                                 <Typography sx={{ marginBottom: '10px', fontSize: 40, fontWeight: 'bolder' }}>¿Eres una empresa que quiere contratar personal?</Typography>
                             </Grid>
@@ -144,7 +150,12 @@ const WelcomePageContainer = () => {
                                 <CompanyStepsCard img="./images/hands.png" text="Selecciona a los mejores candidatos" />
                             </Grid>
                             <Grid size={{ xs: 12, sm: 12, md: 12 }}>
-                                <Button variant="contained" fullWidth sx={{ mt: 5, backgroundColor: theme.palette.primary.dark, color: 'white', fontSize: 20, borderRadius: 5 }} >
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    sx={{ mt: 5, backgroundColor: theme.palette.primary.dark, color: 'white', fontSize: 20, borderRadius: 5 }}
+                                    onClick={() => navigate('/perfil-empresa')}
+                                >
                                     Registrate como empresa
                                 </Button>
                             </Grid>
@@ -275,7 +286,7 @@ const WelcomePageContainer = () => {
                                             backgroundColor: theme.palette.primary.dark
                                         }
                                     }}
-
+                                    onClick={() => navigate('/perfil-empresa')}
                                 >
                                     Publica tu oferta
                                 </Button>
