@@ -13,6 +13,7 @@ import { useNotification } from '../../../contexts/NotificationContext/Notificat
 import ServerError from '../../Error/ServerError/ServerError';
 import CreateProjectModal from '../../Modal/CreateProjectModal/CreateProjectModal';
 import ProjectCard from '../../Card/ProjectCard/ProjectCard';
+import DataNullError from '../../Error/DataNullError/DataNullError';
 import axios from 'axios';
 
 const ProjectsLoadingSkeletons = () => {
@@ -36,6 +37,7 @@ const ProjectsLoadingSkeletons = () => {
 const CompanyProjectsSection = () => {
     const [projectsData, setProjectsData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
+    const [isDataNull, setIsDataNull] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [openModalAddProject, setOpenModalAddProject] = useState(false);
     const [editSettings, setEditSettings] = useState({
@@ -88,6 +90,9 @@ const CompanyProjectsSection = () => {
                 });
                 setProjectsData(response.data);
                 setExistsAnError(false);
+                if(response.data.length === 0) {
+                    setIsDataNull(true);
+                }
             } catch (error) {
                 console.error('Error: ', error.message);
                 setExistsAnError(true);
@@ -111,7 +116,9 @@ const CompanyProjectsSection = () => {
         return formatter.format(newDate).replace(".", "");
     };
     return (
-        <>
+        <Box sx={{
+            height: '100%',
+        }}>
             <Box sx={{
                 width: '100%',
                 display: 'flex',
@@ -160,6 +167,12 @@ const CompanyProjectsSection = () => {
                 />
             )}
 
+            {isDataNull && !existsAnError && (
+                <DataNullError
+                    message={"Aún no tienes proyectos registrados"}
+                />
+            )}
+
             {isLoading && (
                 <Grid container spacing={2} mt={2}>
                     <ProjectsLoadingSkeletons />
@@ -172,7 +185,7 @@ const CompanyProjectsSection = () => {
                 setProjectsData={setProjectsData}
                 editSettings={editSettings}
             />
-        </>
+        </Box>
     );
 };
 

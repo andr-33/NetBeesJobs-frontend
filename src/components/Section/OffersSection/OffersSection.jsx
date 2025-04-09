@@ -1,7 +1,7 @@
 import { 
     Typography, 
     Grid2 as Grid, 
-    useTheme
+    Box
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
@@ -10,17 +10,19 @@ import ServerError from "../../Error/ServerError/ServerError";
 import axios from "axios";
 import CreateOfferModal from "../../Modal/CreateOfferModal/CreateOfferModal";
 import OfferCard from "../../Card/OfferCard/OfferCard";
+import DataNullError from "../../Error/DataNullError/DataNullError";
 
 const OfferSection = () => {
     const [offersData, setOffersData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
+    const [isDataNull, setIsDataNull] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [openModalEditOffer, setOpenModalEditOffer] =  useState(false);
     const [editSettings, setEditSettings] = useState({
         active: false,
         offerToEdit: null
     });
-    const theme = useTheme();
+
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
@@ -57,6 +59,9 @@ const OfferSection = () => {
                 });
                 setOffersData(response.data);
                 setExistsAnError(false);
+                if (response.data.length === 0) {
+                    setIsDataNull(true);
+                }
             } catch (error) {
                 console.error("Error: ", error.message);
                 setExistsAnError(true);
@@ -81,7 +86,9 @@ const OfferSection = () => {
     };
 
     return (
-        <>
+        <Box sx={{
+            height: '100%',
+        }}>
             <Typography
                 variant="h5"
                 sx={{
@@ -94,6 +101,12 @@ const OfferSection = () => {
             {existsAnError && (
                 <ServerError
                     message={"Vaya... No pudimos obtener tus ofertas"}
+                />
+            )}
+
+            {isDataNull && !existsAnError && (
+                <DataNullError
+                    message={"No tienes ofertas en este momento"}
                 />
             )}
 
@@ -118,7 +131,7 @@ const OfferSection = () => {
                 editSettings={editSettings}
                 setOffersData={setOffersData}
             />
-        </>
+        </Box>
     );
 };
 

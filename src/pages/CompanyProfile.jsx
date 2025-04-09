@@ -115,12 +115,6 @@ const CompanyProfilePage = () => {
     try {
       const companyId = companyInfo.emp_empresas_id;
 
-      console.log("📤 Enviando solicitud para crear sesión de Stripe:", {
-        baseUrl,
-        companyId,
-        plan: "premium",
-      });
-
       const paymentSession = await axios.post(
         "/api/stripe/create-checkout-session",
         {
@@ -155,16 +149,24 @@ const CompanyProfilePage = () => {
     <>
       <Box sx={{
         display: 'flex',
+        flexDirection: 'column',
         backgroundColor: theme.palette.background.default,
         position: 'relative',
-        pl: '70px'
+        pl: '50px',
+        overflow: 'hidden',
+        height: '100vh',
       }}>
         <CompanySidebar
           expanded={expanded}
           setExpanded={setExpanded}
           setActiveSection={setActiveSection}
         />
-        <Box sx={{ flexGrow: 1, p: 3 }}>
+        <Box sx={{ 
+          flexGrow: 1,
+          p: 3,
+          display: 'flex',
+          flexDirection: 'column', 
+        }}>
           <Box sx={{
             width: '100%',
             display: 'flex',
@@ -247,7 +249,13 @@ const CompanyProfilePage = () => {
             )}
           </Box>
 
-          <Box component='main' sx={{ mt: 2 }}>
+          <Box 
+            component='main' 
+            sx={{ 
+              mt: 2, 
+              flexGrow: 1 
+            }}
+          >
             {sectionComponents[activeSection]}
           </Box>
         </Box>
