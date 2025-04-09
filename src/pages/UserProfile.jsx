@@ -62,9 +62,12 @@ const UserProfilePage = () => {
         <>
             <Box sx={{
                 display: 'flex',
+                flexDirection: 'column',
                 backgroundColor: theme.palette.background.default,
                 position: 'relative',
-                pl: '70px'
+                pl: '50px',
+                overflow: 'hidden',
+                height: '100vh',
             }}>
                 <UserSideBar
                     expanded={expanded}
@@ -72,7 +75,12 @@ const UserProfilePage = () => {
                     setActiveSection={setActiveSection}
                 />
 
-                <Box sx={{ flexGrow: 1, p: 3 }}>
+                <Box sx={{ 
+                    flexGrow: 1,
+                    p: 3, 
+                    display: 'flex',
+                    flexDirection: 'column' 
+                }}>
                     <Box sx={{
                         width: '100%',
                         display: 'flex',
@@ -132,7 +140,13 @@ const UserProfilePage = () => {
                         )}
                     </Box>
 
-                    <Box component='main' sx={{ mt: 2 }}>
+                    <Box 
+                        component='main' 
+                        sx={{ 
+                            mt: 2, 
+                            flexGrow: 1,
+                        }}
+                    >
                         {sectionComponents[activeSection]}
                     </Box>
                 </Box>

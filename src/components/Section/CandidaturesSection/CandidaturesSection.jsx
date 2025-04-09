@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"; 
-import { Grid2 as Grid, Typography } from "@mui/material";
+import { Grid2 as Grid, Typography, Box } from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import ServerError from "../../Error/ServerError/ServerError";
@@ -51,7 +51,9 @@ const CandidaturesSection = () => {
     },[]);
 
     return(
-        <>
+        <Box sx={{
+            height: '100%',
+        }}>
             <Typography
                 variant="h5"
                 sx={{
@@ -89,7 +91,7 @@ const CandidaturesSection = () => {
                     ))}
                 </Grid>
             )}
-        </>
+        </Box>
     );
 }
 

@@ -10,6 +10,7 @@ const DataNullError = ({ message }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            minHeight: '100%'
         }}>
             <Box
                 component={'img'}
