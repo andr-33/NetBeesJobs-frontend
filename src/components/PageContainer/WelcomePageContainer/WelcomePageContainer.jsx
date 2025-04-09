@@ -130,7 +130,7 @@ const WelcomePageContainer = () => {
                     <Box sx={{ width: '100%', my: 10 }}>
                         <Grid container spacing={2} sx={{ mx: { xs: 1, sm: 10, md: 10, lg: 20}    }}>
                             <Grid size={{ xs: 12, sm: 12, md: 12 }} sx={{ textAlign: 'center', width: '100%' }}>
-                                <Typography sx={{ marginBottom: '10px', fontSize: 48, fontWeight: 'bolder' }}>¿Eres una empresa que quiere contratar personal?</Typography>
+                                <Typography sx={{ marginBottom: '10px', fontSize: 40, fontWeight: 'bolder' }}>¿Eres una empresa que quiere contratar personal?</Typography>
                             </Grid>
 
                             <Grid size={{ xs: 12, sm: 12, md: 4 }}>

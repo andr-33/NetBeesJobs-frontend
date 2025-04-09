@@ -23,7 +23,7 @@ const CompanyStepsCard = ({ img, text, sx }) => {
             <Box component='img' src={img} height={90} />
             <Typography
                 sx={{
-                    fontSize: 30,
+                    fontSize: 20,
                     fontWeight: 500,
                     color: theme.palette.text.primary,
                     mt: 3,
