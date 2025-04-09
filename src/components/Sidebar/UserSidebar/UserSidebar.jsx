@@ -1,14 +1,16 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, useTheme } from "@mui/material";
-import { InsertDriveFileRounded, InventoryRounded, LogoutRounded } from '@mui/icons-material';
+import { InsertDriveFileRounded, InventoryRounded, LogoutRounded, HomeRounded } from '@mui/icons-material';
 import { useAuth } from '../../../contexts/AuthContext/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 const UserSideBar = ({ expanded, setExpanded, setActiveSection }) => {
     const menuItems = [
         { id: 'cvs', name: "Mis CVs", icon: <InsertDriveFileRounded /> },
-        { id: 'registers', name: "Candidaturas", icon: <InventoryRounded /> }
+        { id: 'registers', name: "Candidaturas", icon: <InventoryRounded /> },
     ];
 
     const theme = useTheme();
+    const navigate = useNavigate();
     const { removeToken } = useAuth();
 
     return (
@@ -35,6 +37,19 @@ const UserSideBar = ({ expanded, setExpanded, setActiveSection }) => {
                 height: '100%'
             }}>
                 <List>
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() => navigate('/pagina-principal')}>
+                            <ListItemIcon><HomeRounded /></ListItemIcon>
+                            {expanded &&
+                                <ListItemText
+                                    primary="Inicio"
+                                    sx={{
+                                        minWidth: 200,
+                                    }}
+                                />
+                            }
+                        </ListItemButton>
+                    </ListItem>
                     {menuItems.map((item) => (
                         <ListItem key={item.name} disablePadding>
                             <ListItemButton
