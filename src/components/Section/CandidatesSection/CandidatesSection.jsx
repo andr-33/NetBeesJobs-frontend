@@ -6,6 +6,7 @@ import { CallRounded, PlaceRounded, DownloadRounded } from '@mui/icons-material'
 import axios from 'axios';
 import ServerError from '../../Error/ServerError/ServerError';
 import DownloadButton from '../../Button/DowndloadButton/DownloadButton';
+import DataNullError from '../../Error/DataNullError/DataNullError';
 
 const Tag = ({ icon, text }) => {
     return (
@@ -31,6 +32,7 @@ const Tag = ({ icon, text }) => {
 const CandidatesSection = () => {
     const [candidatesData, setCandidatesData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
+    const [isDataNull, setIsDataNull] = useState(false);
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
@@ -44,6 +46,9 @@ const CandidatesSection = () => {
                 });
                 setCandidatesData(response.data);
                 setExistsAnError(false);
+                if (response.data.length === 0) {
+                    setIsDataNull(true);
+                }
             } catch (error) {
                 console.error("Error: ", error.message);
                 setExistsAnError(true);
@@ -55,7 +60,9 @@ const CandidatesSection = () => {
     }, []);
 
     return (
-        <>
+        <Box sx={{
+            height: '100%',
+        }}>
             <Typography
                 variant="h5"
                 sx={{
@@ -68,6 +75,12 @@ const CandidatesSection = () => {
             {existsAnError && (
                 <ServerError
                     message="Ups... no hemos podido obtener tus candidatos"
+                />
+            )}
+
+            {isDataNull && !existsAnError && (
+                <DataNullError
+                    message="No tienes candidatos en este momento"
                 />
             )}
 
@@ -162,7 +175,7 @@ const CandidatesSection = () => {
                     ))}
                 </Grid>
             )}
-        </>
+        </Box>
     );
 };
 

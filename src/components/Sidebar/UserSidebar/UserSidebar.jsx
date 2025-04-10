@@ -1,20 +1,16 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, useTheme } from "@mui/material";
-import { 
-    PeopleAltRounded, 
-    AccountTreeRounded, 
-    AllInboxRounded, 
-    LogoutRounded 
-} from "@mui/icons-material";
-import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { InsertDriveFileRounded, InventoryRounded, LogoutRounded, HomeRounded } from '@mui/icons-material';
+import { useAuth } from '../../../contexts/AuthContext/AuthContext';
+import { useNavigate } from "react-router-dom";
 
-const CompanySidebar = ({ expanded, setExpanded, setActiveSection }) => {
+const UserSideBar = ({ expanded, setExpanded, setActiveSection }) => {
     const menuItems = [
-        { id: 'candidates', name: "Candidatos", icon: <PeopleAltRounded /> },
-        { id: 'projects', name: "Proyectos", icon: <AccountTreeRounded /> },
-        { id: 'offers', name: "Tus ofertas", icon: <AllInboxRounded /> },
+        { id: 'cvs', name: "Mis CVs", icon: <InsertDriveFileRounded /> },
+        { id: 'registers', name: "Candidaturas", icon: <InventoryRounded /> },
     ];
 
     const theme = useTheme();
+    const navigate = useNavigate();
     const { removeToken } = useAuth();
 
     return (
@@ -41,41 +37,54 @@ const CompanySidebar = ({ expanded, setExpanded, setActiveSection }) => {
                 height: '100%'
             }}>
                 <List>
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() => navigate('/pagina-principal')}>
+                            <ListItemIcon><HomeRounded /></ListItemIcon>
+                            {expanded &&
+                                <ListItemText
+                                    primary="Inicio"
+                                    sx={{
+                                        minWidth: 200,
+                                    }}
+                                />
+                            }
+                        </ListItemButton>
+                    </ListItem>
                     {menuItems.map((item) => (
                         <ListItem key={item.name} disablePadding>
                             <ListItemButton
                                 onClick={() => setActiveSection(item.id)}
                             >
                                 <ListItemIcon>{item.icon}</ListItemIcon>
-                                {expanded && 
-                                    <ListItemText 
-                                        primary={item.name} 
+                                {expanded &&
+                                    <ListItemText
+                                        primary={item.name}
                                         sx={{
                                             minWidth: 200,
-                                        }} 
+                                        }}
                                     />
                                 }
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
-                <Box sx={{ 
-                    flexGrow: 1, 
-                    display: 'flex', 
+                <Box sx={{
+                    flexGrow: 1,
+                    display: 'flex',
                     alignItems: 'flex-end',
                     mb: 1,
                 }}>
                     <ListItem disablePadding>
                         <ListItemButton onClick={removeToken}>
                             <ListItemIcon>
-                               <LogoutRounded />
+                                <LogoutRounded />
                             </ListItemIcon>
-                            {expanded && 
-                                <ListItemText 
+                            {expanded &&
+                                <ListItemText
                                     primary="Cerrar sesión"
                                     sx={{
                                         minWidth: 200,
-                                    }} 
+                                    }}
                                 />
                             }
                         </ListItemButton>
@@ -84,6 +93,7 @@ const CompanySidebar = ({ expanded, setExpanded, setActiveSection }) => {
             </Box>
         </Drawer>
     );
+
 };
 
-export default CompanySidebar;
+export default UserSideBar;

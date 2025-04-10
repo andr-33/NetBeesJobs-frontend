@@ -1,10 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useImageProfile } from "../../../contexts/ImageProfileContext/ImageProfileContext";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../../contexts/NotificationContext/NotificationContext";
 import axios from "axios";
+import dayjs from "dayjs";
 import CustomTextFieldWithIcon from "../../TextField/CustomTextFieldWithIcon/CustomTextFieldWithIcon";
 import LoaderButton from "../../Button/LoaderButton/LoaderButton";
 import OptionPicker from "../../Picker/OptionPicker/OptionPicker";
@@ -12,23 +13,26 @@ import TextFieldWithPicker from "../../TextField/TextFieldWithPicker/TextFieldWi
 import CustomDatePicker from "../../Picker/CustomDatePicker/CustomDatePicker";
 
 const INITIAL_VALUES = {
-  name: "",
-  surname: "",
-  second_surname: "",
-  genre: "",
-  birth_day: "",
-  phone_number: "",
-  nationality: "",
-  document_type: 1,
-  document_number: '',
-  community_id: 7,
-  province_id: 28,
-  city_id: "",
-  zip_code: "",
+  nombre: "",
+  primer_apellido: "",
+  segundo_apellido: "",
+  mst_sexo_id: "",
+  fecha_nacimiento: "",
+  telefono_movil: "",
+  nacionalidad_id: "",
+  mst_clases_doc_id: 1,
+  num_documento: '',
+  mst_comunidades_id: 7,
+  mst_provincias_id: 28,
+  mst_ciudades_id: "",
+  codigo_postal: "",
   image: "",
 };
 
-const ProfileUserForm = () => {
+const ProfileUserForm = ({
+  handleCloseModal,
+  editMode
+}) => {
   const [formValues, setFormValues] = useState(INITIAL_VALUES);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -36,7 +40,7 @@ const ProfileUserForm = () => {
   const { accessToken } = useAuth();
   const { updateNotification, openNotification } = useNotification();
 
-  const handleSubmit = async (event) => {
+  const handleSubmitCreate = async (event) => {
     event.preventDefault();
     setLoading(true);
     formValues.image = selectedImage;
@@ -84,60 +88,121 @@ const ProfileUserForm = () => {
     }
   };
 
+  const handleSubmitUpdate = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try{
+      const response = await axios.put('/api/users/update-profile', formValues, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      });
+
+      updateNotification('Perfil actualizado con exito!', 'success');
+      openNotification();
+    } catch (error) {
+      console.error('Error updating user: ', error);
+      updateNotification('Lo sentimos, algo ha salido mal', 'error');
+      openNotification();
+    } finally {
+      setLoading(false);
+      setFormValues(INITIAL_VALUES);
+      handleCloseModal();
+    }
+  };
+
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleDateChange = (name) => (date) => {
-    if(!date) return;
+    if (!date) return;
 
     setFormValues((prev) => ({ ...prev, [name]: date.format('YYYY-MM-DD') }));
-  }
+  };
+
+  useEffect(() => {
+    const fetchUserInformation = async () => {
+      try {
+        const response = await axios.get('/api/users/user-information', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+        const userData = response.data;
+        const mappedData = {
+          nombre: userData.nombre,
+          primer_apellido: userData.primer_apellido,
+          segundo_apellido: userData.segundo_apellido,
+          mst_sexo_id: userData.mst_sexo_id,
+          fecha_nacimiento: userData.fecha_nacimiento,
+          telefono_movil: userData.telefono_movil,
+          nacionalidad_id: userData.nacionalidad_id,
+          mst_clases_doc_id: userData.mst_clases_doc_id,
+          num_documento: userData.num_documento,
+          mst_comunidades_id: userData.mst_ciudades_id.mst_provincias_id.mst_comunidades_id.mst_comunidades_id,
+          mst_provincias_id: userData.mst_ciudades_id.mst_provincias_id.mst_provincias_id,
+          mst_ciudades_id: userData.mst_ciudades_id.mst_ciudades_id,
+          codigo_postal: userData.codigo_postal,
+        };
+        setFormValues(mappedData);
+      } catch (error) {
+        console.error('Error fetching user data: ', error.message);
+        updateNotification("No pudimos obtener tu información", 'error');
+        openNotification();
+      }
+    };
+  
+    if(editMode) fetchUserInformation();
+  }, []);
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <Box 
+      component="form" 
+      onSubmit={editMode ? handleSubmitUpdate : handleSubmitCreate}>
       <Typography
         variant="h6"
         sx={{
           mb: 1
         }}
       >
-        Sobre ti:
+        {editMode ? "Tus datos: ":"Sobre ti:"}
       </Typography>
       <CustomTextFieldWithIcon
         label="Nombre"
-        name="name"
-        value={formValues.name}
+        name="nombre"
+        value={formValues.nombre}
         onChange={handleOnChange}
         required
       />
       <CustomTextFieldWithIcon
         label="Primer Apellido"
-        name="surname"
-        value={formValues.surname}
+        name="primer_apellido"
+        value={formValues.primer_apellido}
         onChange={handleOnChange}
         required
       />
       <CustomTextFieldWithIcon
         label="Segundo Apellido"
-        name="second_surname"
-        value={formValues.second_surname}
+        name="segundo_apellido"
+        value={formValues.segundo_apellido}
         onChange={handleOnChange}
       />
       <OptionPicker
         urlData='/api/master/genres'
         label="Género"
-        name="genre"
-        value={formValues.genre}
+        name="mst_sexo_id"
+        value={formValues.mst_sexo_id}
         onChange={handleOnChange}
         idKey='mst_sexo_id'
         labelKey='descripcion'
       />
       <CustomTextFieldWithIcon
         label="Teléfono"
-        name="phone_number"
-        value={formValues.phone_number}
+        name="telefono_movil"
+        value={formValues.telefono_movil}
         type="tel"
         onChange={handleOnChange}
         required
@@ -145,27 +210,28 @@ const ProfileUserForm = () => {
       <OptionPicker
         urlData='/api/master/countries'
         label="Nacionalidad"
-        name="nationality"
-        value={formValues.nationality}
+        name="nacionalidad_id"
+        value={formValues.nacionalidad_id}
         onChange={handleOnChange}
         idKey='mst_paises_id'
         labelKey='nombre'
       />
       <CustomDatePicker
         label='Fecha de cumpleaños'
-        onChangeDate={handleDateChange('birth_day')}
+        onChangeDate={handleDateChange('fecha_nacimiento')}
+        value={dayjs(formValues.fecha_nacimiento)}
       />
       <TextFieldWithPicker
         urlData='/api/master/document-types'
         labelPicker='Tipo de documento'
-        namePicker='document_type'
-        valuePicker={formValues.document_type}
+        namePicker='mst_clases_doc_id'
+        valuePicker={formValues.mst_clases_doc_id}
         onChangePicker={handleOnChange}
         idKey='mst_clases_doc_id'
         labelKey='clase'
         labelTextField='No. de documento'
-        nameTextField='document_number'
-        valueTextField={formValues.document_number}
+        nameTextField='num_documento'
+        valueTextField={formValues.num_documento}
         onChangeTextField={handleOnChange}
       />
       <Typography
@@ -179,39 +245,42 @@ const ProfileUserForm = () => {
       <OptionPicker
         urlData='/api/master/communities'
         label="Comunidad Autónoma"
-        name="community_id"
-        value={formValues.community_id}
+        name="mst_comunidades_id"
+        value={formValues.mst_comunidades_id}
         onChange={handleOnChange}
         idKey='mst_comunidades_id'
         labelKey='nombre_corto'
       />
       <OptionPicker
-        urlData={`/api/master/communities/${formValues.community_id}/provinces`}
+        urlData={`/api/master/communities/${formValues.mst_comunidades_id}/provinces`}
         label="Provincia"
-        name="province_id"
-        value={formValues.province_id}
+        name="mst_provincias_id"
+        value={formValues.mst_provincias_id}
         onChange={handleOnChange}
         idKey='mst_provincias_id'
         labelKey='nombre'
       />
       <OptionPicker
-        urlData={`/api/master/provinces/${formValues.province_id}/cities`}
+        urlData={`/api/master/provinces/${formValues.mst_provincias_id}/cities`}
         label="Ciudad"
-        name="city_id"
-        value={formValues.city_id}
+        name="mst_ciudades_id"
+        value={formValues.mst_ciudades_id}
         onChange={handleOnChange}
         idKey='mst_ciudades_id'
         labelKey='nombre'
       />
       <CustomTextFieldWithIcon
         label="Código postal"
-        name="zip_code"
-        value={formValues.zip_code}
+        name="codigo_postal"
+        value={formValues.codigo_postal}
         type="number"
         onChange={handleOnChange}
         required
       />
-      <LoaderButton text="Crear perfil" loading={loading} />
+      <LoaderButton
+        text={editMode ? "Actualizar" : "Crear perfil"}
+        loading={loading}
+      />
     </Box>
   );
 };

@@ -8,7 +8,7 @@ const ImageAvatar = ({roleId}) => {
     const [imageUrl, setImageUrl] = useState(null);
     const theme = useTheme();
     const { accessToken } = useAuth();
-    const route = roleId === 2 ? '/api/companies/get-logo-image' : '/api/users/'
+    const route = roleId === 2 ? '/api/companies/get-logo-image' : '/api/users/get-profile-image'
 
     useEffect(() => {
         const fetchImage = async () => {
@@ -27,7 +27,7 @@ const ImageAvatar = ({roleId}) => {
         <>
             {imageUrl ? (
                 <Avatar 
-                alt="Logo empresa"
+                alt="Imagen"
                 src={imageUrl}
                 sx={{ 
                     width: 200, 
