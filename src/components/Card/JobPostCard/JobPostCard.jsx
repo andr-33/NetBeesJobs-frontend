@@ -5,7 +5,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 
 
-const JobPostCard = ({ imageUrl }) => {
+const JobPostCard = ({ imageUrl, salary, city, title, description, sector }) => {
     const theme = useTheme();
     return (
         <Box
@@ -38,12 +38,11 @@ const JobPostCard = ({ imageUrl }) => {
                                     position: 'absolute',
                                     top: 8,
                                     right: 8,
-                                    display: 'block',  
+                                    display: 'block',
                                     gap: 1,
                                 }}
                             >
-                                <Chip label="Chip 1" size="small" color="primary" />
-                                <Chip label="Chip 2" size="small" color="secondary" />
+                                <Chip label={sector} size="small" color="primary" />
                             </Box>
                         </Box>
 
@@ -57,40 +56,62 @@ const JobPostCard = ({ imageUrl }) => {
                                 gap: 1,
                             }}
                         >
-                            <Chip label="Chip 1" size="small" color="primary" />
-                            <Chip label="Chip 2" size="small" color="secondary" />
+                            <Chip label={sector} size="small" color="primary"  />
                         </Box>
                     </Box>
                 </Grid>
-                <Grid size={12} sx={{px: 2, mb: 1}}>
+                <Grid size={12} sx={{ px: 2, mb: 1 }}>
 
                     <Typography variant="h6" color={theme.palette.primary.dark} sx={{ fontWeight: 'bold', mb: 1 }}>
-                        €1.250 mensual
+                        € {salary} anuales
                     </Typography>
 
                 </Grid>
-                <Grid size={12} sx={{px: 2, mb: 1}}>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1, color: 'black' }} >
-                        Desarrollador
+                <Grid size={12} sx={{ px: 2, mb: 1 }}>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: 'bold',
+                            mb: 1,
+                            color: 'black',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 2, 
+                            overflow: 'hidden', 
+                            textOverflow: 'ellipsis',  
+                            height: '2.7em', 
+                        }}
+                    >
+                        {title}
                     </Typography>
                 </Grid>
-                <Grid size={12} sx={{px: 2, mb: 1}}>
 
-                    <Typography variant="subtitle1" color="textSecondary" sx={{ mb: 1 }}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit
-                    </Typography>
 
-                </Grid>
-                <Grid size={12} sx={{px: 2, mb: 3}}>
-                    <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                        Se busca Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <Grid size={12} sx={{ px: 2, mb: 1 }}>
+                    <Typography
+                        vvariant="subtitle1" 
+                        color="textSecondary" 
+           
+                        sx={{
+                
+                            mb: 1,
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3,  
+                            overflow: 'hidden',  
+                            textOverflow: 'ellipsis',  
+                            height: '4.7em', 
+                        }}
+                    >
+                        {description}
                     </Typography>
                 </Grid>
-                <Grid size={12} sx={{px: 2, mb: 1}}>
+
+                <Grid size={12} sx={{ px: 2, mb: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <LocationOnIcon color="action" sx={{ mr: 1 }} />
                         <Typography variant="body2" color="textSecondary">
-                            Madrid
+                            {city}
                         </Typography>
                     </Box>
 

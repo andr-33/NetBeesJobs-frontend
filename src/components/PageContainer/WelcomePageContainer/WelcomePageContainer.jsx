@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, Grid2 as Grid, useTheme, Button } from "@mui/material";
 import Slider from "react-slick";
 import WelcomePageSection from "../../Section/WelcomePageSection/WelcomePageSection";
@@ -13,10 +13,12 @@ import "./WelcomePageContainer.css";
 import ComparisonCards from "../../Card/ComparisonCard/ComparisonCard";
 import JobPostCard from "../../Card/JobPostCard/JobPostCard";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const WelcomePageContainer = () => {
     const theme = useTheme();
     const navigate = useNavigate();
+    const [offersData, setOffersData] = useState([]);
     const { isMobile } = useScreenWidth();
     const partnerRef = useRef(null);
     const contactRef = useRef(null);
@@ -29,6 +31,21 @@ const WelcomePageContainer = () => {
         arrows: false,
         dots: true,
     };
+
+    useEffect(() => {
+        const fetchAllOffers = async () => {
+            try {
+                const response = await axios.get('/api/companies/all-active-offers');
+                setOffersData(response.data.slice(0, 4));
+                console.log(response.data);
+            } catch (error) {
+                console.error("Error: ", error.message);
+            }
+        };
+        fetchAllOffers();
+    }, []);
+
+
     return (
         <Box sx={{
             scrollSnapType: isMobile ? 'unset' : 'y mandatory',
@@ -259,18 +276,44 @@ const WelcomePageContainer = () => {
                                     Ofertas
                                 </Typography>
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                                <JobPostCard imageUrl="./images/informatica.jpg" />
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                                <JobPostCard imageUrl="./images/informatica.jpg" />
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} display={{ xs: 'none', sm: 'none', md: 'block', lg: 'block' }}>
-                                <JobPostCard imageUrl="./images/informatica.jpg" />
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 3, lg: 3 }} display={{ xs: 'none', sm: 'none', md: 'none', lg: 'block' }}>
-                                <JobPostCard imageUrl="./images/informatica.jpg" />
-                            </Grid>
+                            {
+                                offersData.length !== 0 ? (
+                                    offersData.slice(0, 4).map((item, index) => (
+                                        <Grid
+                                            key={index}
+                                            size={
+                                                {
+                                                    xs: 12,
+                                                    sm: 6,
+                                                    md: 4,
+                                                    lg: 3
+                                                }
+                                            }
+                                            sx={{
+                                                display: {
+                                                    xs: index < 2 ? 'block' : 'none',
+                                                    sm: index < 2 ? 'block' : 'none',
+                                                    md: index < 3 ? 'block' : 'none',
+                                                    lg: 'block',
+                                                }
+                                            }}
+                                        >
+                                            <JobPostCard
+                                                title={item.nombre}
+                                                description={item.descripcion}
+                                                imageUrl={item.mst_emp_sector_id?.link_imagen}
+                                                salary={item.salario_anual}
+                                                city={item.mst_ciudades_id?.nombre}
+                                                sector={item.mst_emp_sector_id?.descripcion}	
+
+                                            />
+                                        </Grid>
+                                    ))
+                                ) : (
+                                    null
+                                )
+                            }
+
                             <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
                                     variant="contained"
@@ -314,7 +357,7 @@ const WelcomePageContainer = () => {
                         color: 'black',
                     }}>
                         <Grid container sx={{ px: { xs: 2, sm: 2, md: 0, lg: 0 }, }}>
-                            <Grid size={{ xs: 12, sm: 12, md: 7 }} sx={{ p: 5, pt: 20 }} >
+                            <Grid size={{ xs: 12, sm: 12, md: 7 }} sx={{ p: 6, pt: 20 }} >
                                 <Typography sx={{ fontSize: 50, mb: { xs: 3, sm: 3, md: 9, lg: 9 }, px: { xs: 2, sm: 2, md: 0, lg: 0 }, fontWeight: 'bolder' }} color='black'>
                                     Publica tus ofertas de empleo
                                 </Typography>
@@ -338,9 +381,9 @@ const WelcomePageContainer = () => {
                         sx={{
                             fontSize: 48,
                             mt: 9,
-                            mb: 9,
                             textAlign: 'center',
                             fontWeight: 500,
+                            fontWeight: 'bolder',
                         }}
                     >
                         Nuestros
