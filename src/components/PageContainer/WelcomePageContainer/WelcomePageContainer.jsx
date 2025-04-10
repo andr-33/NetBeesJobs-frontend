@@ -37,7 +37,6 @@ const WelcomePageContainer = () => {
             try {
                 const response = await axios.get('/api/companies/all-active-offers');
                 setOffersData(response.data.slice(0, 4));
-                console.log(response.data);
             } catch (error) {
                 console.error("Error: ", error.message);
             }
@@ -248,7 +247,7 @@ const WelcomePageContainer = () => {
 
                 <Grid size={{ xs: 12, sm: 12 }} >
                     <WelcomePageSection sx={{ backgroundColor: 'white', color: 'black', mb: 15 }}>
-                        <Box sx={{ width: '100%', textAlign: 'center', mx: { xs: 0, sm: 5, md: 10, lg: 29 } }}>
+                        <Box sx={{ width: '100%', textAlign: 'center',  mx: { xs: 0, sm: 5, md: 10, lg: 29 } }}>
                             <Typography sx={{ fontSize: 48, fontWeight: 'bolder', mb: 10 }}>
                                 Precios
                                 <Typography sx={{ fontWeight: '900', color: theme.palette.primary.main, fontSize: 52, mx: 0.5, textShadow: `2px 2px 4px ${theme.palette.grey[900]}`, }} component='span' >
