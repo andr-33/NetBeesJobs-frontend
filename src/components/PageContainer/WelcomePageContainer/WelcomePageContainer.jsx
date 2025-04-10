@@ -382,7 +382,6 @@ const WelcomePageContainer = () => {
                             fontSize: 48,
                             mt: 9,
                             textAlign: 'center',
-                            fontWeight: 500,
                             fontWeight: 'bolder',
                         }}
                     >
