@@ -153,7 +153,6 @@ const CompanyProfilePage = () => {
         backgroundColor: theme.palette.background.default,
         position: 'relative',
         pl: '50px',
-        overflow: 'hidden',
         height: '100vh',
       }}>
         <CompanySidebar
@@ -253,7 +252,7 @@ const CompanyProfilePage = () => {
             component='main' 
             sx={{ 
               mt: 2, 
-              flexGrow: 1 
+              flexGrow: 1,
             }}
           >
             {sectionComponents[activeSection]}
