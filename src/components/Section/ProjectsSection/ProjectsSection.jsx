@@ -15,24 +15,7 @@ import CreateProjectModal from '../../Modal/CreateProjectModal/CreateProjectModa
 import ProjectCard from '../../Card/ProjectCard/ProjectCard';
 import DataNullError from '../../Error/DataNullError/DataNullError';
 import axios from 'axios';
-
-const ProjectsLoadingSkeletons = () => {
-    return (
-        <>
-            {Array.from({ length: 4 }).map((_, index) => (
-                <Grid key={index} size={{ md: 6, sm: 12 }}>
-                    <Skeleton
-                        variant="rectangular"
-                        height={150}
-                        sx={{
-                            borderRadius: '16px'
-                        }}
-                    />
-                </Grid>
-            ))}
-        </>
-    );
-};
+import CardsSkeleton from '../../Skeleton/CardsSkeleton/CardsSkeleton';
 
 const CompanyProjectsSection = () => {
     const [projectsData, setProjectsData] = useState([]);
@@ -142,25 +125,6 @@ const CompanyProjectsSection = () => {
                 </Button>
             </Box>
 
-            {projectsData.length > 0 && (
-                <Grid container spacing={2} mt={2}>
-                    {projectsData.map((project, index) => (
-                        <Grid key={index} size={{ md: 6, sm: 12 }}>
-                            <ProjectCard
-                                id={project.emp_proyectos_id}
-                                name={project.nombre}
-                                description={project.descripcion}
-                                startDate={formatDate(project.fecha_inicio)}
-                                endDate={formatDate(project.fecha_fin)}
-                                state={project.estado}
-                                handleDeleteProject={handleDeleteProject}
-                                handleEditProject={()=> handleEditProject(project.emp_proyectos_id)}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-
             {existsAnError && (
                 <ServerError
                     message={"Vaya... No pudimos obtener tus proyectos"}
@@ -174,8 +138,29 @@ const CompanyProjectsSection = () => {
             )}
 
             {isLoading && (
+                <CardsSkeleton 
+                    length={4}
+                    height={250}
+                    size={{ lg: 6, md: 6, sm: 12 }}
+                />
+            )}
+
+            {projectsData.length > 0 && (
                 <Grid container spacing={2} mt={2}>
-                    <ProjectsLoadingSkeletons />
+                    {projectsData.map((project, index) => (
+                        <Grid key={index} size={{ lg: 6, md: 6, sm: 12 }}>
+                            <ProjectCard
+                                id={project.emp_proyectos_id}
+                                name={project.nombre}
+                                description={project.descripcion}
+                                startDate={formatDate(project.fecha_inicio)}
+                                endDate={formatDate(project.fecha_fin)}
+                                state={project.estado}
+                                handleDeleteProject={handleDeleteProject}
+                                handleEditProject={()=> handleEditProject(project.emp_proyectos_id)}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
             )}
 

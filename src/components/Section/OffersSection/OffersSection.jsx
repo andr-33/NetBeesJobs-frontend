@@ -11,6 +11,7 @@ import axios from "axios";
 import CreateOfferModal from "../../Modal/CreateOfferModal/CreateOfferModal";
 import OfferCard from "../../Card/OfferCard/OfferCard";
 import DataNullError from "../../Error/DataNullError/DataNullError";
+import CardsSkeleton from "../../Skeleton/CardsSkeleton/CardsSkeleton";
 
 const OfferSection = () => {
     const [offersData, setOffersData] = useState([]);
@@ -74,17 +75,6 @@ const OfferSection = () => {
         fetchAllCompanyOffers();
     }, []);
 
-    const formatDate = (dateISO) => {
-        const newDate = new Date(dateISO);
-        const opciones = {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-        };
-        const formatter = new Intl.DateTimeFormat("es-ES", opciones);
-        return formatter.format(newDate).replace(".", "");
-    };
-
     return (
         <Box sx={{
             height: '100%',
@@ -107,6 +97,14 @@ const OfferSection = () => {
             {isDataNull && !existsAnError && (
                 <DataNullError
                     message={"No tienes ofertas en este momento"}
+                />
+            )}
+
+            {isLoading && (
+                <CardsSkeleton 
+                    length={4}
+                    height={200}
+                    size={{ lg: 6, md: 6, sm: 12 }}
                 />
             )}
 

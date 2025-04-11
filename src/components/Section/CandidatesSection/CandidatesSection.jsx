@@ -7,6 +7,7 @@ import axios from 'axios';
 import ServerError from '../../Error/ServerError/ServerError';
 import DownloadButton from '../../Button/DowndloadButton/DownloadButton';
 import DataNullError from '../../Error/DataNullError/DataNullError';
+import CardsSkeleton from '../../Skeleton/CardsSkeleton/CardsSkeleton';
 
 const Tag = ({ icon, text }) => {
     return (
@@ -33,11 +34,13 @@ const CandidatesSection = () => {
     const [candidatesData, setCandidatesData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
     const [isDataNull, setIsDataNull] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
     useEffect(() => {
         const fetchCandidates = async () => {
+            setIsLoading(true);
             try {
                 const response = await axios.get('/api/companies/all-company-candidates', {
                     headers: {
@@ -54,6 +57,8 @@ const CandidatesSection = () => {
                 setExistsAnError(true);
                 updateNotification('No pudimos obtener a tus candidatos', 'error');
                 openNotification();
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchCandidates();
@@ -84,6 +89,14 @@ const CandidatesSection = () => {
                 />
             )}
 
+            {isLoading && (
+                <CardsSkeleton 
+                    length={8}
+                    height={200}
+                    size={{ lg: 3, md: 6, sm: 12 }}
+                />
+            )}
+
             {candidatesData.length > 0 && (
                 <Grid container spacing={2} mt={2}>
                     {candidatesData.map(({ 
@@ -91,7 +104,7 @@ const CandidatesSection = () => {
                         emp_ofertas_id : offer,
                         can_cv_id : cv
                     }, index) => (
-                        <Grid key={index} size={{ lg: 3, sm: 12 }}>
+                        <Grid key={index} size={{ lg: 3, md: 6, sm: 12 }}>
                             <Paper 
                             key={index}
                             elevation={3}
