@@ -6,11 +6,13 @@ import ServerError from "../../Error/ServerError/ServerError";
 import axios from "axios";
 import CandidatureCard from "../../Card/CandidatureCard/CandidatureCard";
 import DataNullError from "../../Error/DataNullError/DataNullError";
+import CardsSkeleton from "../../Skeleton/CardsSkeleton/CardsSkeleton";
 
 const CandidaturesSection = () => {
     const [candidaturesData, setCandidaturesData] = useState([]);
     const [existsAnError, setExistsAnError] = useState(false);
     const [isDataNull, setIsDataNull] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { accessToken } = useAuth();
     const { updateNotification, openNotification } = useNotification();
 
@@ -29,6 +31,7 @@ const CandidaturesSection = () => {
 
     useEffect(()=>{
         const fetchCandidatures = async () => {
+            setIsLoading(true);
             try {
                 const response = await axios.get('/api/users/user-candidatures', {
                     headers: {
@@ -45,6 +48,8 @@ const CandidaturesSection = () => {
                 setExistsAnError(true);
                 updateNotification('No pudimos obtener tus candidaturas', 'error');
                 openNotification();
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchCandidatures();
@@ -72,6 +77,14 @@ const CandidaturesSection = () => {
             {isDataNull && !existsAnError && (
                 <DataNullError 
                     message="Aún no tienes candidaturas registradas"
+                />
+            )}
+
+            {isLoading && (
+                <CardsSkeleton 
+                    length={6} 
+                    height={200} 
+                    size={{ lg: 4, md: 6, sm: 12 }}
                 />
             )}
 
